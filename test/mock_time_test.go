@@ -9,11 +9,11 @@ import (
 	"time"
 )
 
-func TestMockTimeはローカルマシンMacの日付を2018年1月1日に変更できる(t *testing.T) {
-	expected := time.Date(2018,1,1,0,0,0,0,time.UTC)
+func TestMockTimeはローカルマシンMacの日付を任意の日付に変更できる(t *testing.T) {
+	expected := time.Date(2018,12,12,0,0,0,0,time.UTC)
 	exYear, exMonth, exDay := expected.Date()
 
-	mock_time.SetTime()
+	mock_time.SetTime(2018,12,12)
 
 	assert.Equal(t, time.Now().Year(), exYear)
 	assert.Equal(t, time.Now().Month(), exMonth)
