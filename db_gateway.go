@@ -19,11 +19,8 @@ type Table struct {
 	rows []Row
 }
 
-func FindTable(db *sql.DB, tableName string) Table {
-	rows, _ := db.Query("SELECT * FROM users;")
-	types, _ := rows.ColumnTypes()
+func ScanArgs(types []*sql.ColumnType) []interface{} {
 	dataPtrs := make([]interface{}, len(types))
-
 	for i := range types {
 		if types[i].DatabaseTypeName() == "INT" {
 			dataPtrs[i] = new(int)
@@ -31,9 +28,10 @@ func FindTable(db *sql.DB, tableName string) Table {
 			dataPtrs[i] = new(string)
 		}
 	}
+	return dataPtrs
+}
 
-	rows.Next()
-	rows.Scan(dataPtrs...)
+func RowFrom(types []*sql.ColumnType, dataPtrs []interface{}) Row {
 	columns := make([]Column, len(types))
 	for i := range types {
 			refv := reflect.ValueOf(dataPtrs[i])
@@ -44,12 +42,18 @@ func FindTable(db *sql.DB, tableName string) Table {
 				columns[i] = Column{ types[i].Name(), *r }
 			}
 	}
-	fmt.Println(columns)
-	return Table{
-								[]Row{
-										Row{
-											columns,
-										},
-								},
-							}
+	return Row{columns}
+}
+
+func FindTable(db *sql.DB, tableName string) Table {
+	rows, _ := db.Query("SELECT * FROM " + tableName + ";")
+	types, _ := rows.ColumnTypes()
+	dataPtrs := ScanArgs(types)
+	newRows := make([]Row, 0)
+	for rows.Next() {
+		rows.Scan(dataPtrs...)
+		newRows = append(newRows, RowFrom(types, dataPtrs))
+	}
+	fmt.Println(newRows)
+	return Table{newRows}
 }
