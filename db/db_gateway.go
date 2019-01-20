@@ -1,4 +1,4 @@
-package db_gateway
+package db
 
 import (
 	"database/sql"
