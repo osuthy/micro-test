@@ -3,23 +3,9 @@ package db
 import (
 	"database/sql"
 	"reflect"
-	"fmt"
 )
 
-type Column struct {
-	name string
-	value interface{}
-}
-
-type Row struct {
-	columns []Column
-}
-
-type Table struct {
-	rows []Row
-}
-
-func ScanArgs(types []*sql.ColumnType) []interface{} {
+func scanArgs(types []*sql.ColumnType) []interface{} {
 	dataPtrs := make([]interface{}, len(types))
 	for i := range types {
 		if types[i].DatabaseTypeName() == "INT" {
@@ -31,7 +17,7 @@ func ScanArgs(types []*sql.ColumnType) []interface{} {
 	return dataPtrs
 }
 
-func RowFrom(types []*sql.ColumnType, dataPtrs []interface{}) Row {
+func rowFrom(types []*sql.ColumnType, dataPtrs []interface{}) Row {
 	columns := make([]Column, len(types))
 	for i := range types {
 			refv := reflect.ValueOf(dataPtrs[i])
@@ -48,12 +34,11 @@ func RowFrom(types []*sql.ColumnType, dataPtrs []interface{}) Row {
 func FindTable(db *sql.DB, tableName string) Table {
 	rows, _ := db.Query("SELECT * FROM " + tableName + ";")
 	types, _ := rows.ColumnTypes()
-	dataPtrs := ScanArgs(types)
+	dataPtrs := scanArgs(types)
 	newRows := make([]Row, 0)
 	for rows.Next() {
 		rows.Scan(dataPtrs...)
-		newRows = append(newRows, RowFrom(types, dataPtrs))
+		newRows = append(newRows, rowFrom(types, dataPtrs))
 	}
-	fmt.Println(newRows)
 	return Table{newRows}
 }

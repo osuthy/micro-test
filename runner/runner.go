@@ -4,4 +4,4 @@ type testRunner struct {
 	Result string
 }
 
-var( TestRunner = testRunner{"success"} )
+var( TestRunner = testRunner{} )
