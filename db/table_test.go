@@ -2,11 +2,11 @@ package db
 
 import (
 	"testing"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestIsSame(t *testing.T) {
-	result := Table{
-		[]Row{
+	result := Table{ []Row{
 			Row{
 				[]Column{
 					Column{"column1", 1}, Column{"column2", 2},
@@ -14,6 +14,6 @@ func TestIsSame(t *testing.T) {
 			},
 		},
 	}.isSame(Table{[]Row{Row{[]Column{Column{"column2", 2}, Column{"column1", 1}}}}})
-	if !result { t.Fail() }
+	assert.True(t, result)
 }
 

@@ -4,7 +4,7 @@ import (
 	"testing"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-	"reflect"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestFinedTable(t *testing.T) {
@@ -15,7 +15,7 @@ func TestFinedTable(t *testing.T) {
 	defer db.Close()
 
 	table := FindTable(db, "users")
-	if !reflect.DeepEqual(table, Table{
+	assert.Equal(t, table, Table{
 		[]Row{
 			Row{
 				[]Column{
@@ -34,7 +34,5 @@ func TestFinedTable(t *testing.T) {
 				},
 			},
 		},
-	}) {
-		t.Error("table not create")
-	}
+	})
 }

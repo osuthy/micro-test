@@ -2,9 +2,9 @@ package spec
 
 import(
 	"testing"
+	"github.com/stretchr/testify/assert"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-	"reflect"
 	"github.com/ShoichiroKitano/micro_test/db"
 	"github.com/ShoichiroKitano/micro_test/runner"
 )
@@ -25,9 +25,7 @@ func TestDBは検証できる(t *testing.T) {
 		db.R{"id": 1, "name": "userA", "mail": "userA@gmail.com", "age": 20},
 		db.R{"id": 2, "name": "userB", "mail": "userB@gmail.com", "age": 21},
 	)
-	if !reflect.DeepEqual(runner.TestRunner.Result, "success") {
-		t.Error("verify is fail")
-	}
+	assert.Equal(t, runner.TestRunner.Result, "success")
 }
 
 func TestDBは検証できる2(t *testing.T) {
@@ -41,7 +39,5 @@ func TestDBは検証できる2(t *testing.T) {
 		db.R{"id": 1, "name": "userA", "mail": "userA@gmail.com", "age": 20},
 		db.R{"id": 2, "name": "userC", "mail": "userB@gmail.com", "age": 21},
 	)
-	if !reflect.DeepEqual(runner.TestRunner.Result, "") {
-		t.Error("verify is fail")
-	}
+	assert.Equal(t, runner.TestRunner.Result, "")
 }

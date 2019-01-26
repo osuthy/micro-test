@@ -2,15 +2,15 @@ package db
 
 import (
 	"testing"
-	"reflect"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestRecordToTable(t *testing.T) {
+func Test複数のRecordをTableに変換する(t *testing.T) {
 	records := []R{
 		R{"column1": "A1", "column2": "A2"},
 		R{"column1": "B1", "column2": "B2"},
 	}
-	if !reflect.DeepEqual(toTable(records), Table{
+	assert.Equal(t, toTable(records), Table{
 		[]Row {
 			Row{
 				[]Column{
@@ -23,7 +23,5 @@ func TestRecordToTable(t *testing.T) {
 				},
 			},
 		},
-	}) {
-		t.Error("toTable is fail")
-	}
+	})
 }
