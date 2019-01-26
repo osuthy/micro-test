@@ -5,12 +5,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// TableInformationのバリデーション
 func Test複数のRecordをTableに変換する(t *testing.T) {
-	records := []R{
-		R{"column1": "A1", "column2": "A2"},
-		R{"column1": "B1", "column2": "B2"},
-	}
-	assert.Equal(t, toTable(records), Table{
+	tableInfo := Columns("column1", "column2").
+	R("A1", "A2").
+	R("B1", "B2")
+	assert.Equal(t, tableInfo.toTable(), Table{
 		[]Row {
 			Row{
 				[]Column{

@@ -23,8 +23,8 @@ type DSL struct {
 	tableName string
 }
 
-func (this DSL) ShouldHaveTable(records...R) {
-	expectedTable := toTable(records)
+func (this DSL) ShouldHaveTable(expected TableInformation) {
+	expectedTable := expected.toTable()
 	resultTable := FindTable(this.connection.driver, this.tableName)
   if expectedTable.isSame(resultTable) {
 		runner.TestRunner.Result = "success"
