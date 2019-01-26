@@ -4,20 +4,18 @@ import (
 	"sort"
 )
 
-type R map[string]interface{}
-
 type TableInformation struct {
 	columnNames []string
 	records [][]interface{}
 }
 
+func Columns(columnNames...string) TableInformation {
+	return TableInformation{columnNames, make([][]interface{}, 0)}
+}
+
 func (this TableInformation) R(values...interface{}) TableInformation {
 	this.records = append(this.records, values)
 	return this
-}
-
-func Columns(columnNames...string) TableInformation {
-	return TableInformation{columnNames, make([][]interface{}, 0)}
 }
 
 func (this TableInformation) toTable() Table {
