@@ -10,34 +10,49 @@ import(
 )
 
 func tearDown(con *sql.DB) {
-	con.Query("truncate table users;")
+	con.Query("truncate table test;")
 	con.Close()
 }
 
-func TestDBは検証できる(t *testing.T) {
+func TestDBはカラムの値を正しいと判定する(t *testing.T) {
+	runner.TestRunner.Result = "init"
 	con, _ := sql.Open("mysql", "root:@/test_micro_test")
-	con.Query("insert into users (id, name, mail, age) values (1, 'userA', 'userA@gmail.com', 20);")
-	con.Query("insert into users (id, name, mail, age) values (2, 'userB', 'userB@gmail.com', 21);")
+	con.Query("insert into test (column1, column2) values ('A1', 'A2');")
+	con.Query("insert into test (column1, column2) values ('B1', 'B2');")
 	defer tearDown(con)
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
-	db.DB("conName", "users").ShouldHaveTable(
-		db.R{"id": 1, "name": "userA", "mail": "userA@gmail.com", "age": 20},
-		db.R{"id": 2, "name": "userB", "mail": "userB@gmail.com", "age": 21},
+	db.DB("conName", "test").ShouldHaveTable(
+		db.R{"column1": "A1", "column2": "A2"},
+		db.R{"column1": "B1", "column2": "B2"},
 	)
 	assert.Equal(t, runner.TestRunner.Result, "success")
 }
 
-func TestDBは検証できる2(t *testing.T) {
+func TestDBはカラムの値の誤りを検出する(t *testing.T) {
+	runner.TestRunner.Result = "init"
 	con, _ := sql.Open("mysql", "root:@/test_micro_test")
-	con.Query("insert into users (id, name, mail, age) values (1, 'userA', 'userA@gmail.com', 20);")
-	con.Query("insert into users (id, name, mail, age) values (2, 'userB', 'userB@gmail.com', 21);")
+	con.Query("insert into test (column1, column2) values ('A1', 'A2');")
+	con.Query("insert into test (column1, column2) values ('B1', 'B2');")
 	defer tearDown(con)
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
-	db.DB("conName", "users").ShouldHaveTable(
-		db.R{"id": 1, "name": "userA", "mail": "userA@gmail.com", "age": 20},
-		db.R{"id": 2, "name": "userC", "mail": "userB@gmail.com", "age": 21},
+	db.DB("conName", "test").ShouldHaveTable(
+		db.R{"column1": "A1", "column2": "A2"},
+		db.R{"column1": "fail", "column2": "B2"},
 	)
 	assert.Equal(t, runner.TestRunner.Result, "")
+}
+
+func TestDBはカラム順序は無視して検証する(t *testing.T) {
+	runner.TestRunner.Result = "init"
+	con, _ := sql.Open("mysql", "root:@/test_micro_test")
+	con.Query("insert into test (column1, column2) values ('1', '2');")
+	defer tearDown(con)
+
+	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
+	db.DB("conName", "test").ShouldHaveTable(
+		db.R{"column2": "2", "column1": "1"},
+	)
+	assert.Equal(t, runner.TestRunner.Result, "success")
 }

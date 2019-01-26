@@ -18,3 +18,6 @@ func toTable(records []R) Table {
 	}
 	return Table{rows}
 }
+
+func toColumn() {
+}
