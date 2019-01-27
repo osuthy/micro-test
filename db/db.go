@@ -19,12 +19,8 @@ type DSL struct {
 }
 
 func (this DSL) HasRecords(fixture TableInformation) {
-	//fixtureTable := fixture.toTable()
-	//this.connection.StoreTable(fixtureTable)
-	con, _ := sql.Open("mysql", "root:@/test_micro_test")
-	con.Query("insert into test (column1, column2) values ('A1', 'A2');")
-	con.Query("insert into test (column1, column2) values ('B1', 'B2');")
-	con.Close()
+	fixtureTable := fixture.toTable()
+	this.connection.StoreTable(fixtureTable)
 }
 
 func (this DSL) ShouldHaveTable(expected TableInformation) {

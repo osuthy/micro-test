@@ -42,3 +42,16 @@ func FindTable(db *sql.DB, tableName string) Table {
 	}
 	return Table{tableName, newRows}
 }
+
+func (this *Connection) StoreTable(table Table) {
+	for _, row := range table.rows {
+		this.driver.Query("insert into test (" + row.columns[0].name + "," + row.columns[1].name + ") values (" + "'" + toLiteral(row.columns[0]) + "','" + toLiteral(row.columns[1]) + "');")
+	}
+}
+
+func toLiteral(column Column) string {
+	refv := reflect.ValueOf(column.value)
+	r, _ := refv.Interface().(string)
+	return "'" + r +"'"
+}
+
