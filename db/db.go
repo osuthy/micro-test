@@ -6,6 +6,7 @@ import (
 	"github.com/ShoichiroKitano/micro_test/runner"
 )
 
+// 本当はkubernetesのnamespace単位でコネクション作るからここでOpenはしない予定
 func DefineConnection(connectionName, rdbms, information string) {
 	db, _ := sql.Open(rdbms, information)
 	con := new(Connection)
