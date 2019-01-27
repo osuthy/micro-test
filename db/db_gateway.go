@@ -31,8 +31,8 @@ func rowFrom(types []*sql.ColumnType, dataPtrs []interface{}) Row {
 	return Row{columns}
 }
 
-func FindTable(db *sql.DB, tableName string) Table {
-	rows, _ := db.Query("SELECT * FROM " + tableName + ";")
+func (this *Connection) FindTable(tableName string) Table {
+	rows, _ := this.driver.Query("SELECT * FROM " + tableName + ";")
 	types, _ := rows.ColumnTypes()
 	dataPtrs := scanArgs(types)
 	newRows := make([]Row, 0)
@@ -45,7 +45,7 @@ func FindTable(db *sql.DB, tableName string) Table {
 
 func (this *Connection) StoreTable(table Table) {
 	for _, row := range table.rows {
-		this.driver.Query("insert into test (" + row.columns[0].name + "," + row.columns[1].name + ") values (" + "'" + toLiteral(row.columns[0]) + "','" + toLiteral(row.columns[1]) + "');")
+		this.driver.Query("insert into test (" + row.columns[0].name + "," + row.columns[1].name + ") values (" + toLiteral(row.columns[0]) + "," + toLiteral(row.columns[1]) + ");")
 	}
 }
 

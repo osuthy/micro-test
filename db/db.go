@@ -25,7 +25,7 @@ func (this DSL) HasRecords(fixture TableInformation) {
 
 func (this DSL) ShouldHaveTable(expected TableInformation) {
 	expectedTable := expected.toTable()
-	resultTable := FindTable(this.connection.driver, expectedTable.name)
+	resultTable := this.connection.FindTable(expectedTable.name)
   if expectedTable.isSame(resultTable) {
 		runner.TestRunner.Result = "success"
 	} else {

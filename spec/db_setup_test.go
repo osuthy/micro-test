@@ -12,7 +12,7 @@ import(
 func TestDBはデータのセットアップができる(t *testing.T) {
 	con, _ := sql.Open("mysql", "root:@/test_micro_test")
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
-	defer tearDown(con)
+	//defer tearDown(con)
 
 	db.DB("conName").HasRecords(
 		db.TableName("test").

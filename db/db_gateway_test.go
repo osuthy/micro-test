@@ -13,8 +13,9 @@ func TestFinedTable(t *testing.T) {
 	db.Query("insert into test (column1, column2) values ('B1', 'B2');")
 	defer db.Query("truncate table test;")
 	defer db.Close()
-
-	table := FindTable(db, "test")
+	connection := new(Connection)
+	connection.driver = db
+	table := connection.FindTable("test")
 	assert.Equal(t, table, Table{
 		"test",
 		[]Row{
