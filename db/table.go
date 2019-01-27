@@ -15,6 +15,7 @@ type Row struct {
 }
 
 type Table struct {
+	name string
 	rows []Row
 }
 

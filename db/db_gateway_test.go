@@ -16,6 +16,7 @@ func TestFinedTable(t *testing.T) {
 
 	table := FindTable(db, "test")
 	assert.Equal(t, table, Table{
+		"test",
 		[]Row{
 			Row{
 				[]Column{

@@ -9,3 +9,7 @@ type Connection struct {
 	name string
 }
 
+var (
+	connections = make([](*Connection), 0)
+)
+

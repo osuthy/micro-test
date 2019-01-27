@@ -40,5 +40,5 @@ func FindTable(db *sql.DB, tableName string) Table {
 		rows.Scan(dataPtrs...)
 		newRows = append(newRows, rowFrom(types, dataPtrs))
 	}
-	return Table{newRows}
+	return Table{tableName, newRows}
 }

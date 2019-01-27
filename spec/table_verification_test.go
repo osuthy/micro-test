@@ -22,8 +22,9 @@ func TestDBはカラムの値を正しいと判定する(t *testing.T) {
 	defer tearDown(con)
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
-	db.DB("conName", "test").ShouldHaveTable(
-		db.Columns("column1", "column2").
+	db.DB("conName").ShouldHaveTable(
+		db.TableName("test").
+		Columns("column1", "column2").
 		R("A1", "A2").
 		R("B1", "B2"),
 	)
@@ -38,8 +39,9 @@ func TestDBはカラムの値の誤りを検出する(t *testing.T) {
 	defer tearDown(con)
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
-	db.DB("conName", "test").ShouldHaveTable(
-		db.Columns("column1", "column2").
+	db.DB("conName").ShouldHaveTable(
+		db.TableName("test").
+		Columns("column1", "column2").
 		R("A1", "A2").
 		R("BUG", "B2"),
 	)
@@ -53,8 +55,9 @@ func TestDBはカラム順序は無視して検証する(t *testing.T) {
 	defer tearDown(con)
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
-	db.DB("conName", "test").ShouldHaveTable(
-		db.Columns("column2", "column1").
+	db.DB("conName").ShouldHaveTable(
+		db.TableName("test").
+		Columns("column2", "column1").
 		R("B", "A"),
 	)
 	assert.Equal(t, runner.TestRunner.Result, "success")
@@ -68,8 +71,9 @@ func TestDBは行の順序が期待値と異なる場合はテストを失敗さ
 	defer tearDown(con)
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
-	db.DB("conName", "test").ShouldHaveTable(
-		db.Columns("column1", "column2").
+	db.DB("conName").ShouldHaveTable(
+		db.TableName("test").
+		Columns("column1", "column2").
 		R("B1", "B2").
 		R("A1", "A2"),
 	)

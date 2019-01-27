@@ -5,12 +5,18 @@ import (
 )
 
 type TableInformation struct {
+	tableName string
 	columnNames []string
 	records [][]interface{}
 }
 
-func Columns(columnNames...string) TableInformation {
-	return TableInformation{columnNames, make([][]interface{}, 0)}
+func TableName(tableName string) TableInformation {
+	return TableInformation{tableName: tableName, records: make([][]interface{}, 0)}
+}
+
+func (this TableInformation) Columns(columnNames...string) TableInformation {
+	this.columnNames = columnNames
+	return this
 }
 
 func (this TableInformation) R(values...interface{}) TableInformation {
@@ -28,6 +34,6 @@ func (this TableInformation) toTable() Table {
 		sort.Slice(columns, func(i, j int) bool { return columns[i].name < columns[j].name })
 		rows = append(rows, Row{columns})
 	}
-	return Table{rows}
+	return Table{this.tableName, rows}
 }
 

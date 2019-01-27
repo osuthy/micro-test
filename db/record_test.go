@@ -7,10 +7,12 @@ import (
 
 // TableInformationのバリデーション
 func TestTableInformationをTableに変換する(t *testing.T) {
-	tableInfo := Columns("column1", "column2").
+	tableInfo := TableName("name").
+	Columns("column1", "column2").
 	R("A1", "A2").
 	R("B1", "B2")
 	assert.Equal(t, tableInfo.toTable(), Table{
+		"name",
 		[]Row {
 			Row{
 				[]Column{
@@ -27,10 +29,12 @@ func TestTableInformationをTableに変換する(t *testing.T) {
 }
 
 func TestTableInformationをTableに変換する際にカラムは名前順になる(t *testing.T) {
-	tableInfo := Columns("column2", "column1").
+	tableInfo := TableName("name").
+	Columns("column2", "column1").
 	R("A2", "A1").
 	R("B2", "B1")
 	assert.Equal(t, tableInfo.toTable(), Table{
+		"name",
 		[]Row {
 			Row{
 				[]Column{
