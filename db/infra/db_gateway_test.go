@@ -9,14 +9,12 @@ import (
 )
 
 func TestFinedTable(t *testing.T) {
-	db, _ := sql.Open("mysql", "root:@/test_micro_test")
-	db.Query("insert into test (column1, column2) values ('A1', 'A2');")
-	db.Query("insert into test (column1, column2) values ('B1', 'B2');")
-	defer db.Query("truncate table test;")
-	defer db.Close()
-	connection := new(Connection)
-	connection.driver = db
-	table := connection.FindTable("test")
+	driver, _ := sql.Open("mysql", "root:@/test_micro_test")
+	driver.Query("insert into test (column1, column2) values ('A1', 'A2');")
+	driver.Query("insert into test (column1, column2) values ('B1', 'B2');")
+	defer driver.Query("truncate table test;")
+	defer driver.Close()
+	table := NewConnection(driver).FindTable("test")
 	assert.Equal(t, table, Table{
 		"test",
 		[]Row{
