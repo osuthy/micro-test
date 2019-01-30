@@ -43,7 +43,7 @@ func TestDBはデフォルト値をつかってデータのセットアップが
 	defer tearDown(con)
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
-	db.DB("conName").SetDefaultValue(
+	db.DB("conName").DefineDefaultValue(
 		db.TableName("test").
 		DefaultValue("column1", "default1").
 		DefaultValue("column2", "default2"),

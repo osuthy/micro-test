@@ -1,4 +1,4 @@
-package db
+package infra
 
 import (
 	"database/sql"
@@ -8,12 +8,13 @@ import (
 
 type Connection struct {
 	driver *sql.DB
-	name string
 }
 
-var (
-	connections = make([](*Connection), 0)
-)
+func NewConnection(driver *sql.DB) *Connection {
+	this := new(Connection)
+	this.driver = driver
+	return this
+}
 
 func scanArgs(types []*sql.ColumnType) []interface{} {
 	dataPtrs := make([]interface{}, len(types))

@@ -5,26 +5,58 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/ShoichiroKitano/micro_test/runner"
+	. "github.com/ShoichiroKitano/micro_test/db/infra"
 )
+
+var connectionInformations = [](*ConnectionInformation){}
+
+type ConnectionInformation struct {
+	name string
+	rdbms string
+	information string
+}
+
+func DefineConnection(connectionName, rdbms, information string) {
+	connection := new(ConnectionInformation)
+	connection.rdbms = rdbms
+	connection.name = connectionName
+	connection.information = information
+	connectionInformations = append(connectionInformations, connection)
+}
+
+func findConnectionInformation(connectionName string) *ConnectionInformation {
+	for _, connectionInformation := range connectionInformations {
+		if connectionInformation.name == connectionName {
+			return connectionInformation
+		}
+	}
+	return nil
+}
 
 var defaultValues = make([]TableInformation, 0)
 
-// 本当はkubernetesのnamespace単位でコネクション作るからここでOpenはしない予定
-func DefineConnection(connectionName, rdbms, information string) {
-	db, _ := sql.Open(rdbms, information)
-	con := new(Connection)
-	con.name = connectionName
-	con.driver = db
-	connections = append(connections, con)
+func (this DSL) DefineDefaultValue(defaultValue TableInformation) {
+	defaultValues = append(defaultValues, defaultValue)
+}
+
+func findDefaultValueOf(tableName string) TableInformation {
+	for _, tableInformation := range defaultValues {
+		if tableInformation.tableName == tableName {
+			return tableInformation
+		}
+	}
+	return TableInformation{}
 }
 
 type DSL struct {
 	connection *Connection
 }
 
-// コネクションがきれていた場合は再接続を行う
 func DB(connectionName string) DSL {
-	return DSL{connections[0]}
+	info := findConnectionInformation(connectionName)
+	driver, _ := sql.Open(info.rdbms, info.information)
+	con := NewConnection(driver)
+	return DSL{con}
 }
 
 func (this DSL) HasRecords(fixture TableInformation) {
@@ -46,18 +78,5 @@ func (this DSL) ShouldHaveTable(expected TableInformation) {
 	} else {
 		runner.TestRunner.Result = ""
 	}
-}
-
-func (this DSL) SetDefaultValue(defaultValue TableInformation) {
-	defaultValues = append(defaultValues, defaultValue)
-}
-
-func findDefaultValueOf(tableName string) TableInformation {
-	for _, tableInformation := range defaultValues {
-		if tableInformation.tableName == tableName {
-			return tableInformation
-		}
-	}
-	return TableInformation{}
 }
 
