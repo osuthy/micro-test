@@ -25,7 +25,7 @@ func TestTableInformationをTableに変換する(t *testing.T) {
 				},
 			},
 		},
-	})
+	}, tableInfo.toTable())
 }
 
 func TestTableInformationをTableに変換する際にカラムは名前順になる(t *testing.T) {
@@ -33,7 +33,7 @@ func TestTableInformationをTableに変換する際にカラムは名前順に�
 	Columns("column2", "column1").
 	R("A2", "A1").
 	R("B2", "B1")
-	assert.Equal(t, tableInfo.toTable(), Table{
+	assert.Equal(t, Table{
 		"name",
 		[]Row {
 			Row{
@@ -47,19 +47,21 @@ func TestTableInformationをTableに変換する際にカラムは名前順に�
 				},
 			},
 		},
-	})
+	}, tableInfo.toTable())
 }
 
 func TestTableInformationからデフォルトの行データを取得する(t *testing.T) {
-	assert.Equal(t, TableName("name").
+	assert.Equal(t, Row{[]Column{Column{"column1", "d1"}, {"column2", "d2"}}},
+	TableName("name").
 		DefaultValue("column1", "d1").
 		DefaultValue("column2", "d2").
-		defaultRow(), Row{[]Column{Column{"column1", "d1"}, {"column2", "d2"}}})
+		defaultRow())
 }
 
 func TestTableInformationからデフォルトの行データのカラムは名前順になる(t *testing.T) {
-	assert.Equal(t, TableName("name").
+	assert.Equal(t, Row{[]Column{Column{"column1", "d1"}, {"column2", "d2"}}},
+	TableName("name").
 		DefaultValue("column2", "d2").
 		DefaultValue("column1", "d1").
-		defaultRow(), Row{[]Column{Column{"column1", "d1"}, {"column2", "d2"}}})
+		defaultRow())
 }

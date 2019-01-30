@@ -28,7 +28,7 @@ func TestDBはカラムの値を正しいと判定する(t *testing.T) {
 		R("A1", "A2").
 		R("B1", "B2"),
 	)
-	assert.Equal(t, runner.TestRunner.Result, "success")
+	assert.Equal(t, "success", runner.TestRunner.Result)
 }
 
 func TestDBはカラムの値の誤りを検出する(t *testing.T) {
@@ -60,7 +60,7 @@ func TestDBはカラム順序は無視して検証する(t *testing.T) {
 		Columns("column2", "column1").
 		R("B", "A"),
 	)
-	assert.Equal(t, runner.TestRunner.Result, "success")
+	assert.Equal(t, "success", runner.TestRunner.Result)
 }
 
 func TestDBは行の順序が期待値と異なる場合はテストを失敗させる(t *testing.T) {
@@ -77,5 +77,5 @@ func TestDBは行の順序が期待値と異なる場合はテストを失敗さ
 		R("B1", "B2").
 		R("A1", "A2"),
 	)
-	assert.Equal(t, runner.TestRunner.Result, "")
+	assert.Equal(t, "", runner.TestRunner.Result)
 }

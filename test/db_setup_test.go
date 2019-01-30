@@ -22,18 +22,18 @@ func TestDBはデータのセットアップができる(t *testing.T) {
 	)
 
 	rows, _ := con.Query("SELECT * FROM test;")
-	var colmun1 string
-	var colmun2 string
+	var column1 string
+	var column2 string
 
 	assert.True(t, rows.Next())
-	rows.Scan(&colmun1, &colmun2)
-	assert.Equal(t, colmun1, "A1")
-	assert.Equal(t, colmun2, "A2")
+	rows.Scan(&column1, &column2)
+	assert.Equal(t, "A1", column1)
+	assert.Equal(t, "A2", column2)
 
 	assert.True(t, rows.Next())
-	rows.Scan(&colmun1, &colmun2)
-	assert.Equal(t, colmun1, "B1")
-	assert.Equal(t, colmun2, "B2")
+	rows.Scan(&column1, &column2)
+	assert.Equal(t, "B1", column1)
+	assert.Equal(t, "B2", column2)
 
 	assert.False(t, rows.Next())
 }
@@ -57,18 +57,18 @@ func TestDBはデフォルト値をつかってデータのセットアップが
 	)
 
 	rows, _ := con.Query("SELECT * FROM test;")
-	var colmun1 string
-	var colmun2 string
+	var column1 string
+	var column2 string
 
 	assert.True(t, rows.Next())
-	rows.Scan(&colmun1, &colmun2)
-	assert.Equal(t, colmun1, "A1")
-	assert.Equal(t, colmun2, "default2")
+	rows.Scan(&column1, &column2)
+	assert.Equal(t, "A1", column1)
+	assert.Equal(t, "default2", column2)
 
 	assert.True(t, rows.Next())
-	rows.Scan(&colmun1, &colmun2)
-	assert.Equal(t, colmun1, "B1")
-	assert.Equal(t, colmun2, "default2")
+	rows.Scan(&column1, &column2)
+	assert.Equal(t, "B1", column1)
+	assert.Equal(t, "default2", column2)
 
 	assert.False(t, rows.Next())
 }
