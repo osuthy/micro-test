@@ -96,21 +96,62 @@ func TestIsSameFalse(t *testing.T) {
 	assert.False(t, result)
 }
 
-func Test行方法で全ての行の値を補完する(t *testing.T) {
+func Test行の値で全てのカラムの値を補完する(t *testing.T) {
 	result := Table{
 		"name",
 		[]Row{
 			Row{
 				[]Column{
-					Column{"column1", 1}, Column{"column2", 2},
+					Column{"column1", "A1"}, Column{"column2", "A2"},
+				},
+			},
+			Row{
+				[]Column{
+					Column{"column1", "B1"}, Column{"column2", "B2"},
 				},
 			},
 		},
-	}.filledTableWith(Row{[]Column{Column{"column3", 3}, Column{"column4", 4}}})
+	}.filledTableWith(Row{[]Column{Column{"column3", "D3"}, Column{"column4", "D4"}}})
+	assert.Equal(t, result.name, "name")
 	assert.Equal(t, result.rows, []Row{
 			Row{
 				[]Column{
-					Column{"column1", 1}, Column{"column2", 2}, Column{"column3", 3}, Column{"column4", 4},
-				}}})
+					Column{"column1", "A1"}, Column{"column2", "A2"}, Column{"column3", "D3"}, Column{"column4", "D4"},
+				},
+			},
+			Row{
+				[]Column{
+					Column{"column1", "B1"}, Column{"column2", "B2"}, Column{"column3", "D3"}, Column{"column4", "D4"},
+				},
+			}})
 }
 
+func Test補完対象の行にカラムの値がある場合は補完しない(t *testing.T) {
+	result := Table{
+		"name",
+		[]Row{
+			Row{
+				[]Column{
+					Column{"column1", "A1"}, Column{"column2", "A2"},
+				},
+			},
+			Row{
+				[]Column{
+					Column{"column1", "B1"}, Column{"column2", "B2"},
+				},
+			},
+		},
+	}.filledTableWith(Row{[]Column{Column{"column1", "D1"}, Column{"column2", "D2"}, Column{"column3", "D3"},}})
+	assert.Equal(t, result.name, "name")
+	assert.Equal(t, result.rows, []Row{
+			Row{
+				[]Column{
+					Column{"column1", "A1"}, Column{"column2", "A2"}, Column{"column3", "D3"},
+				},
+			},
+			Row{
+				[]Column{
+					Column{"column1", "B1"}, Column{"column2", "B2"}, Column{"column3", "D3"},
+				},
+			}})
+}

@@ -30,21 +30,27 @@ func (this Table) isSame(other Table) bool {
 }
 
 func (this Table) filledTableWith(row Row) Table {
-	row2 := this.rows[0]
-	row3 := row2.override(row)
-	return Table{rows: []Row{row3}}
+	newRows := []Row{}
+	for _, thisRow := range this.rows {
+		newRow := thisRow.override(row)
+		newRows = append(newRows, newRow)
+	}
+	return Table{rows: newRows, name: this.name}
+}
+
+func (this Row) contains(columnName string) bool {
+	for _, thisColumn := range this.columns {
+		if thisColumn.name == columnName {
+			return true
+		}
+	}
+	return false
 }
 
 func (this Row) override(row Row) Row {
 	columns := []Column{}
 	for _, column := range row.columns {
-		contains := false
-		for _, column2 := range this.columns {
-			if reflect.DeepEqual(column, column2) {
-				contains = true
-			}
-		}
-		if !contains {
+		if !this.contains(column.name) {
 			columns = append(columns, column)
 		}
 	}

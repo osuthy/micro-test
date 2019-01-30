@@ -45,8 +45,8 @@ func TestDBはデフォルト値をつかってデータのセットアップが
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").SetDefaultValue(
 		db.TableName("test").
-		DefaultValue("column1", "defalut1").
-		DefaultValue("column2", "defalut2"),
+		DefaultValue("column1", "default1").
+		DefaultValue("column2", "default2"),
 	)
 
 	db.DB("conName").HasRecords(

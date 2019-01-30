@@ -1,6 +1,7 @@
 package db
 
 import (
+	"reflect"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/ShoichiroKitano/micro_test/runner"
@@ -28,8 +29,13 @@ func DB(connectionName string) DSL {
 
 func (this DSL) HasRecords(fixture TableInformation) {
 	fixtureTable := fixture.toTable()
-	completedTable := fixtureTable.filledTableWith(defaultValues[0].defaultRow())
-	this.connection.StoreTable(completedTable)
+	defaultValue := findDefaultValueOf(fixtureTable.name)
+	if !reflect.DeepEqual(defaultValue, TableInformation{}) {
+		completedTable := fixtureTable.filledTableWith(defaultValue.defaultRow())
+		this.connection.StoreTable(completedTable)
+	} else {
+		this.connection.StoreTable(fixtureTable)
+	}
 }
 
 func (this DSL) ShouldHaveTable(expected TableInformation) {
@@ -45,3 +51,13 @@ func (this DSL) ShouldHaveTable(expected TableInformation) {
 func (this DSL) SetDefaultValue(defaultValue TableInformation) {
 	defaultValues = append(defaultValues, defaultValue)
 }
+
+func findDefaultValueOf(tableName string) TableInformation {
+	for _, tableInformation := range defaultValues {
+		if tableInformation.tableName == tableName {
+			return tableInformation
+		}
+	}
+	return TableInformation{}
+}
+
