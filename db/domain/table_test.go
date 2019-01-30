@@ -5,7 +5,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-//テーブル名が異なる
+//テーブル名が異なる場合
+
 func TestRow2(t *testing.T) {
 	result := Table{
 		"name",
