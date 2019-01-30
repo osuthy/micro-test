@@ -25,8 +25,8 @@ func TestDBはカラムの値を正しいと判定する(t *testing.T) {
 	db.DB("conName").ShouldHaveTable(
 		db.TableName("test").
 		Columns("column1", "column2").
-		R("A1", "A2").
-		R("B1", "B2"),
+		Record("A1", "A2").
+		Record("B1", "B2"),
 	)
 	assert.Equal(t, "success", runner.TestRunner.Result)
 }
@@ -42,8 +42,8 @@ func TestDBはカラムの値の誤りを検出する(t *testing.T) {
 	db.DB("conName").ShouldHaveTable(
 		db.TableName("test").
 		Columns("column1", "column2").
-		R("A1", "A2").
-		R("BUG", "B2"),
+		Record("A1", "A2").
+		Record("BUG", "B2"),
 	)
 	assert.Equal(t, runner.TestRunner.Result, "")
 }
@@ -58,7 +58,7 @@ func TestDBはカラム順序は無視して検証する(t *testing.T) {
 	db.DB("conName").ShouldHaveTable(
 		db.TableName("test").
 		Columns("column2", "column1").
-		R("B", "A"),
+		Record("B", "A"),
 	)
 	assert.Equal(t, "success", runner.TestRunner.Result)
 }
@@ -74,8 +74,8 @@ func TestDBは行の順序が期待値と異なる場合はテストを失敗さ
 	db.DB("conName").ShouldHaveTable(
 		db.TableName("test").
 		Columns("column1", "column2").
-		R("B1", "B2").
-		R("A1", "A2"),
+		Record("B1", "B2").
+		Record("A1", "A2"),
 	)
 	assert.Equal(t, "", runner.TestRunner.Result)
 }

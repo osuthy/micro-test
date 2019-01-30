@@ -24,7 +24,7 @@ func (this TableInformation) Columns(columnNames...string) TableInformation {
 	return this
 }
 
-func (this TableInformation) R(values...interface{}) TableInformation {
+func (this TableInformation) Record(values...interface{}) TableInformation {
 	this.records = append(this.records, values)
 	return this
 }

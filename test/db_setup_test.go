@@ -17,8 +17,8 @@ func TestDBはデータのセットアップができる(t *testing.T) {
 	db.DB("conName").HasRecords(
 		db.TableName("test").
 		Columns("column1", "column2").
-		R("A1", "A2").
-		R("B1", "B2"),
+		Record("A1", "A2").
+		Record("B1", "B2"),
 	)
 
 	rows, _ := con.Query("SELECT * FROM test;")
@@ -52,8 +52,8 @@ func TestDBはデフォルト値をつかってデータのセットアップが
 	db.DB("conName").HasRecords(
 		db.TableName("test").
 		Columns("column1").
-		R("A1").
-		R("B1"),
+		Record("A1").
+		Record("B1"),
 	)
 
 	rows, _ := con.Query("SELECT * FROM test;")
