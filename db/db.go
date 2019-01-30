@@ -6,6 +6,8 @@ import (
 	"github.com/ShoichiroKitano/micro_test/runner"
 )
 
+var defaultValues = make([]TableInformation, 0)
+
 // 本当はkubernetesのnamespace単位でコネクション作るからここでOpenはしない予定
 func DefineConnection(connectionName, rdbms, information string) {
 	db, _ := sql.Open(rdbms, information)
@@ -19,9 +21,15 @@ type DSL struct {
 	connection *Connection
 }
 
+// コネクションがきれていた場合は再接続を行う
+func DB(connectionName string) DSL {
+	return DSL{connections[0]}
+}
+
 func (this DSL) HasRecords(fixture TableInformation) {
 	fixtureTable := fixture.toTable()
-	this.connection.StoreTable(fixtureTable)
+	completedTable := fixtureTable.filledTableWith(defaultValues[0].defaultRow())
+	this.connection.StoreTable(completedTable)
 }
 
 func (this DSL) ShouldHaveTable(expected TableInformation) {
@@ -34,7 +42,6 @@ func (this DSL) ShouldHaveTable(expected TableInformation) {
 	}
 }
 
-// コネクションがきれていた場合は再接続を行う
-func DB(connectionName string) DSL {
-	return DSL{connections[0]}
+func (this DSL) SetDefaultValue(defaultValue TableInformation) {
+	defaultValues = append(defaultValues, defaultValue)
 }

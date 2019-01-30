@@ -49,3 +49,17 @@ func TestTableInformationをTableに変換する際にカラムは名前順に�
 		},
 	})
 }
+
+func TestTableInformationからデフォルトの行データを取得する(t *testing.T) {
+	assert.Equal(t, TableName("name").
+		DefaultValue("column1", "d1").
+		DefaultValue("column2", "d2").
+		defaultRow(), Row{[]Column{Column{"column1", "d1"}, {"column2", "d2"}}})
+}
+
+func TestTableInformationからデフォルトの行データのカラムは名前順になる(t *testing.T) {
+	assert.Equal(t, TableName("name").
+		DefaultValue("column2", "d2").
+		DefaultValue("column1", "d1").
+		defaultRow(), Row{[]Column{Column{"column1", "d1"}, {"column2", "d2"}}})
+}

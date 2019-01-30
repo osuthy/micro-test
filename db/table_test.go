@@ -95,3 +95,22 @@ func TestIsSameFalse(t *testing.T) {
 	}.isSame(Table{"name", []Row{Row{[]Column{Column{"column1", 100}, Column{"column2", 2}}}}})
 	assert.False(t, result)
 }
+
+func Test行方法で全ての行の値を補完する(t *testing.T) {
+	result := Table{
+		"name",
+		[]Row{
+			Row{
+				[]Column{
+					Column{"column1", 1}, Column{"column2", 2},
+				},
+			},
+		},
+	}.filledTableWith(Row{[]Column{Column{"column3", 3}, Column{"column4", 4}}})
+	assert.Equal(t, result.rows, []Row{
+			Row{
+				[]Column{
+					Column{"column1", 1}, Column{"column2", 2}, Column{"column3", 3}, Column{"column4", 4},
+				}}})
+}
+
