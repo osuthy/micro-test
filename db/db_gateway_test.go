@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/stretchr/testify/assert"
+	. "github.com/ShoichiroKitano/micro_test/db/domain"
 )
 
 func TestFinedTable(t *testing.T) {

@@ -28,10 +28,10 @@ func DB(connectionName string) DSL {
 }
 
 func (this DSL) HasRecords(fixture TableInformation) {
-	fixtureTable := fixture.toTable()
-	defaultValue := findDefaultValueOf(fixtureTable.name)
+	fixtureTable := fixture.ToTable()
+	defaultValue := findDefaultValueOf(fixtureTable.Name)
 	if !reflect.DeepEqual(defaultValue, TableInformation{}) {
-		completedTable := fixtureTable.filledTableWith(defaultValue.defaultRow())
+		completedTable := fixtureTable.FilledTableWith(defaultValue.DefaultRow())
 		this.connection.StoreTable(completedTable)
 	} else {
 		this.connection.StoreTable(fixtureTable)
@@ -39,9 +39,9 @@ func (this DSL) HasRecords(fixture TableInformation) {
 }
 
 func (this DSL) ShouldHaveTable(expected TableInformation) {
-	expectedTable := expected.toTable()
-	resultTable := this.connection.FindTable(expectedTable.name)
-  if expectedTable.isSame(resultTable) {
+	expectedTable := expected.ToTable()
+	resultTable := this.connection.FindTable(expectedTable.Name)
+  if expectedTable.IsSame(resultTable) {
 		runner.TestRunner.Result = "success"
 	} else {
 		runner.TestRunner.Result = ""

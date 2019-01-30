@@ -3,6 +3,7 @@ package db
 import (
 	"testing"
 	"github.com/stretchr/testify/assert"
+	. "github.com/ShoichiroKitano/micro_test/db/domain"
 )
 
 // TableInformationのバリデーション
@@ -11,7 +12,7 @@ func TestTableInformationをTableに変換する(t *testing.T) {
 	Columns("column1", "column2").
 	R("A1", "A2").
 	R("B1", "B2")
-	assert.Equal(t, tableInfo.toTable(), Table{
+	assert.Equal(t, tableInfo.ToTable(), Table{
 		"name",
 		[]Row {
 			Row{
@@ -25,7 +26,7 @@ func TestTableInformationをTableに変換する(t *testing.T) {
 				},
 			},
 		},
-	}, tableInfo.toTable())
+	}, tableInfo.ToTable())
 }
 
 func TestTableInformationをTableに変換する際にカラムは名前順になる(t *testing.T) {
@@ -47,7 +48,7 @@ func TestTableInformationをTableに変換する際にカラムは名前順に�
 				},
 			},
 		},
-	}, tableInfo.toTable())
+	}, tableInfo.ToTable())
 }
 
 func TestTableInformationからデフォルトの行データを取得する(t *testing.T) {
@@ -55,7 +56,7 @@ func TestTableInformationからデフォルトの行データを取得する(t *
 	TableName("name").
 		DefaultValue("column1", "d1").
 		DefaultValue("column2", "d2").
-		defaultRow())
+		DefaultRow())
 }
 
 func TestTableInformationからデフォルトの行データのカラムは名前順になる(t *testing.T) {
@@ -63,5 +64,5 @@ func TestTableInformationからデフォルトの行データのカラムは名�
 	TableName("name").
 		DefaultValue("column2", "d2").
 		DefaultValue("column1", "d1").
-		defaultRow())
+		DefaultRow())
 }

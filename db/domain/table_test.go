@@ -1,4 +1,4 @@
-package db
+package domain
 
 import (
 	"testing"
@@ -21,7 +21,7 @@ func TestRow2(t *testing.T) {
 				},
 			},
 		},
-	}.isSame(Table{
+	}.IsSame(Table{
 		"name",
 		[]Row{
 			Row{[]Column{Column{"column", 2}}},
@@ -45,7 +45,7 @@ func TestRow(t *testing.T) {
 				},
 			},
 		},
-	}.isSame(Table{
+	}.IsSame(Table{
 		"name",
 		[]Row{
 		Row{[]Column{Column{"column", 1}}},
@@ -64,7 +64,7 @@ func TestIgnoreOrder(t *testing.T) {
 				},
 			},
 		},
-	}.isSame(Table{"name", []Row{Row{[]Column{Column{"column2", 2}, Column{"column1", 1}}}}})
+	}.IsSame(Table{"name", []Row{Row{[]Column{Column{"column2", 2}, Column{"column1", 1}}}}})
 	assert.True(t, result)
 }
 
@@ -78,7 +78,7 @@ func TestIsSameTrue(t *testing.T) {
 				},
 			},
 		},
-	}.isSame(Table{"name", []Row{Row{[]Column{Column{"column1", 1}, Column{"column2", 2}}}}})
+	}.IsSame(Table{"name", []Row{Row{[]Column{Column{"column1", 1}, Column{"column2", 2}}}}})
 	assert.True(t, result)
 }
 
@@ -92,7 +92,7 @@ func TestIsSameFalse(t *testing.T) {
 				},
 			},
 		},
-	}.isSame(Table{"name", []Row{Row{[]Column{Column{"column1", 100}, Column{"column2", 2}}}}})
+	}.IsSame(Table{"name", []Row{Row{[]Column{Column{"column1", 100}, Column{"column2", 2}}}}})
 	assert.False(t, result)
 }
 
@@ -111,8 +111,8 @@ func Test行の値で全てのカラムの値を補完する(t *testing.T) {
 				},
 			},
 		},
-	}.filledTableWith(Row{[]Column{Column{"column3", "D3"}, Column{"column4", "D4"}}})
-	assert.Equal(t, "name", result.name)
+	}.FilledTableWith(Row{[]Column{Column{"column3", "D3"}, Column{"column4", "D4"}}})
+	assert.Equal(t, "name", result.Name)
 	assert.Equal(t, []Row{
 			Row{
 				[]Column{
@@ -123,7 +123,7 @@ func Test行の値で全てのカラムの値を補完する(t *testing.T) {
 				[]Column{
 					Column{"column1", "B1"}, Column{"column2", "B2"}, Column{"column3", "D3"}, Column{"column4", "D4"},
 				},
-			}}, result.rows)
+			}}, result.Rows)
 }
 
 func Test補完対象の行にカラムの値がある場合は補完しない(t *testing.T) {
@@ -141,8 +141,8 @@ func Test補完対象の行にカラムの値がある場合は補完しない(t
 				},
 			},
 		},
-	}.filledTableWith(Row{[]Column{Column{"column1", "D1"}, Column{"column2", "D2"}, Column{"column3", "D3"},}})
-	assert.Equal(t, "name", result.name)
+	}.FilledTableWith(Row{[]Column{Column{"column1", "D1"}, Column{"column2", "D2"}, Column{"column3", "D3"},}})
+	assert.Equal(t, "name", result.Name)
 	assert.Equal(t, []Row{
 			Row{
 				[]Column{
@@ -153,5 +153,5 @@ func Test補完対象の行にカラムの値がある場合は補完しない(t
 				[]Column{
 					Column{"column1", "B1"}, Column{"column2", "B2"}, Column{"column3", "D3"},
 				},
-			}}, result.rows)
+			}}, result.Rows)
 }

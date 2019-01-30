@@ -2,6 +2,7 @@ package db
 
 import (
 	"sort"
+	. "github.com/ShoichiroKitano/micro_test/db/domain"
 )
 
 type TableInformation struct {
@@ -33,23 +34,23 @@ func (this TableInformation) DefaultValue(columnName string, value interface{}) 
 	return this
 }
 
-func (this TableInformation) defaultRow() Row {
+func (this TableInformation) DefaultRow() Row {
 	columns := make([]Column, 0)
 	for columnName, value := range this.defaultRecord {
 		columns = append(columns, Column{columnName, value})
 	}
-	sort.Slice(columns, func(i, j int) bool { return columns[i].name < columns[j].name })
+	sort.Slice(columns, func(i, j int) bool { return columns[i].Name < columns[j].Name })
 	return Row{columns}
 }
 
-func (this TableInformation) toTable() Table {
+func (this TableInformation) ToTable() Table {
 	rows := make([]Row, 0)
 	for _, record := range this.records {
 		columns := make([]Column, 0)
 		for i, name := range this.columnNames {
 			columns = append(columns, Column{name, record[i]})
 		}
-		sort.Slice(columns, func(i, j int) bool { return columns[i].name < columns[j].name })
+		sort.Slice(columns, func(i, j int) bool { return columns[i].Name < columns[j].Name })
 		rows = append(rows, Row{columns})
 	}
 	return Table{this.tableName, rows}

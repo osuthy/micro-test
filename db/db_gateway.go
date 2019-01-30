@@ -3,6 +3,16 @@ package db
 import (
 	"database/sql"
 	"reflect"
+	. "github.com/ShoichiroKitano/micro_test/db/domain"
+)
+
+type Connection struct {
+	driver *sql.DB
+	name string
+}
+
+var (
+	connections = make([](*Connection), 0)
 )
 
 func scanArgs(types []*sql.ColumnType) []interface{} {
@@ -44,13 +54,13 @@ func (this *Connection) FindTable(tableName string) Table {
 }
 
 func (this *Connection) StoreTable(table Table) {
-	for _, row := range table.rows {
-		this.driver.Query("insert into test (" + row.columns[0].name + "," + row.columns[1].name + ") values (" + toLiteral(row.columns[0]) + "," + toLiteral(row.columns[1]) + ");")
+	for _, row := range table.Rows {
+		this.driver.Query("insert into test (" + row.Columns[0].Name + "," + row.Columns[1].Name + ") values (" + toLiteral(row.Columns[0]) + "," + toLiteral(row.Columns[1]) + ");")
 	}
 }
 
 func toLiteral(column Column) string {
-	refv := reflect.ValueOf(column.value)
+	refv := reflect.ValueOf(column.Value)
 	r, _ := refv.Interface().(string)
 	return "'" + r +"'"
 }
