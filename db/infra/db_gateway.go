@@ -16,6 +16,34 @@ func NewConnection(driver *sql.DB) *Connection {
 	return this
 }
 
+func (this *Connection) FindTable(tableName string) Table {
+	rows, _ := this.driver.Query("SELECT * FROM " + tableName + ";")
+	types, _ := rows.ColumnTypes()
+	dataPtrs := scanArgs(types)
+	newRows := make([]Row, 0)
+	for rows.Next() {
+		rows.Scan(dataPtrs...)
+		newRows = append(newRows, rowFrom(types, dataPtrs))
+	}
+	return Table{tableName, newRows}
+}
+
+func (this *Connection) StoreTable(table Table) {
+	for _, row := range table.Rows {
+		this.driver.Query("insert into test (" + row.Columns[0].Name + "," + row.Columns[1].Name + ") values (" + toLiteral(row.Columns[0]) + "," + toLiteral(row.Columns[1]) + ");")
+	}
+}
+
+func (this *Connection) TruncateTable(tableName string) {
+	this.driver.Query("truncate table " + tableName + ";")
+}
+
+func toLiteral(column Column) string {
+	refv := reflect.ValueOf(column.Value)
+	r, _ := refv.Interface().(string)
+	return "'" + r +"'"
+}
+
 func scanArgs(types []*sql.ColumnType) []interface{} {
 	dataPtrs := make([]interface{}, len(types))
 	for i := range types {
@@ -41,28 +69,3 @@ func rowFrom(types []*sql.ColumnType, dataPtrs []interface{}) Row {
 	}
 	return Row{columns}
 }
-
-func (this *Connection) FindTable(tableName string) Table {
-	rows, _ := this.driver.Query("SELECT * FROM " + tableName + ";")
-	types, _ := rows.ColumnTypes()
-	dataPtrs := scanArgs(types)
-	newRows := make([]Row, 0)
-	for rows.Next() {
-		rows.Scan(dataPtrs...)
-		newRows = append(newRows, rowFrom(types, dataPtrs))
-	}
-	return Table{tableName, newRows}
-}
-
-func (this *Connection) StoreTable(table Table) {
-	for _, row := range table.Rows {
-		this.driver.Query("insert into test (" + row.Columns[0].Name + "," + row.Columns[1].Name + ") values (" + toLiteral(row.Columns[0]) + "," + toLiteral(row.Columns[1]) + ");")
-	}
-}
-
-func toLiteral(column Column) string {
-	refv := reflect.ValueOf(column.Value)
-	r, _ := refv.Interface().(string)
-	return "'" + r +"'"
-}
-

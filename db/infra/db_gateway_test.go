@@ -15,9 +15,8 @@ func TestFinedTable(t *testing.T) {
 	defer driver.Query("truncate table test;")
 	defer driver.Close()
 	table := NewConnection(driver).FindTable("test")
-	assert.Equal(t, table, Table{
-		"test",
-		[]Row{
+	assert.Equal(t, table.Name, "test")
+	assert.Equal(t, table.Rows, []Row{
 			Row{
 				[]Column{
 					Column{"column1", "A1"}, Column{"column2", "A2"},
@@ -28,6 +27,17 @@ func TestFinedTable(t *testing.T) {
 					Column{"column1", "B1"}, Column{"column2", "B2"},
 				},
 			},
-		},
-	})
+		})
+}
+
+func TestTruncateTable(t *testing.T) {
+	driver, _ := sql.Open("mysql", "root:@/test_micro_test")
+	driver.Query("insert into test (column1, column2) values ('A1', 'A2');")
+	defer driver.Query("truncate table test;")
+	defer driver.Close()
+	connection := NewConnection(driver)
+	connection.TruncateTable("test")
+	table := connection.FindTable("test")
+	assert.Equal(t, table.Name, "test")
+	assert.Equal(t, table.Rows, []Row{})
 }

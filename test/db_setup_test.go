@@ -7,7 +7,6 @@ import(
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/ShoichiroKitano/micro_test/db"
 )
-// 自動採番、テンプレート、時間
 
 func TestDBはデータのセットアップができる(t *testing.T) {
 	con, _ := sql.Open("mysql", "root:@/test_micro_test")
