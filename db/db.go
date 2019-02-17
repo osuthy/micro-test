@@ -80,3 +80,6 @@ func (this DSL) ShouldHaveTable(expected TableInformation) {
 	}
 }
 
+func (this DSL) Truncate(tableName string) {
+	this.connection.TruncateTable(tableName)
+}
