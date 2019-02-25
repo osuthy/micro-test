@@ -16,18 +16,11 @@ func TestFinedTable(t *testing.T) {
 	defer driver.Close()
 	table := NewConnection(driver).FindTable("test")
 	assert.Equal(t, table.Name, "test")
-	assert.Equal(t, table.Rows, []Row{
-			Row{
-				[]Column{
-					Column{"column1", "A1"}, Column{"column2", "A2"},
-				},
-			},
-			Row{
-				[]Column{
-					Column{"column1", "B1"}, Column{"column2", "B2"},
-				},
-			},
-		})
+	assert.Equal(t, table.Rows, []*Row{
+			NewRow([]*Column{NewColumn("column1", "A1"),
+											 NewColumn("column2", "A2")}),
+			NewRow([]*Column{NewColumn("column1", "B1"),
+											 NewColumn("column2", "B2")})})
 }
 
 func TestTruncateTable(t *testing.T) {
@@ -39,5 +32,5 @@ func TestTruncateTable(t *testing.T) {
 	connection.TruncateTable("test")
 	table := connection.FindTable("test")
 	assert.Equal(t, table.Name, "test")
-	assert.Equal(t, table.Rows, []Row{})
+	assert.Equal(t, table.Rows, []*Row{})
 }

@@ -12,21 +12,12 @@ func TestTableInformationをTableに変換する(t *testing.T) {
 	Columns("column1", "column2").
 	Record("A1", "A2").
 	Record("B1", "B2")
-	assert.Equal(t, tableInfo.ToTable(), Table{
-		"name",
-		[]Row {
-			Row{
-				[]Column{
-					Column{"column1", "A1"}, Column{"column2", "A2"},
-				},
-			},
-			Row{
-				[]Column{
-					Column{"column1", "B1"}, Column{"column2", "B2"},
-				},
-			},
-		},
-	}, tableInfo.ToTable())
+	assert.Equal(t, NewTable("name", []*Row {
+			NewRow([]*Column{NewColumn("column1", "A1"),
+											 NewColumn("column2", "A2")}),
+			NewRow([]*Column{NewColumn("column1", "B1"),
+											 NewColumn("column2", "B2")})},
+		), tableInfo.ToTable())
 }
 
 func TestTableInformationをTableに変換する際にカラムは名前順になる(t *testing.T) {
@@ -34,25 +25,16 @@ func TestTableInformationをTableに変換する際にカラムは名前順に�
 	Columns("column2", "column1").
 	Record("A2", "A1").
 	Record("B2", "B1")
-	assert.Equal(t, Table{
-		"name",
-		[]Row {
-			Row{
-				[]Column{
-					Column{"column1", "A1"}, Column{"column2", "A2"},
-				},
-			},
-			Row{
-				[]Column{
-					Column{"column1", "B1"}, Column{"column2", "B2"},
-				},
-			},
-		},
-	}, tableInfo.ToTable())
+	assert.Equal(t, NewTable("name", []*Row {
+			NewRow([]*Column{NewColumn("column1", "A1"),
+											 NewColumn("column2", "A2")}),
+			NewRow([]*Column{NewColumn("column1", "B1"),
+										   NewColumn("column2", "B2")})},
+	), tableInfo.ToTable())
 }
 
 func TestTableInformationからデフォルトの行データを取得する(t *testing.T) {
-	assert.Equal(t, Row{[]Column{Column{"column1", "d1"}, {"column2", "d2"}}},
+	assert.Equal(t, NewRow([]*Column{NewColumn("column1", "d1"), NewColumn("column2", "d2")}),
 	TableName("name").
 		DefaultValue("column1", "d1").
 		DefaultValue("column2", "d2").
@@ -60,7 +42,7 @@ func TestTableInformationからデフォルトの行データを取得する(t *
 }
 
 func TestTableInformationからデフォルトの行データのカラムは名前順になる(t *testing.T) {
-	assert.Equal(t, Row{[]Column{Column{"column1", "d1"}, {"column2", "d2"}}},
+	assert.Equal(t, NewRow([]*Column{NewColumn("column1", "d1"), NewColumn("column2", "d2")}),
 	TableName("name").
 		DefaultValue("column2", "d2").
 		DefaultValue("column1", "d1").

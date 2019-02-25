@@ -34,25 +34,25 @@ func (this TableInformation) DefaultValue(columnName string, value interface{}) 
 	return this
 }
 
-func (this TableInformation) DefaultRow() Row {
-	columns := make([]Column, 0)
+func (this TableInformation) DefaultRow() *Row {
+	columns := make([]*Column, 0)
 	for columnName, value := range this.defaultRecord {
-		columns = append(columns, Column{columnName, value})
+		columns = append(columns, NewColumn(columnName, value))
 	}
 	sort.Slice(columns, func(i, j int) bool { return columns[i].Name < columns[j].Name })
-	return Row{columns}
+	return NewRow(columns)
 }
 
-func (this TableInformation) ToTable() Table {
-	rows := make([]Row, 0)
+func (this TableInformation) ToTable() *Table {
+	rows := make([]*Row, 0)
 	for _, record := range this.records {
-		columns := make([]Column, 0)
+		columns := make([]*Column, 0)
 		for i, name := range this.columnNames {
-			columns = append(columns, Column{name, record[i]})
+			columns = append(columns, NewColumn(name, record[i]))
 		}
 		sort.Slice(columns, func(i, j int) bool { return columns[i].Name < columns[j].Name })
-		rows = append(rows, Row{columns})
+		rows = append(rows, NewRow(columns))
 	}
-	return Table{this.tableName, rows}
+	return NewTable(this.tableName, rows)
 }
 
