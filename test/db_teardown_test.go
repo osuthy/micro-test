@@ -3,14 +3,14 @@ package test
 import(
 	"testing"
 	"github.com/stretchr/testify/assert"
-	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/ShoichiroKitano/micro_test/db"
+	"github.com/ShoichiroKitano/micro_test/db/infra"
 )
 
 func TestDBは指定したテーブルをtruncateできる(t *testing.T) {
-	con, _ := sql.Open("mysql", "root:@/test_micro_test")
-	defer tearDown(con)
+	driver := infra.FindDBConnection("mysql", "root:@/test_micro_test").Driver
+	defer tearDown(driver)
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").HasRecords(
@@ -22,6 +22,8 @@ func TestDBは指定したテーブルをtruncateできる(t *testing.T) {
 
 	db.DB("conName").Truncate("test")
 
-	rows, _ := con.Query("SELECT * FROM test;")
+	rows, _ := driver.Query("SELECT * FROM test;")
+
+	defer rows.Close()
 	assert.False(t, rows.Next())
 }

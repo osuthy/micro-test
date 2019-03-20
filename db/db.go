@@ -2,7 +2,6 @@ package db
 
 import (
 	"reflect"
-	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/ShoichiroKitano/micro_test/runner"
 	. "github.com/ShoichiroKitano/micro_test/db/infra"
@@ -54,8 +53,7 @@ type DSL struct {
 
 func DB(connectionName string) DSL {
 	info := findConnectionInformation(connectionName)
-	driver, _ := sql.Open(info.rdbms, info.information)
-	con := NewConnection(driver)
+	con := FindDBConnection(info.rdbms, info.information)
 	return DSL{con}
 }
 

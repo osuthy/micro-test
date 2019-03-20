@@ -7,3 +7,5 @@ create table if not exists test (
   column2 char(30),
   primary key (column1)
 );
+
+

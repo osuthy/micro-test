@@ -5,20 +5,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func CreateRow() {
+}
 //テーブル名が異なる場合
 
-func TestRow2(t *testing.T) {
-	result := NewTable(
-		"name",
-		[]*Row{NewRow([]*Column{NewColumn("column", 1)}), NewRow([]*Column{NewColumn("column", 2)})},
-	).IsSame(NewTable(
-		"name",
-		[]*Row{NewRow([]*Column{NewColumn("column", 2)}), NewRow([]*Column{NewColumn("column", 1)})},
-	))
-	assert.False(t, result)
-}
-
-func TestRow(t *testing.T) {
+func Test名前と行が一致している場合同じテーブルと判定する(t *testing.T) {
 	result := NewTable(
 		"name",
 		[]*Row{NewRow([]*Column{NewColumn("column", 1)}), NewRow([]*Column{NewColumn("column", 2)})},
@@ -29,7 +20,22 @@ func TestRow(t *testing.T) {
 	assert.True(t, result)
 }
 
-func TestIgnoreOrder(t *testing.T) {
+func Test名前が一致していない場合異なるテーブルと判定する(t *testing.T) {
+	result := NewTable("name1", []*Row{}).IsSame(NewTable("name2", []*Row{}))
+	assert.False(t, result)
+}
+
+func Testカラムの値が異なる場合は異なるテーブルと判定する(t *testing.T) {
+	result := NewTable("name", []*Row{
+			NewRow([]*Column{NewColumn("column1", 1),
+											 NewColumn("column2", 2)})},
+	    ).IsSame(NewTable("name", []*Row{
+				NewRow([]*Column{NewColumn("column1", 100),
+												 NewColumn("column2", 2)})}))
+	assert.False(t, result)
+}
+
+func Testカラムは順不同で判定する(t *testing.T) {
 	result := NewTable("name", []*Row{
 			NewRow([]*Column{NewColumn("column1", 1),
 											 NewColumn("column2", 2)})},
@@ -39,23 +45,14 @@ func TestIgnoreOrder(t *testing.T) {
 	assert.True(t, result)
 }
 
-func TestIsSameTrue(t *testing.T) {
-	result := NewTable("name", []*Row{
-			NewRow([]*Column{NewColumn("column1", 1),
-											 NewColumn("column2", 2)})},
-		).IsSame(NewTable("name", []*Row{
-			NewRow([]*Column{NewColumn("column1", 1),
-											 NewColumn("column2", 2)})}))
-	assert.True(t, result)
-}
-
-func TestIsSameFalse(t *testing.T) {
-	result := NewTable("name", []*Row{
-			NewRow([]*Column{NewColumn("column1", 1),
-											 NewColumn("column2", 2)})},
-	    ).IsSame(NewTable("name", []*Row{
-				NewRow([]*Column{NewColumn("column1", 100),
-												 NewColumn("column2", 2)})}))
+func Test行の順序が一致していない場合異なるテーブルと判定する(t *testing.T) {
+	result := NewTable(
+		"name",
+		[]*Row{NewRow([]*Column{NewColumn("column", 1)}), NewRow([]*Column{NewColumn("column", 2)})},
+	).IsSame(NewTable(
+		"name",
+		[]*Row{NewRow([]*Column{NewColumn("column", 2)}), NewRow([]*Column{NewColumn("column", 1)})},
+	))
 	assert.False(t, result)
 }
 

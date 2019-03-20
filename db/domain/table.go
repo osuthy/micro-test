@@ -39,7 +39,9 @@ func NewTable(name string, rows []*Row) *Table {
 	return table
 }
 
+// ここが破壊的な操作している
 func (this *Table) IsSame(other *Table) bool {
+	if(this.Name != other.Name) { return false }
 	for _, row := range this.Rows {
 		sort.Slice(row.Columns, func(i, j int) bool { return row.Columns[i].Name < row.Columns[j].Name })
 	}

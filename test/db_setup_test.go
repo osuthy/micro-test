@@ -3,14 +3,14 @@ package test
 import(
 	"testing"
 	"github.com/stretchr/testify/assert"
-	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/ShoichiroKitano/micro_test/db"
+	"github.com/ShoichiroKitano/micro_test/db/infra"
 )
 
 func TestDBはデータのセットアップができる(t *testing.T) {
-	con, _ := sql.Open("mysql", "root:@/test_micro_test")
-	defer tearDown(con)
+	driver := infra.FindDBConnection("mysql", "root:@/test_micro_test").Driver
+	defer tearDown(driver)
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").HasRecords(
@@ -20,7 +20,8 @@ func TestDBはデータのセットアップができる(t *testing.T) {
 		Record("B1", "B2"),
 	)
 
-	rows, _ := con.Query("SELECT * FROM test;")
+	rows, _ := driver.Query("SELECT * FROM test;")
+	defer rows.Close()
 	var column1 string
 	var column2 string
 
@@ -38,8 +39,8 @@ func TestDBはデータのセットアップができる(t *testing.T) {
 }
 
 func TestDBはデフォルト値をつかってデータのセットアップができる(t *testing.T) {
-	con, _ := sql.Open("mysql", "root:@/test_micro_test")
-	defer tearDown(con)
+	driver := infra.FindDBConnection("mysql", "root:@/test_micro_test").Driver
+	defer tearDown(driver)
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").DefineDefaultValue(
@@ -55,7 +56,8 @@ func TestDBはデフォルト値をつかってデータのセットアップが
 		Record("B1"),
 	)
 
-	rows, _ := con.Query("SELECT * FROM test;")
+	rows, _ := driver.Query("SELECT * FROM test;")
+	defer rows.Close()
 	var column1 string
 	var column2 string
 

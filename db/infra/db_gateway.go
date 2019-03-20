@@ -7,17 +7,18 @@ import (
 )
 
 type Connection struct {
-	driver *sql.DB
+	Driver *sql.DB
 }
 
 func NewConnection(driver *sql.DB) *Connection {
 	this := new(Connection)
-	this.driver = driver
+	this.Driver = driver
 	return this
 }
 
 func (this *Connection) FindTable(tableName string) *Table {
-	rows, _ := this.driver.Query("SELECT * FROM " + tableName + ";")
+	rows, _ := this.Driver.Query("SELECT * FROM " + tableName + ";")
+	defer rows.Close()
 	types, _ := rows.ColumnTypes()
 	dataPtrs := scanArgs(types)
 	newRows := make([]*Row, 0)
@@ -29,13 +30,17 @@ func (this *Connection) FindTable(tableName string) *Table {
 }
 
 func (this *Connection) StoreTable(table *Table) {
+	tx, _ := this.Driver.Begin()
 	for _, row := range table.Rows {
-		this.driver.Query("insert into test (" + row.Columns[0].Name + "," + row.Columns[1].Name + ") values (" + toLiteral(row.Columns[0]) + "," + toLiteral(row.Columns[1]) + ");")
+		tx.Exec("insert into test (" + row.Columns[0].Name + "," + row.Columns[1].Name + ") values (" + toLiteral(row.Columns[0]) + "," + toLiteral(row.Columns[1]) + ");")
 	}
+	tx.Commit()
 }
 
 func (this *Connection) TruncateTable(tableName string) {
-	this.driver.Query("truncate table " + tableName + ";")
+	tx, _ := this.Driver.Begin()
+	tx.Exec("truncate table " + tableName + ";")
+	tx.Commit()
 }
 
 func toLiteral(column *Column) string {
