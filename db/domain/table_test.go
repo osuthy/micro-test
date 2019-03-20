@@ -5,10 +5,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func CreateRow() {
-}
-//テーブル名が異なる場合
-
 func Test名前と行が一致している場合同じテーブルと判定する(t *testing.T) {
 	result := NewTable(
 		"name",
