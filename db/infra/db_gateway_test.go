@@ -6,32 +6,16 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	. "github.com/ShoichiroKitano/micro_test/db/domain"
-	"fmt"
 )
 
 func tearDown(driver *sql.DB) {
 	tx, _ := driver.Begin()
 	tx.Exec("truncate table test;")
 	tx.Commit()
-	rows, _ := driver.Query("select * from test;")
-	defer rows.Close()
-	var column1 string
-	var column2 string
-
-	fmt.Println("rooooooow")
-	rows.Next()
-	rows.Scan(&column1, &column2)
-	fmt.Println(column1)
-	fmt.Println(column2)
-
-	rows.Next()
-	rows.Scan(&column1, &column2)
-	fmt.Println(column1)
-	fmt.Println(column2)
 }
 
 func TestFinedTable(t *testing.T) {
-	driver := FindDBConnection("mysql", "root:@/test_micro_test").Driver
+	driver := FindDBConnection("mysql", "root:@/test_connection").Driver
 	defer tearDown(driver)
 	tx, _ := driver.Begin()
 	tx.Exec("insert into test (column1, column2) values ('A1', 'A2');")
@@ -48,7 +32,7 @@ func TestFinedTable(t *testing.T) {
 }
 
 func TestTruncateTable(t *testing.T) {
-	driver := FindDBConnection("mysql", "root:@/test_micro_test").Driver
+	driver := FindDBConnection("mysql", "root:@/test_connection").Driver
 	defer tearDown(driver)
 	tx, _ := driver.Begin()
 	tx.Exec("insert into test (column1, column2) values ('A1', 'A2');")

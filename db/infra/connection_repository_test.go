@@ -7,8 +7,8 @@ import (
 )
 
 func Testコネクションへのインターフェースの生成は一回のみ行う(t *testing.T) {
-	con1 := FindDBConnection("mysql", "root:@/test_connection")
-	con2 := FindDBConnection("mysql", "root:@/test_connection")
+	con1 := FindDBConnection("mysql", "root:@/test_connection_repository")
+	con2 := FindDBConnection("mysql", "root:@/test_connection_repository")
 	assert.True(t, con1 == con2)
 	assert.True(t, con1.Driver == con2.Driver)
 }
