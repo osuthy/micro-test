@@ -5,15 +5,34 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type TableBuilder struct {
+	tableName string
+	rows []*Row
+}
+
+func BuildTable(tableName string) TableBuilder {
+	return TableBuilder{tableName, []*Row{}}
+}
+
+func (builder TableBuilder) WithRow(columns ...*Column) TableBuilder {
+	builder.rows = append(builder.rows, NewRow(columns))
+	return builder
+}
+
+func (builder TableBuilder) Build() *Table {
+	return NewTable(builder.tableName, builder.rows)
+}
+
 func Test名前と行が一致している場合同じテーブルと判定する(t *testing.T) {
-	result := NewTable(
-		"name",
-		[]*Row{NewRow([]*Column{NewColumn("column", 1)}), NewRow([]*Column{NewColumn("column", 2)})},
-	).IsSame(NewTable(
-		"name",
-		[]*Row{NewRow([]*Column{NewColumn("column", 1)}), NewRow([]*Column{NewColumn("column", 2)})},
-	))
-	assert.True(t, result)
+	table1 := BuildTable("name").
+							WithRow(NewColumn("column", 1)).
+							WithRow(NewColumn("column", 2)).
+							Build()
+	table2 := BuildTable("name").
+							WithRow(NewColumn("column", 1)).
+							WithRow(NewColumn("column", 2)).
+							Build()
+	assert.True(t, table1.IsSame(table2))
 }
 
 func Test名前が一致していない場合異なるテーブルと判定する(t *testing.T) {
