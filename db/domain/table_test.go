@@ -15,12 +15,16 @@ func BuildTable(tableName string) TableBuilder {
 }
 
 func (builder TableBuilder) WithRow(columns ...*Column) TableBuilder {
-	builder.rows = append(builder.rows, NewRow(columns))
+	builder.rows = append(builder.rows, CreateRow(columns...))
 	return builder
 }
 
 func (builder TableBuilder) Build() *Table {
 	return NewTable(builder.tableName, builder.rows)
+}
+
+func CreateRow(columns ...*Column) *Row {
+	return NewRow(columns)
 }
 
 func Testテブールとしての等価性の判定(t *testing.T) {
@@ -103,41 +107,31 @@ func Testテブールとしての等価性の判定(t *testing.T) {
 	})
 }
 
-func Test行の値で全てのカラムの値を補完する(t *testing.T) {
-	result := NewTable("name", []*Row{
-			NewRow([]*Column{NewColumn("column1", "A1"),
-											 NewColumn("column2", "A2")}),
-			NewRow([]*Column{NewColumn("column1", "B1"),
-											 NewColumn("column2", "B2")})},
-		  ).FilledTableWith(NewRow([]*Column{NewColumn("column3", "D3"),
-																				 NewColumn("column4", "D4")}))
-	assert.Equal(t, "name", result.Name)
-	assert.Equal(t, []*Row{
-			NewRow([]*Column{NewColumn("column1", "A1"),
-											 NewColumn("column2", "A2"),
-											 NewColumn("column3", "D3"),
-											 NewColumn("column4", "D4")}),
-			NewRow([]*Column{NewColumn("column1", "B1"),
-											 NewColumn("column2", "B2"),
-											 NewColumn("column3", "D3"),
-											 NewColumn("column4", "D4")})}, result.Rows)
+
+func Test行によるカラムの補完(t *testing.T) {
+	t.Run("テーブルに存在していないカラムを行から補完する", func(t *testing.T) {
+		table := BuildTable("name").
+							 WithRow(NewColumn("c1", "A1"), NewColumn("c2", "A2")).
+							 WithRow(NewColumn("c1", "B1"), NewColumn("c2", "B2")).Build()
+		row := CreateRow(NewColumn("c3", "D3"), NewColumn("c4", "D4"))
+
+		expected := BuildTable("name").
+											 WithRow(NewColumn("c1", "A1"), NewColumn("c2", "A2"), NewColumn("c3", "D3"), NewColumn("c4", "D4")).
+											 WithRow(NewColumn("c1", "B1"), NewColumn("c2", "B2"), NewColumn("c3", "D3"), NewColumn("c4", "D4")).
+											 Build()
+		assert.True(t, table.FilledTableWith(row).IsSameAsTable(expected))
+	})
+
+	t.Run("行が持つカラムをテーブルが持っているなら補完しない", func(t *testing.T) {
+			table := BuildTable("name").
+								 WithRow(NewColumn("c1", "A1"), NewColumn("c2", "A2")).
+								 WithRow(NewColumn("c1", "B1"), NewColumn("c2", "B2")).Build()
+			row := CreateRow(NewColumn("c1", "not completed1"), NewColumn("c2", "not completed2"), NewColumn("c3", "completed"))
+
+			expected := BuildTable("name").
+								 WithRow(NewColumn("c1", "A1"), NewColumn("c2", "A2"), NewColumn("c3", "completed")).
+								 WithRow(NewColumn("c1", "B1"), NewColumn("c2", "B2"), NewColumn("c3", "completed")).Build()
+			assert.True(t, table.FilledTableWith(row).IsSameAsTable(expected))
+	})
 }
 
-func Test補完対象の行にカラムの値がある場合は補完しない(t *testing.T) {
-	result := NewTable("name", []*Row{
-			NewRow([]*Column{NewColumn("column1", "A1"),
-											 NewColumn("column2", "A2")}),
-			NewRow([]*Column{NewColumn("column1", "B1"),
-			                 NewColumn("column2", "B2")})},
-		  ).FilledTableWith(NewRow([]*Column{NewColumn("column1", "D1"),
-																		     NewColumn("column2", "D2"),
-																		     NewColumn("column3", "D3"),}))
-	assert.Equal(t, "name", result.Name)
-	assert.Equal(t, []*Row{
-			NewRow([]*Column{NewColumn("column1", "A1"),
-											 NewColumn("column2", "A2"),
-											 NewColumn("column3", "D3")}),
-			NewRow([]*Column{NewColumn("column1", "B1"),
-											 NewColumn("column2", "B2"),
-											 NewColumn("column3", "D3")})}, result.Rows)
-}
