@@ -2,7 +2,7 @@ package db
 
 import (
 	"sort"
-	. "github.com/ShoichiroKitano/micro_test/db/domain"
+	. "github.com/ShoichiroKitano/micro_test/db/table"
 )
 
 type TableInformation struct {
