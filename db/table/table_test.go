@@ -119,19 +119,23 @@ func Test行によるカラムの補完(t *testing.T) {
 											 WithRow(NewColumn("c1", "A1"), NewColumn("c2", "A2"), NewColumn("c3", "D3"), NewColumn("c4", "D4")).
 											 WithRow(NewColumn("c1", "B1"), NewColumn("c2", "B2"), NewColumn("c3", "D3"), NewColumn("c4", "D4")).
 											 Build()
-		assert.True(t, table.FilledTableWith(row).IsSameAsTable(expected))
+		assertTable(t, expected, table.FilledTableWith(row))
 	})
 
 	t.Run("行が持つカラムをテーブルが持っているなら補完しない", func(t *testing.T) {
-			table := BuildTable("name").
-								 WithRow(NewColumn("c1", "A1"), NewColumn("c2", "A2")).
-								 WithRow(NewColumn("c1", "B1"), NewColumn("c2", "B2")).Build()
-			row := CreateRow(NewColumn("c1", "not completed1"), NewColumn("c2", "not completed2"), NewColumn("c3", "completed"))
+		table := BuildTable("name").
+							 WithRow(NewColumn("c1", "A1"), NewColumn("c2", "A2")).
+							 WithRow(NewColumn("c1", "B1"), NewColumn("c2", "B2")).Build()
+		row := CreateRow(NewColumn("c1", "not completed1"), NewColumn("c2", "not completed2"), NewColumn("c3", "completed"))
 
-			expected := BuildTable("name").
-								 WithRow(NewColumn("c1", "A1"), NewColumn("c2", "A2"), NewColumn("c3", "completed")).
-								 WithRow(NewColumn("c1", "B1"), NewColumn("c2", "B2"), NewColumn("c3", "completed")).Build()
-			assert.True(t, table.FilledTableWith(row).IsSameAsTable(expected))
+		expected := BuildTable("name").
+							 WithRow(NewColumn("c1", "A1"), NewColumn("c2", "A2"), NewColumn("c3", "completed")).
+							 WithRow(NewColumn("c1", "B1"), NewColumn("c2", "B2"), NewColumn("c3", "completed")).Build()
+		assertTable(t, expected, table.FilledTableWith(row))
 	})
+}
+
+func assertTable(t *testing.T, actual, expected *Table) {
+	assert.True(t, expected.IsSameAsTable(expected))
 }
 
