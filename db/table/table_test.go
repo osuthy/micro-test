@@ -5,28 +5,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type TableBuilder struct {
-	tableName string
-	rows []*Row
-}
-
-func BuildTable(tableName string) TableBuilder {
-	return TableBuilder{tableName, []*Row{}}
-}
-
-func (builder TableBuilder) WithRow(columns ...*Column) TableBuilder {
-	builder.rows = append(builder.rows, CreateRow(columns...))
-	return builder
-}
-
-func (builder TableBuilder) Build() *Table {
-	return NewTable(builder.tableName, builder.rows)
-}
-
-func CreateRow(columns ...*Column) *Row {
-	return NewRow(columns)
-}
-
 func Testテブールとしての等価性の判定(t *testing.T) {
 	t.Run("名前と行が完全に一致", func(t *testing.T) {
 		table1 := BuildTable("name").
@@ -119,7 +97,7 @@ func Test行によるカラムの補完(t *testing.T) {
 											 WithRow(NewColumn("c1", "A1"), NewColumn("c2", "A2"), NewColumn("c3", "D3"), NewColumn("c4", "D4")).
 											 WithRow(NewColumn("c1", "B1"), NewColumn("c2", "B2"), NewColumn("c3", "D3"), NewColumn("c4", "D4")).
 											 Build()
-		assertTable(t, expected, table.FilledTableWith(row))
+		assert.Equal(t, expected, table.FilledTableWith(row))
 	})
 
 	t.Run("行が持つカラムをテーブルが持っているなら補完しない", func(t *testing.T) {
@@ -131,11 +109,7 @@ func Test行によるカラムの補完(t *testing.T) {
 		expected := BuildTable("name").
 							 WithRow(NewColumn("c1", "A1"), NewColumn("c2", "A2"), NewColumn("c3", "completed")).
 							 WithRow(NewColumn("c1", "B1"), NewColumn("c2", "B2"), NewColumn("c3", "completed")).Build()
-		assertTable(t, expected, table.FilledTableWith(row))
+		assert.Equal(t, expected, table.FilledTableWith(row))
 	})
-}
-
-func assertTable(t *testing.T, actual, expected *Table) {
-	assert.True(t, expected.IsSameAsTable(expected))
 }
 
