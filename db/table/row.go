@@ -21,14 +21,21 @@ func (this *Row) Override(row *Row) *Row {
 			columns = append(columns, column)
 		}
 	}
-	filledColumns := append(this.Columns, columns...)
-	sort.Slice(filledColumns, func(i, j int) bool { return filledColumns[i].Name < filledColumns[j].Name })
-	return NewRow(filledColumns)
+	return NewRow(append(this.Columns, columns...)).Sorted()
+}
+
+func (this *Row) Sorted() *Row {
+	columns := []*Column{}
+	for _, column := range this.Columns {
+		columns = append(columns, column)
+	}
+	sort.Slice(columns, func(i, j int) bool { return columns[i].HigherOrderThan(columns[j]) })
+	return NewRow(columns)
 }
 
 func (this *Row) hasSameName(column *Column) bool {
 	for _, thisColumn := range this.Columns {
-		if thisColumn.HasSameName(column){
+		if thisColumn.HasSameName(column) {
 			return true
 		}
 	}
