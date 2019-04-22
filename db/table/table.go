@@ -2,7 +2,6 @@ package table
 
 import (
 	"reflect"
-	"sort"
 )
 
 type Table struct {
@@ -17,16 +16,9 @@ func NewTable(name string, rows []*Row) *Table {
 	return table
 }
 
-// ここが破壊的な操作している
 func (this *Table) IsSameAsTable(other *Table) bool {
 	if(this.Name != other.Name) { return false }
-	for _, row := range this.Rows {
-		sort.Slice(row.Columns, func(i, j int) bool { return row.Columns[i].Name < row.Columns[j].Name })
-	}
-	for _, row := range other.Rows {
-		sort.Slice(row.Columns, func(i, j int) bool { return row.Columns[i].Name < row.Columns[j].Name })
-	}
-	return reflect.DeepEqual(this.Rows, other.Rows)
+	return reflect.DeepEqual(this.rowsColumnsSorted(), other.rowsColumnsSorted())
 }
 
 func (this *Table) FilledTableWith(row *Row) *Table {
@@ -38,3 +30,10 @@ func (this *Table) FilledTableWith(row *Row) *Table {
 	return NewTable(this.Name, newRows)
 }
 
+func (this *Table) rowsColumnsSorted() []*Row {
+	sortedRows := []*Row{}
+	for _, row := range this.Rows {
+		sortedRows = append(sortedRows, row.Sorted())
+	}
+	return sortedRows
+}

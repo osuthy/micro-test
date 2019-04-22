@@ -12,6 +12,10 @@ func NewColumn(name string, value interface{}) *Column {
 	return column
 }
 
-func (this *Column) HasSameName(column *Column) bool {
-	return this.Name == column.Name
+func (this *Column) HasSameName(other *Column) bool {
+	return this.Name == other.Name
+}
+
+func (this *Column) HigherOrderThan(other *Column) bool {
+	return this.Name < other.Name
 }
