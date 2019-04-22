@@ -3,7 +3,7 @@ package db
 import (
 	"testing"
 	"github.com/stretchr/testify/assert"
-	. "github.com/ShoichiroKitano/micro_test/db/domain"
+	. "github.com/ShoichiroKitano/micro_test/db/table"
 )
 
 // TableInformationのバリデーション
