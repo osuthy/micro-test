@@ -12,3 +12,6 @@ func NewColumn(name string, value interface{}) *Column {
 	return column
 }
 
+func (this *Column) HasSameName(column *Column) bool {
+	return this.Name == column.Name
+}

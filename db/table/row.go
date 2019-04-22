@@ -14,19 +14,10 @@ func NewRow(columns []*Column) *Row {
 	return row
 }
 
-func (this *Row) contains(columnName string) bool {
-	for _, thisColumn := range this.Columns {
-		if thisColumn.Name == columnName {
-			return true
-		}
-	}
-	return false
-}
-
 func (this *Row) Override(row *Row) *Row {
 	columns := []*Column{}
 	for _, column := range row.Columns {
-		if !this.contains(column.Name) {
+		if !this.hasSameName(column) {
 			columns = append(columns, column)
 		}
 	}
@@ -34,3 +25,13 @@ func (this *Row) Override(row *Row) *Row {
 	sort.Slice(filledColumns, func(i, j int) bool { return filledColumns[i].Name < filledColumns[j].Name })
 	return NewRow(filledColumns)
 }
+
+func (this *Row) hasSameName(column *Column) bool {
+	for _, thisColumn := range this.Columns {
+		if thisColumn.HasSameName(column){
+			return true
+		}
+	}
+	return false
+}
+
