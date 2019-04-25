@@ -1,10 +1,5 @@
 package table
 
-import (
-	"testing"
-	"github.com/stretchr/testify/assert"
-)
-
 type TableBuilder struct {
 	tableName string
 	rows []*Row
