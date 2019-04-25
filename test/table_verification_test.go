@@ -3,27 +3,26 @@ package test
 import(
 	"testing"
 	"github.com/stretchr/testify/assert"
-	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
+
+	. "github.com/ShoichiroKitano/micro_test/test/helper"
+
 	"github.com/ShoichiroKitano/micro_test/db"
 	"github.com/ShoichiroKitano/micro_test/db/infra"
 	"github.com/ShoichiroKitano/micro_test/runner"
 )
 
-func tearDown(driver *sql.DB) {
-	tx, _ := driver.Begin()
-	tx.Exec("truncate table test;")
+func InsertIntoTest(rdbms, connectionInformation, column1Value, column2Value string) {
+	tx, _ := infra.FindDBConnection(rdbms, connectionInformation).Driver.Begin()
+	tx.Exec("insert into test (column1, column2) values ('" + column1Value + "', '" + column2Value + "');")
 	tx.Commit()
 }
 
 func TestDBはカラムの値を正しいと判定する(t *testing.T) {
+	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
+
 	runner.TestRunner.Result = "init"
-	driver := infra.FindDBConnection("mysql", "root:@/test_micro_test").Driver
-	defer tearDown(driver)
-	tx, _ := driver.Begin()
-	tx.Exec("insert into test (column1, column2) values ('A1', 'A2');")
-	tx.Exec("insert into test (column1, column2) values ('B1', 'B2');")
-	tx.Commit()
+	InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
+	InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").ShouldHaveTable(
@@ -36,13 +35,11 @@ func TestDBはカラムの値を正しいと判定する(t *testing.T) {
 }
 
 func TestDBはカラムの値の誤りを検出する(t *testing.T) {
+	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
+
 	runner.TestRunner.Result = "init"
-	driver := infra.FindDBConnection("mysql", "root:@/test_micro_test").Driver
-	defer tearDown(driver)
-	tx, _ := driver.Begin()
-	tx.Exec("insert into test (column1, column2) values ('A1', 'A2');")
-	tx.Exec("insert into test (column1, column2) values ('B1', 'B2');")
-	tx.Commit()
+	InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
+	InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").ShouldHaveTable(
@@ -55,12 +52,10 @@ func TestDBはカラムの値の誤りを検出する(t *testing.T) {
 }
 
 func TestDBはカラム順序は無視して検証する(t *testing.T) {
+	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
+
 	runner.TestRunner.Result = "init"
-	driver := infra.FindDBConnection("mysql", "root:@/test_micro_test").Driver
-	defer tearDown(driver)
-	tx, _ := driver.Begin()
-	tx.Exec("insert into test (column1, column2) values ('A', 'B');")
-	tx.Commit()
+	InsertIntoTest("mysql", "root:@/test_micro_test", "A", "B")
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").ShouldHaveTable(
@@ -72,13 +67,11 @@ func TestDBはカラム順序は無視して検証する(t *testing.T) {
 }
 
 func TestDBは行の順序が期待値と異なる場合はテストを失敗させる(t *testing.T) {
+	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
+
 	runner.TestRunner.Result = "init"
-	driver := infra.FindDBConnection("mysql", "root:@/test_micro_test").Driver
-	defer tearDown(driver)
-	tx, _ := driver.Begin()
-	tx.Exec("insert into test (column1, column2) values ('A1', 'A2');")
-	tx.Exec("insert into test (column1, column2) values ('B1', 'B2');")
-	tx.Commit()
+	InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
+	InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").ShouldHaveTable(
