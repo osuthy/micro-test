@@ -3,44 +3,42 @@ package infra
 import (
 	"testing"
 	"github.com/stretchr/testify/assert"
-	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	. "github.com/ShoichiroKitano/micro_test/db/table"
 )
 
-func tearDown(driver *sql.DB) {
-	tx, _ := driver.Begin()
+func TestDBのデータからTableオブジェクトを構築(t *testing.T) {
+	defer tearDown()
+	InsertIntoTest("mysql", "root:@/test_connection", "A1", "A2")
+	InsertIntoTest("mysql", "root:@/test_connection", "B1", "B2")
+
+	table := FindDBConnection("mysql", "root:@/test_connection").FindTable("test")
+
+	expected := BuildTable("test").
+							WithRow(NewColumn("column1", "A1"), NewColumn("column2", "A2")).
+							WithRow(NewColumn("column1", "B1"), NewColumn("column2", "B2")).Build()
+	assert.Equal(t, expected, table)
+}
+
+func Testテーブルのトランケート(t *testing.T) {
+	defer tearDown()
+	InsertIntoTest("mysql", "root:@/test_connection", "A1", "A2")
+
+	connection := FindDBConnection("mysql", "root:@/test_connection")
+	connection.TruncateTable("test")
+
+	verifyTableIsEmpty(t, connection, "test")
+}
+
+func verifyTableIsEmpty(t *testing.T, connection *Connection, tableName string) {
+	table := connection.FindTable(tableName)
+	expected := BuildTable(tableName).Build()
+	assert.Equal(t, expected, table)
+}
+
+func tearDown() {
+	tx, _ := FindDBConnection("mysql", "root:@/test_connection").Driver.Begin()
 	tx.Exec("truncate table test;")
 	tx.Commit()
 }
 
-func TestFinedTable(t *testing.T) {
-	driver := FindDBConnection("mysql", "root:@/test_connection").Driver
-	defer tearDown(driver)
-	tx, _ := driver.Begin()
-	tx.Exec("insert into test (column1, column2) values ('A1', 'A2');")
-	tx.Exec("insert into test (column1, column2) values ('B1', 'B2');")
-	tx.Commit()
-
-	table := NewConnection(driver).FindTable("test")
-	assert.Equal(t, table.Name, "test")
-	assert.Equal(t, table.Rows, []*Row{
-			NewRow([]*Column{NewColumn("column1", "A1"),
-											 NewColumn("column2", "A2")}),
-			NewRow([]*Column{NewColumn("column1", "B1"),
-											 NewColumn("column2", "B2")})})
-}
-
-func TestTruncateTable(t *testing.T) {
-	driver := FindDBConnection("mysql", "root:@/test_connection").Driver
-	defer tearDown(driver)
-	tx, _ := driver.Begin()
-	tx.Exec("insert into test (column1, column2) values ('A1', 'A2');")
-	tx.Commit()
-
-	connection := NewConnection(driver)
-	connection.TruncateTable("test")
-	table := connection.FindTable("test")
-	assert.Equal(t, table.Name, "test")
-	assert.Equal(t, table.Rows, []*Row{})
-}

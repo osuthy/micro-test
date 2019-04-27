@@ -10,12 +10,6 @@ import(
 	"github.com/ShoichiroKitano/micro_test/runner"
 )
 
-func InsertIntoTest(rdbms, connectionInformation, column1Value, column2Value string) {
-	tx, _ := FindDBConnection(rdbms, connectionInformation).Driver.Begin()
-	tx.Exec("insert into test (column1, column2) values ('" + column1Value + "', '" + column2Value + "');")
-	tx.Commit()
-}
-
 func TestDBはカラムの値を正しいと判定する(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 
