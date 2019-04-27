@@ -5,3 +5,9 @@ type testRunner struct {
 }
 
 var( TestRunner = testRunner{} )
+
+var TestMethod func() = nil
+
+func Run() {
+	TestMethod()
+}
