@@ -1,20 +1,18 @@
-package helper
+package infra
 
 import(
 	"testing"
 	"github.com/stretchr/testify/assert"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-
-	"github.com/ShoichiroKitano/micro_test/db/infra"
 )
 
 func TruncateTable(rdbms, connectionInformation, tableName string) {
-	infra.FindDBConnection(rdbms, connectionInformation).TruncateTable(tableName)
+	FindDBConnection(rdbms, connectionInformation).TruncateTable(tableName)
 }
 
 func Select(rdbms, connectionInformation, tableName string) *sql.Rows {
-	rows, _ := infra.FindDBConnection(rdbms, connectionInformation).Driver.Query("SELECT * FROM " + tableName + ";")
+	rows, _ := FindDBConnection(rdbms, connectionInformation).Driver.Query("SELECT * FROM " + tableName + ";")
 	return rows
 }
 
