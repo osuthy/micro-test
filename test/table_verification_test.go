@@ -4,15 +4,14 @@ import(
 	"testing"
 	"github.com/stretchr/testify/assert"
 
-	. "github.com/ShoichiroKitano/micro_test/test/helper"
+	. "github.com/ShoichiroKitano/micro_test/db/infra"
 
 	"github.com/ShoichiroKitano/micro_test/db"
-	"github.com/ShoichiroKitano/micro_test/db/infra"
 	"github.com/ShoichiroKitano/micro_test/runner"
 )
 
 func InsertIntoTest(rdbms, connectionInformation, column1Value, column2Value string) {
-	tx, _ := infra.FindDBConnection(rdbms, connectionInformation).Driver.Begin()
+	tx, _ := FindDBConnection(rdbms, connectionInformation).Driver.Begin()
 	tx.Exec("insert into test (column1, column2) values ('" + column1Value + "', '" + column2Value + "');")
 	tx.Commit()
 }

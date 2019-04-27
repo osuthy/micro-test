@@ -5,7 +5,7 @@ import(
 	"github.com/stretchr/testify/assert"
 	"database/sql"
 
-	. "github.com/ShoichiroKitano/micro_test/test/helper"
+	. "github.com/ShoichiroKitano/micro_test/db/infra"
 
 	"github.com/ShoichiroKitano/micro_test/db"
 )

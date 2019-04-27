@@ -3,7 +3,7 @@ package test
 import(
 	"testing"
 
-	. "github.com/ShoichiroKitano/micro_test/test/helper"
+	. "github.com/ShoichiroKitano/micro_test/db/infra"
 
 	"github.com/ShoichiroKitano/micro_test/db"
 )
