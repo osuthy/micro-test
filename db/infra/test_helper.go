@@ -7,6 +7,12 @@ import(
 	_ "github.com/go-sql-driver/mysql"
 )
 
+func InsertIntoTest(rdbms, connectionInformation, column1Value, column2Value string) {
+	tx, _ := FindDBConnection(rdbms, connectionInformation).Driver.Begin()
+	tx.Exec("insert into test (column1, column2) values ('" + column1Value + "', '" + column2Value + "');")
+	tx.Commit()
+}
+
 func TruncateTable(rdbms, connectionInformation, tableName string) {
 	FindDBConnection(rdbms, connectionInformation).TruncateTable(tableName)
 }
