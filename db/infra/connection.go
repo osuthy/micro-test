@@ -3,7 +3,7 @@ package infra
 import (
 	"database/sql"
 	"reflect"
-	. "github.com/ShoichiroKitano/micro_test/db/domain"
+	. "github.com/ShoichiroKitano/micro_test/db/table"
 )
 
 type Connection struct {

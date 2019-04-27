@@ -2,15 +2,14 @@ package test
 
 import(
 	"testing"
-	"github.com/stretchr/testify/assert"
-	_ "github.com/go-sql-driver/mysql"
+
+	. "github.com/ShoichiroKitano/micro_test/db/infra"
+
 	"github.com/ShoichiroKitano/micro_test/db"
-	"github.com/ShoichiroKitano/micro_test/db/infra"
 )
 
 func TestDBはデータのセットアップができる(t *testing.T) {
-	driver := infra.FindDBConnection("mysql", "root:@/test_micro_test").Driver
-	defer tearDown(driver)
+	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").HasRecords(
@@ -20,27 +19,15 @@ func TestDBはデータのセットアップができる(t *testing.T) {
 		Record("B1", "B2"),
 	)
 
-	rows, _ := driver.Query("SELECT * FROM test;")
+	rows := Select("mysql", "root:@/test_micro_test", "test")
 	defer rows.Close()
-	var column1 string
-	var column2 string
-
-	assert.True(t, rows.Next())
-	rows.Scan(&column1, &column2)
-	assert.Equal(t, "A1", column1)
-	assert.Equal(t, "A2", column2)
-
-	assert.True(t, rows.Next())
-	rows.Scan(&column1, &column2)
-	assert.Equal(t, "B1", column1)
-	assert.Equal(t, "B2", column2)
-
-	assert.False(t, rows.Next())
+	AssertNextRow(t, rows, "A1", "A2")
+	AssertNextRow(t, rows, "B1", "B2")
+	AssertNextIsNone(t, rows)
 }
 
 func TestDBはデフォルト値をつかってデータのセットアップができる(t *testing.T) {
-	driver := infra.FindDBConnection("mysql", "root:@/test_micro_test").Driver
-	defer tearDown(driver)
+	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").DefineDefaultValue(
@@ -56,20 +43,10 @@ func TestDBはデフォルト値をつかってデータのセットアップが
 		Record("B1"),
 	)
 
-	rows, _ := driver.Query("SELECT * FROM test;")
+	rows := Select("mysql", "root:@/test_micro_test", "test")
 	defer rows.Close()
-	var column1 string
-	var column2 string
-
-	assert.True(t, rows.Next())
-	rows.Scan(&column1, &column2)
-	assert.Equal(t, "A1", column1)
-	assert.Equal(t, "default2", column2)
-
-	assert.True(t, rows.Next())
-	rows.Scan(&column1, &column2)
-	assert.Equal(t, "B1", column1)
-	assert.Equal(t, "default2", column2)
-
-	assert.False(t, rows.Next())
+	AssertNextRow(t, rows, "A1", "default2")
+	AssertNextRow(t, rows, "B1", "default2")
+	AssertNextIsNone(t, rows)
 }
+
