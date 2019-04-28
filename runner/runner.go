@@ -4,10 +4,12 @@ type testRunner struct {
 	Result string
 }
 
-var( TestRunner = testRunner{} )
+var TestRunner testRunner = testRunner{}
+var	TestFunctions []func() = []func(){}
 
-var TestMethod func() = nil
 
 func Run() {
-	TestMethod()
+	for _, TestFunction := range TestFunctions {
+		TestFunction()
+	}
 }
