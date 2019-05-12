@@ -10,19 +10,19 @@ func NewTestBuilder() *TestBuilder {
 	return builder
 }
 
-func (this *TestBuilder) BuildTestSuite() {
+func (this *TestBuilder) AddTestSuite() {
 	this.suites = append([]*TestSuite{NewTestSuite()}, this.suites...)
 }
 
-func (this *TestBuilder) BuildSetUp(setUpFunction func()) {
+func (this *TestBuilder) AddSetUpFunction(setUpFunction func()) {
 	this.suites[0].setUpFunction = NewSetUpFunction(setUpFunction)
 }
 
-func (this *TestBuilder) BuildTestCase(testFunction func()) {
+func (this *TestBuilder) AddTestCase(testFunction func()) {
 	this.suites[0].Add(NewTestCase(testFunction))
 }
 
-func (this *TestBuilder) Pop() Testable {
+func (this *TestBuilder) Build() Testable {
 	last := this.suites[0]
 	for i := 1; i < len(this.suites); i++ {
 		this.suites[i].Add(last)
