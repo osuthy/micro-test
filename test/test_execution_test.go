@@ -5,13 +5,13 @@ import(
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/ShoichiroKitano/micro_test/dsl"
+	"github.com/ShoichiroKitano/micro_test"
 	"github.com/ShoichiroKitano/micro_test/runner"
-	. "github.com/ShoichiroKitano/micro_test/dsl/testable"
+	. "github.com/ShoichiroKitano/micro_test/testable"
 )
 
 func resetSuites() {
-	dsl.Suites = []Testable{}
+	micro_test.Suites = []Testable{}
 }
 
 func Test定義したテストを実行できる(t *testing.T) {
@@ -20,12 +20,12 @@ func Test定義したテストを実行できる(t *testing.T) {
 
 	result1 := 0
 	result2 := 0
-	dsl.Feature("feature description", func() {
-		dsl.Test("test dscription1", func(){
+	micro_test.Feature("feature description", func() {
+		micro_test.Test("test dscription1", func(){
 			result1++
 		})
 
-		dsl.Test("test dscription2", func(){
+		micro_test.Test("test dscription2", func(){
 			result2++
 		})
 	})
@@ -41,21 +41,21 @@ func TestImplicitSetUpをテスト毎に行える(t *testing.T) {
 	resetSuites()
 
 	results := []string{}
-	dsl.Feature("feature description", func() {
-		dsl.Before(func() {
+	micro_test.Feature("feature description", func() {
+		micro_test.Before(func() {
 			results = append(results, "setUp1")
 		})
 
-		dsl.Feature("sub feature description", func() {
-			dsl.Before(func() {
+		micro_test.Feature("sub feature description", func() {
+			micro_test.Before(func() {
 				results = append(results, "setUp2")
 			})
 
-			dsl.Test("test dscription1", func(){
+			micro_test.Test("test dscription1", func(){
 				results = append(results, "description1")
 			})
 
-			dsl.Test("test dscription2", func(){
+			micro_test.Test("test dscription2", func(){
 				results = append(results, "description2")
 			})
 		})
@@ -71,14 +71,14 @@ func Testトップレベルの宣言ごとにテストSuiteが構築される(t 
 	resetSuites()
 
 	results := []string{}
-	dsl.Feature("feature description1", func() {
-		dsl.Test("test dscription1", func(){
+	micro_test.Feature("feature description1", func() {
+		micro_test.Test("test dscription1", func(){
 			results = append(results, "description1")
 		})
 	})
 
-	dsl.Feature("feature description2", func() {
-		dsl.Test("test dscription2", func(){
+	micro_test.Feature("feature description2", func() {
+		micro_test.Test("test dscription2", func(){
 			results = append(results, "description2")
 		})
 	})

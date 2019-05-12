@@ -1,7 +1,7 @@
-package dsl
+package micro_test
 
 import (
-	. "github.com/ShoichiroKitano/micro_test/dsl/testable"
+	. "github.com/ShoichiroKitano/micro_test/testable"
 )
 
 var testBuilder *TestBuilder = NewTestBuilder()

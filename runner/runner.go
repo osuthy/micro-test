@@ -1,7 +1,7 @@
 package runner
 
 import (
-	"github.com/ShoichiroKitano/micro_test/dsl"
+	"github.com/ShoichiroKitano/micro_test"
 )
 
 type testRunner struct {
@@ -11,7 +11,7 @@ type testRunner struct {
 var TestRunner testRunner = testRunner{}
 
 func Run() {
-	for _, suite := range dsl.Suites {
+	for _, suite := range micro_test.Suites {
 		for suite.HasUnexecutedTest() {
 			suite.Execute()
 		}
