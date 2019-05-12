@@ -5,6 +5,7 @@ import (
 )
 
 var testBuilder *TestBuilder = NewTestBuilder()
+var buildLock interface{} = nil
 
 var	Suites []Testable = []Testable{}
 
@@ -13,10 +14,17 @@ func Before(setUpFunction func()) {
 }
 
 func Feature(description string, testFunction func()) interface{} {
+	lock := new(interface{})
+	if(buildLock == nil) { buildLock = lock }
+
 	testBuilder.BuildTestSuite()
 	testFunction()
-	Suites = append(Suites, testBuilder.Pop())
-	testBuilder = NewTestBuilder()
+
+	if(buildLock == lock) {
+		Suites = append(Suites, testBuilder.Pop())
+		testBuilder = NewTestBuilder()
+		buildLock = nil
+	}
 	return nil
 }
 
