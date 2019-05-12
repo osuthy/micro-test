@@ -10,18 +10,18 @@ var buildLock interface{} = nil
 var	Suites []Testable = []Testable{}
 
 func Before(setUpFunction func()) {
-	testBuilder.BuildSetUp(setUpFunction)
+	testBuilder.AddSetUpFunction(setUpFunction)
 }
 
 func Feature(description string, testFunction func()) interface{} {
 	lock := new(interface{})
 	if(buildLock == nil) { buildLock = lock }
 
-	testBuilder.BuildTestSuite()
+	testBuilder.AddTestSuite()
 	testFunction()
 
 	if(buildLock == lock) {
-		Suites = append(Suites, testBuilder.Pop())
+		Suites = append(Suites, testBuilder.Build())
 		testBuilder = NewTestBuilder()
 		buildLock = nil
 	}
@@ -29,6 +29,6 @@ func Feature(description string, testFunction func()) interface{} {
 }
 
 func Test(description string, testFunction func()) interface{} {
-	testBuilder.BuildTestCase(testFunction)
+	testBuilder.AddTestCase(testFunction)
 	return nil
 }
