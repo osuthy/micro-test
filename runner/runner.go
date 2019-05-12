@@ -12,6 +12,8 @@ var TestRunner testRunner = testRunner{}
 
 func Run() {
 	for _, suite := range dsl.Suites {
-		suite.Execute()
+		for suite.HasUnexecutedTest() {
+			suite.Execute()
+		}
 	}
 }
