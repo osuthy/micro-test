@@ -1,1 +1,13 @@
-{ "request": { "url": "/get/this", "method": "GET" }, "response": { "status": 200, "body": "Here it is!\n" }}
+{ "request":
+  {
+    "url": "/test",
+    "method": "POST",
+    "bodyPatterns": [{
+      "equalToJson": "{ \"object\": 2, \"array\": [1, 2, 3] }"
+    }]
+  },
+  "response": {
+    "status": 200,
+    "body": "Here it is!\n"
+  }
+}
