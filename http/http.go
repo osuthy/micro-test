@@ -4,7 +4,7 @@ import(
 	"fmt"
 	"net/http"
 	"bytes"
-	"reflect"
+	"io/ioutil"
 	. "github.com/ShoichiroKitano/micro_test/json"
 )
 
@@ -18,13 +18,19 @@ func Server(adress string) *Client {
 	return client
 }
 
-func (this Client) ReceiveRequest(methodType string, path string, json []byte) {
-	url := fmt.Sprintf("%s %s ",this.Adress, path)
-	fmt.Println("######################")
-	fmt.Println(url)
+func (this Client) ReceiveRequest(methodType string, path string, json []byte) (int, string) {
+	url := fmt.Sprintf("http://%s%s",this.Adress, path)
 
-	reqest, _ := http.NewRequest(methodType, url, bytes.NewBuffer([]byte(json)))
-	fmt.Println(reflect.TypeOf(reqest))
+	request, _ := http.NewRequest(methodType, url, bytes.NewBuffer([]byte(json)))
+	resp, err := http.DefaultClient.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return 500, "BadRequest!!"
+	  }
+	defer resp.Body.Close()
+
+	body, _ := ioutil.ReadAll(resp.Body)
+	return resp.StatusCode, string(body)
 }
 
 func WithJson(object O) []byte {
