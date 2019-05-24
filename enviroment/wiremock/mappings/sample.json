@@ -3,11 +3,11 @@
     "url": "/test",
     "method": "POST",
     "bodyPatterns": [{
-      "equalToJson": "{ \"object\": 2, \"array\": [1, 2, 3] }"
+      "equalToJson": "{ \"object\": \"value\", \"array\": [1, 2, 3] }"
     }]
   },
   "response": {
     "status": 200,
-    "body": "Here it is!\n"
+    "body": "test success"
   }
 }
