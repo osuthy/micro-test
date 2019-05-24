@@ -1,7 +1,7 @@
 { "request":
   {
     "url": "/test",
-    "method": "POST",
+    "method": "GET",
     "bodyPatterns": [{
       "equalToJson": "{ \"object\": \"value\", \"array\": [1, 2, 3] }"
     }]
