@@ -10,9 +10,9 @@ import(
 func TestHttpはサーバーにメソッドGETでリクエストを送ることができる(t *testing.T) {
 	var body string
 	var status int
-	status, body = http.Sever("localhost:8080").
-	ReceiveReuest("POST", "/test",
-	WithJson(json.O{
+	status, body = http.Server("localhost:8080").
+	ReceiveRequest("GET", "/test",
+	http.WithJson(json.O{
 		"object": "value",
 		"array": json.A{1, 2, 3},
 	}))
