@@ -12,8 +12,11 @@ var TestRunner testRunner = testRunner{}
 
 func Run() {
 	for _, suite := range micro_test.Suites {
-		for suite.HasUnexecutedTest() {
-			suite.Execute()
+		s := suite
+		for {
+			s.Execute()
+			if !s.HasNextTest() { break }
+			s = s.NextTest()
 		}
 	}
 }
