@@ -23,6 +23,9 @@ func (this *TestSuite) NextTest() Testable {
 	test := this.tests[0].NextTest()
 	if(test != nil) { tests = append(tests, test) }
 	if(len(this.tests) == 1) {
+		if(len(tests) == 0) {
+			return nil
+		}
 		suite.tests = tests
 		return suite
 	}

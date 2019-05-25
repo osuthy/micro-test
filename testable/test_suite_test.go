@@ -65,6 +65,27 @@ func Test次のテストケースの取り出し(t *testing.T) {
 		next.Execute()
 		assert.Equal(t, []string{"test2"}, result)
 	})
+
+	t.Run("テストスイートからテストケースの個数分取り出す場合", func(t *testing.T) {
+		var result []string
+		suite := NewTestSuite()
+		nested := NewTestSuite()
+		nested.Add(NewTestCase(func(){ result = append(result, "test1") }))
+		nested.Add(NewTestCase(func(){ result = append(result, "test2") }))
+		nested.Add(NewTestCase(func(){ result = append(result, "test3") }))
+		suite.Add(nested)
+		last := suite.NextTest().NextTest()
+
+		last.Execute()
+		assert.Equal(t, []string{"test3"}, result)
+	})
+
+	t.Run("テストケースの1個の場合", func(t *testing.T) {
+		var result []string
+		suite := NewTestSuite()
+		suite.Add(NewTestCase(func(){ result = append(result, "test1") }))
+		assert.Equal(t, nil, suite.NextTest())
+	})
 }
 
 func Test次のテストケースがあるか判定(t *testing.T) {
