@@ -5,32 +5,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test次のテストケースの取り出し(t *testing.T) {
-	t.Run("テストケースがある場合", func(t *testing.T) {
-		var result []string
-		suite := NewTestSuite()
-		suite.Add(NewTestCase(func(){ result = append(result, "test1") }))
-		suite.Add(NewTestCase(func(){ result = append(result, "test2") }))
-		suite.Add(NewTestCase(func(){ result = append(result, "test3") }))
-		next := suite.NextTest()
-		next.Execute()
-		assert.Equal(t, []string{"test2"}, result)
-	})
-
-	t.Run("テストスイートがある場合", func(t *testing.T) {
-		var result []string
-		suite := NewTestSuite()
-		nested := NewTestSuite()
-		nested.Add(NewTestCase(func(){ result = append(result, "test1") }))
-		nested.Add(NewTestCase(func(){ result = append(result, "test2") }))
-		nested.Add(NewTestCase(func(){ result = append(result, "test3") }))
-		suite.Add(nested)
-		next := suite.NextTest()
-		next.Execute()
-		assert.Equal(t, []string{"test2"}, result)
-	})
-}
-
 func Test一番最初に入力されたテストケースのみを実行(t *testing.T) {
 	t.Run("テストケースの場合", func(t *testing.T) {
 		var result []string
@@ -50,6 +24,46 @@ func Test一番最初に入力されたテストケースのみを実行(t *test
 		suite.Add(NewTestCase(func(){ result = append(result, "test2") }))
 		suite.Execute()
 		assert.Equal(t, []string{"test1"}, result)
+	})
+}
+
+func Test次のテストケースの取り出し(t *testing.T) {
+	t.Run("テストケースがある場合", func(t *testing.T) {
+		var result []string
+		suite := NewTestSuite()
+		suite.Add(NewTestCase(func(){ result = append(result, "test1") }))
+		suite.Add(NewTestCase(func(){ result = append(result, "test2") }))
+		suite.Add(NewTestCase(func(){ result = append(result, "test3") }))
+		next := suite.NextTest()
+
+		next.Execute()
+		assert.Equal(t, []string{"test2"}, result)
+	})
+
+	t.Run("テストケースの個数分取り出す場合", func(t *testing.T) {
+		var result []string
+		suite := NewTestSuite()
+		suite.Add(NewTestCase(func(){ result = append(result, "test1") }))
+		suite.Add(NewTestCase(func(){ result = append(result, "test2") }))
+		suite.Add(NewTestCase(func(){ result = append(result, "test3") }))
+		last := suite.NextTest().NextTest()
+
+		last.Execute()
+		assert.Equal(t, []string{"test3"}, result)
+	})
+
+	t.Run("テストスイートがある場合", func(t *testing.T) {
+		var result []string
+		suite := NewTestSuite()
+		nested := NewTestSuite()
+		nested.Add(NewTestCase(func(){ result = append(result, "test1") }))
+		nested.Add(NewTestCase(func(){ result = append(result, "test2") }))
+		nested.Add(NewTestCase(func(){ result = append(result, "test3") }))
+		suite.Add(nested)
+		next := suite.NextTest()
+
+		next.Execute()
+		assert.Equal(t, []string{"test2"}, result)
 	})
 }
 
