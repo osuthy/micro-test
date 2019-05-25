@@ -1,6 +1,7 @@
 package testable
 
 type Testable interface {
+	NextTest() Testable
 	Execute()
-	HasUnexecutedTest() bool
+	HasNextTest() bool
 }

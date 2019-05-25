@@ -1,19 +1,21 @@
 package testable
 
 type TestCase struct {
-	canExecute bool
 	function func()
 }
 
 func NewTestCase(function func()) *TestCase {
-	return &TestCase{canExecute: true, function: function}
+	return &TestCase{function: function}
 }
 
 func (this *TestCase) Execute() {
 	this.function()
-	this.canExecute = false
 }
 
-func (this *TestCase) HasUnexecutedTest() bool {
-	return this.canExecute
+func (this *TestCase) HasNextTest() bool {
+	return false
+}
+
+func (this *TestCase) NextTest() Testable {
+	return nil
 }

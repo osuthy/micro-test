@@ -22,7 +22,7 @@ func (this *TestBuilder) AddTestCase(testFunction func()) {
 	this.suites[0].Add(NewTestCase(testFunction))
 }
 
-func (this *TestBuilder) Build() Testable {
+func (this *TestBuilder) Build() *TestSuite {
 	last := this.suites[0]
 	for i := 1; i < len(this.suites); i++ {
 		this.suites[i].Add(last)
