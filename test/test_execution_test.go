@@ -1,6 +1,6 @@
 package test
 
-import(
+import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -20,11 +20,11 @@ func Test定義したテストを実行できる(t *testing.T) {
 
 	results := []string{}
 	micro_test.Feature("feature description", func() {
-		micro_test.Test("test dscription1", func(){
+		micro_test.Test("test dscription1", func() {
 			results = append(results, "test1")
 		})
 
-		micro_test.Test("test dscription2", func(){
+		micro_test.Test("test dscription2", func() {
 			results = append(results, "test2")
 		})
 	})
@@ -49,11 +49,11 @@ func TestImplicitSetUpをテスト毎に行える(t *testing.T) {
 				results = append(results, "setUp2")
 			})
 
-			micro_test.Test("test dscription1", func(){
+			micro_test.Test("test dscription1", func() {
 				results = append(results, "description1")
 			})
 
-			micro_test.Test("test dscription2", func(){
+			micro_test.Test("test dscription2", func() {
 				results = append(results, "description2")
 			})
 		})
@@ -70,13 +70,13 @@ func Testトップレベルの宣言ごとにテストSuiteが構築される(t 
 
 	results := []string{}
 	micro_test.Feature("feature description1", func() {
-		micro_test.Test("test dscription1", func(){
+		micro_test.Test("test dscription1", func() {
 			results = append(results, "test1")
 		})
 	})
 
 	micro_test.Feature("feature description2", func() {
-		micro_test.Test("test dscription2", func(){
+		micro_test.Test("test dscription2", func() {
 			results = append(results, "test2")
 		})
 	})

@@ -2,8 +2,8 @@ package infra
 
 import (
 	"database/sql"
-	"reflect"
 	. "github.com/ShoichiroKitano/micro_test/db/table"
+	"reflect"
 )
 
 type Connection struct {
@@ -44,7 +44,7 @@ func (this *Connection) TruncateTable(tableName string) {
 func toLiteral(column *Column) string {
 	refv := reflect.ValueOf(column.Value)
 	r, _ := refv.Interface().(string)
-	return "'" + r +"'"
+	return "'" + r + "'"
 }
 
 func scanArgs(types []*sql.ColumnType) []interface{} {
@@ -62,13 +62,13 @@ func scanArgs(types []*sql.ColumnType) []interface{} {
 func rowFrom(types []*sql.ColumnType, dataPtrs []interface{}) *Row {
 	columns := make([]*Column, len(types))
 	for i := range types {
-			refv := reflect.ValueOf(dataPtrs[i])
-			if r, ok := refv.Interface().(*int); ok {
-				columns[i] = NewColumn(types[i].Name(), *r)
-			}
-			if r, ok := refv.Interface().(*string); ok {
-				columns[i] = NewColumn(types[i].Name(), *r)
-			}
+		refv := reflect.ValueOf(dataPtrs[i])
+		if r, ok := refv.Interface().(*int); ok {
+			columns[i] = NewColumn(types[i].Name(), *r)
+		}
+		if r, ok := refv.Interface().(*string); ok {
+			columns[i] = NewColumn(types[i].Name(), *r)
+		}
 	}
 	return NewRow(columns)
 }

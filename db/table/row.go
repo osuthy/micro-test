@@ -39,4 +39,3 @@ func (this *Row) hasSameName(column *Column) bool {
 	}
 	return false
 }
-

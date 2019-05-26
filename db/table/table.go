@@ -14,7 +14,9 @@ func NewTable(name string, rows []*Row) *Table {
 }
 
 func (this *Table) IsSameAsTable(other *Table) bool {
-	if(this.Name != other.Name) { return false }
+	if this.Name != other.Name {
+		return false
+	}
 	return reflect.DeepEqual(this.rowsColumnsSorted(), other.rowsColumnsSorted())
 }
 

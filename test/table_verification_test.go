@@ -1,8 +1,8 @@
 package test
 
-import(
-	"testing"
+import (
 	"github.com/stretchr/testify/assert"
+	"testing"
 
 	. "github.com/ShoichiroKitano/micro_test/db/infra"
 
@@ -20,9 +20,9 @@ func TestDBはカラムの値を正しいと判定する(t *testing.T) {
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").ShouldHaveTable(
 		db.TableName("test").
-		Columns("column1", "column2").
-		Record("A1", "A2").
-		Record("B1", "B2"),
+			Columns("column1", "column2").
+			Record("A1", "A2").
+			Record("B1", "B2"),
 	)
 	assert.Equal(t, "success", runner.TestRunner.Result)
 }
@@ -37,9 +37,9 @@ func TestDBはカラムの値の誤りを検出する(t *testing.T) {
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").ShouldHaveTable(
 		db.TableName("test").
-		Columns("column1", "column2").
-		Record("A1", "A2").
-		Record("BUG", "B2"),
+			Columns("column1", "column2").
+			Record("A1", "A2").
+			Record("BUG", "B2"),
 	)
 	assert.Equal(t, runner.TestRunner.Result, "")
 }
@@ -53,8 +53,8 @@ func TestDBはカラム順序は無視して検証する(t *testing.T) {
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").ShouldHaveTable(
 		db.TableName("test").
-		Columns("column2", "column1").
-		Record("B", "A"),
+			Columns("column2", "column1").
+			Record("B", "A"),
 	)
 	assert.Equal(t, "success", runner.TestRunner.Result)
 }
@@ -69,9 +69,9 @@ func TestDBは行の順序が期待値と異なる場合はテストを失敗さ
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").ShouldHaveTable(
 		db.TableName("test").
-		Columns("column1", "column2").
-		Record("B1", "B2").
-		Record("A1", "A2"),
+			Columns("column1", "column2").
+			Record("B1", "B2").
+			Record("A1", "A2"),
 	)
 	assert.Equal(t, "", runner.TestRunner.Result)
 }

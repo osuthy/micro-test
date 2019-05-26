@@ -5,9 +5,9 @@ import (
 )
 
 type ConnectionMap struct {
-	driverName string
+	driverName            string
 	connectionInformation string
-	connection *Connection
+	connection            *Connection
 }
 
 var maps []ConnectionMap = []ConnectionMap{}

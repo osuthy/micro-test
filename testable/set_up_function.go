@@ -5,7 +5,7 @@ type SetUpFunction struct {
 }
 
 func NewSetUpFunction(function func()) *SetUpFunction {
-	return &SetUpFunction { function: function }
+	return &SetUpFunction{function: function}
 }
 
 func (this *SetUpFunction) Execute() {
