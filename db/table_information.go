@@ -1,7 +1,6 @@
 package db
 
 import (
-	"sort"
 	. "github.com/ShoichiroKitano/micro_test/db/table"
 )
 
@@ -39,8 +38,7 @@ func (this TableInformation) DefaultRow() *Row {
 	for columnName, value := range this.defaultRecord {
 		columns = append(columns, NewColumn(columnName, value))
 	}
-	sort.Slice(columns, func(i, j int) bool { return columns[i].Name < columns[j].Name })
-	return NewRow(columns)
+	return NewRow(columns).Sorted()
 }
 
 func (this TableInformation) ToTable() *Table {
@@ -50,8 +48,7 @@ func (this TableInformation) ToTable() *Table {
 		for i, name := range this.columnNames {
 			columns = append(columns, NewColumn(name, record[i]))
 		}
-		sort.Slice(columns, func(i, j int) bool { return columns[i].Name < columns[j].Name })
-		rows = append(rows, NewRow(columns))
+		rows = append(rows, NewRow(columns).Sorted())
 	}
 	return NewTable(this.tableName, rows)
 }
