@@ -34,11 +34,10 @@ func (this *TestSuite) NextTest() Testable {
 			return nil
 		}
 		suite.tests = tests
-		return suite
+		return NewTestSuite2(tests, this.setUpFunction)
 	}
 	tests = append(tests, this.tests[1:]...)
-	suite.tests = tests
-	return suite
+	return NewTestSuite2(tests, this.setUpFunction)
 }
 
 func (this *TestSuite) Add(test Testable) {
