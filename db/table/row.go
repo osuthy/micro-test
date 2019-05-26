@@ -9,9 +9,7 @@ type Row struct {
 }
 
 func NewRow(columns []*Column) *Row {
-	row := new(Row)
-	row.Columns = columns
-	return row
+	return &Row{Columns: columns}
 }
 
 func (this *Row) Override(row *Row) *Row {

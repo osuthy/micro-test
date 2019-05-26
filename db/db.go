@@ -16,11 +16,11 @@ type ConnectionInformation struct {
 }
 
 func DefineConnection(connectionName, rdbms, information string) {
-	connection := new(ConnectionInformation)
-	connection.rdbms = rdbms
-	connection.name = connectionName
-	connection.information = information
-	connectionInformations = append(connectionInformations, connection)
+	c := ConnectionInformation{
+		name: connectionName,
+		rdbms: rdbms,
+		information: information}
+	connectionInformations = append(connectionInformations, &c)
 }
 
 func findConnectionInformation(connectionName string) *ConnectionInformation {
@@ -32,7 +32,7 @@ func findConnectionInformation(connectionName string) *ConnectionInformation {
 	return nil
 }
 
-var defaultValues = make([]TableInformation, 0)
+var defaultValues = []TableInformation{}
 
 func (this DSL) DefineDefaultValue(defaultValue TableInformation) {
 	defaultValues = append(defaultValues, defaultValue)
