@@ -11,22 +11,24 @@ func NewTestBuilder() *TestBuilder {
 }
 
 func (this *TestBuilder) AddTestSuite() {
-	this.suites = append([]*TestSuite{NewTestSuite()}, this.suites...)
+	this.suites = append([]*TestSuite{NewTestSuite(nil, nil)}, this.suites...)
 }
 
 func (this *TestBuilder) AddSetUpFunction(setUpFunction func()) {
-	this.suites[0].setUpFunction = NewSetUpFunction(setUpFunction)
+	suite := this.suites[0].SetSetUpFunction(NewSetUpFunction(setUpFunction))
+	this.suites[0] = suite
 }
 
 func (this *TestBuilder) AddTestCase(testFunction func()) {
-	this.suites[0].Add(NewTestCase(testFunction))
+	suite := this.suites[0].AddTest(NewTestCase(testFunction))
+	this.suites[0] = suite
 }
 
 func (this *TestBuilder) Build() *TestSuite {
 	last := this.suites[0]
 	for i := 1; i < len(this.suites); i++ {
-		this.suites[i].Add(last)
-		last = this.suites[i]
+		suite := this.suites[i].AddTest(last)
+		last = suite
 	}
 	return last
 }
