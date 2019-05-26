@@ -9,6 +9,13 @@ func NewTestSuite() *TestSuite {
 	return new(TestSuite)
 }
 
+func NewTestSuite2(tests []Testable, setUpFunction *SetUpFunction) *TestSuite {
+	return &TestSuite {
+		tests: tests,
+		setUpFunction: setUpFunction,
+	}
+}
+
 func (this *TestSuite) Execute() {
 	if this.setUpFunction != nil {
 		this.setUpFunction.Execute()
