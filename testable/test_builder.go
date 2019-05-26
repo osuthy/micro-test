@@ -1,32 +1,49 @@
 package testable
 
 type TestBuilder struct {
-	suites []*TestSuite
+	suites []*TestSuiteStruct
+}
+
+type TestSuiteStruct struct {
+	setUpFunction *SetUpFunction
+	testCases []*TestCase
 }
 
 func NewTestBuilder() *TestBuilder {
-	return &TestBuilder{suites: []*TestSuite{}}
+	return &TestBuilder{suites: []*TestSuiteStruct{}}
 }
 
 func (this *TestBuilder) AddTestSuite() {
-	this.suites = append([]*TestSuite{NewTestSuite(nil, nil)}, this.suites...)
+	suite := &TestSuiteStruct{
+		setUpFunction: nil,
+		testCases: []*TestCase{},
+	}
+	this.suites = append([]*TestSuiteStruct{suite}, this.suites...)
 }
 
 func (this *TestBuilder) AddSetUpFunction(setUpFunction func()) {
-	suite := this.suites[0].SetSetUpFunction(NewSetUpFunction(setUpFunction))
-	this.suites[0] = suite
+	this.suites[0].setUpFunction = NewSetUpFunction(setUpFunction)
 }
 
 func (this *TestBuilder) AddTestCase(testFunction func()) {
-	suite := this.suites[0].AddTest(NewTestCase(testFunction))
-	this.suites[0] = suite
+	this.suites[0].testCases = append(this.suites[0].testCases, NewTestCase(testFunction))
 }
 
 func (this *TestBuilder) Build() *TestSuite {
-	last := this.suites[0]
+	root := NewTestSuite(toTestable(this.suites[0].testCases), this.suites[0].setUpFunction)
 	for i := 1; i < len(this.suites); i++ {
-		suite := this.suites[i].AddTest(last)
-		last = suite
+		testables := toTestable(this.suites[i].testCases)
+		testables = append(testables, root)
+		suite := NewTestSuite(testables, this.suites[i].setUpFunction)
+		root = suite
 	}
-	return last
+	return root
+}
+
+func toTestable(testCases []*TestCase) []Testable {
+	testables := []Testable{}
+	for _, testCase := range(testCases) {
+		testables = append(testables, testCase)
+	}
+	return testables
 }
