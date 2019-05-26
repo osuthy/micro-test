@@ -24,8 +24,6 @@ func (this *TestSuite) Execute() {
 }
 
 func (this *TestSuite) NextTest() Testable {
-	suite := NewTestSuite()
-	suite.setUpFunction = this.setUpFunction
 	tests := []Testable{}
 	test := this.tests[0].NextTest()
 	if(test != nil) { tests = append(tests, test) }
@@ -33,7 +31,6 @@ func (this *TestSuite) NextTest() Testable {
 		if(len(tests) == 0) {
 			return nil
 		}
-		suite.tests = tests
 		return NewTestSuite2(tests, this.setUpFunction)
 	}
 	tests = append(tests, this.tests[1:]...)
