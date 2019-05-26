@@ -17,10 +17,6 @@ func (this *TestSuite) AddTest(test Testable) *TestSuite {
 	return NewTestSuite(tests, this.setUpFunction)
 }
 
-func (this *TestSuite) SetSetUpFunction(setUpFunction *SetUpFunction) *TestSuite {
-	return NewTestSuite(this.tests, setUpFunction)
-}
-
 func (this *TestSuite) Execute() {
 	if this.setUpFunction != nil {
 		this.setUpFunction.Execute()
@@ -40,10 +36,6 @@ func (this *TestSuite) NextTest() Testable {
 	}
 	tests = append(tests, this.tests[1:]...)
 	return NewTestSuite(tests, this.setUpFunction)
-}
-
-func (this *TestSuite) Add(test Testable) {
-	this.tests = append(this.tests, test)
 }
 
 func (this *TestSuite) HasNextTest() bool {
