@@ -1,15 +1,12 @@
 package table
 
 type Column struct {
-	Name string
+	Name  string
 	Value interface{}
 }
 
 func NewColumn(name string, value interface{}) *Column {
-	column := new(Column)
-	column.Name = name
-	column.Value = value
-	return column
+	return &Column{Name: name, Value: value}
 }
 
 func (this *Column) HasSameName(other *Column) bool {

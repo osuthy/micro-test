@@ -1,10 +1,10 @@
 package infra
 
 import (
-	"testing"
-	"github.com/stretchr/testify/assert"
-	_ "github.com/go-sql-driver/mysql"
 	. "github.com/ShoichiroKitano/micro_test/db/table"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestDBのデータからTableオブジェクトを構築(t *testing.T) {
@@ -15,8 +15,8 @@ func TestDBのデータからTableオブジェクトを構築(t *testing.T) {
 	table := FindDBConnection("mysql", "root:@/test_connection").FindTable("test")
 
 	expected := BuildTable("test").
-							WithRow(NewColumn("column1", "A1"), NewColumn("column2", "A2")).
-							WithRow(NewColumn("column1", "B1"), NewColumn("column2", "B2")).Build()
+		WithRow(NewColumn("column1", "A1"), NewColumn("column2", "A2")).
+		WithRow(NewColumn("column1", "B1"), NewColumn("column2", "B2")).Build()
 	assert.Equal(t, expected, table)
 }
 
@@ -41,4 +41,3 @@ func tearDown() {
 	tx.Exec("truncate table test;")
 	tx.Commit()
 }
-

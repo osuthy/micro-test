@@ -10,14 +10,13 @@ type Table struct {
 }
 
 func NewTable(name string, rows []*Row) *Table {
-	table := new(Table)
-	table.Name = name
-	table.Rows = rows
-	return table
+	return &Table{Name: name, Rows: rows}
 }
 
 func (this *Table) IsSameAsTable(other *Table) bool {
-	if(this.Name != other.Name) { return false }
+	if this.Name != other.Name {
+		return false
+	}
 	return reflect.DeepEqual(this.rowsColumnsSorted(), other.rowsColumnsSorted())
 }
 

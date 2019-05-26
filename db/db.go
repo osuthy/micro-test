@@ -1,26 +1,26 @@
 package db
 
 import (
-	"reflect"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/ShoichiroKitano/micro_test/runner"
 	. "github.com/ShoichiroKitano/micro_test/db/infra"
+	"github.com/ShoichiroKitano/micro_test/runner"
+	_ "github.com/go-sql-driver/mysql"
+	"reflect"
 )
 
 var connectionInformations = [](*ConnectionInformation){}
 
 type ConnectionInformation struct {
-	name string
-	rdbms string
+	name        string
+	rdbms       string
 	information string
 }
 
 func DefineConnection(connectionName, rdbms, information string) {
-	connection := new(ConnectionInformation)
-	connection.rdbms = rdbms
-	connection.name = connectionName
-	connection.information = information
-	connectionInformations = append(connectionInformations, connection)
+	c := ConnectionInformation{
+		name:        connectionName,
+		rdbms:       rdbms,
+		information: information}
+	connectionInformations = append(connectionInformations, &c)
 }
 
 func findConnectionInformation(connectionName string) *ConnectionInformation {
@@ -32,7 +32,7 @@ func findConnectionInformation(connectionName string) *ConnectionInformation {
 	return nil
 }
 
-var defaultValues = make([]TableInformation, 0)
+var defaultValues = []TableInformation{}
 
 func (this DSL) DefineDefaultValue(defaultValue TableInformation) {
 	defaultValues = append(defaultValues, defaultValue)
@@ -71,7 +71,7 @@ func (this DSL) HasRecords(fixture TableInformation) {
 func (this DSL) ShouldHaveTable(expected TableInformation) {
 	expectedTable := expected.ToTable()
 	resultTable := this.connection.FindTable(expectedTable.Name)
-  if expectedTable.IsSameAsTable(resultTable) {
+	if expectedTable.IsSameAsTable(resultTable) {
 		runner.TestRunner.Result = "success"
 	} else {
 		runner.TestRunner.Result = ""

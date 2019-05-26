@@ -2,8 +2,8 @@ package infra
 
 import (
 	_ "github.com/go-sql-driver/mysql"
-	"testing"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func Testコネクションへのインターフェースの生成は一回のみ行う(t *testing.T) {

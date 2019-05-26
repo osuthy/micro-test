@@ -15,7 +15,9 @@ func Run() {
 		s := suite
 		for {
 			s.Execute()
-			if !s.HasNextTest() { break }
+			if !s.HasNextTest() {
+				break
+			}
 			s = s.NextTest()
 		}
 	}

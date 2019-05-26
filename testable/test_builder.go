@@ -6,7 +6,7 @@ type TestBuilder struct {
 
 type TestSuiteStruct struct {
 	setUpFunction *SetUpFunction
-	testCases []*TestCase
+	testCases     []*TestCase
 }
 
 func NewTestBuilder() *TestBuilder {
@@ -16,7 +16,7 @@ func NewTestBuilder() *TestBuilder {
 func (this *TestBuilder) AddTestSuite() {
 	suite := &TestSuiteStruct{
 		setUpFunction: nil,
-		testCases: []*TestCase{},
+		testCases:     []*TestCase{},
 	}
 	this.suites = append([]*TestSuiteStruct{suite}, this.suites...)
 }
@@ -42,7 +42,7 @@ func (this *TestBuilder) Build() *TestSuite {
 
 func toTestable(testCases []*TestCase) []Testable {
 	testables := []Testable{}
-	for _, testCase := range(testCases) {
+	for _, testCase := range testCases {
 		testables = append(testables, testCase)
 	}
 	return testables
