@@ -6,7 +6,7 @@ import (
 )
 
 func createTestSuite(tests ...Testable) *TestSuite {
-	return NewTestSuite2(tests, nil)
+	return NewTestSuite(tests, nil)
 }
 
 func Test一番最初に入力されたテストケースのみを実行(t *testing.T) {
@@ -85,8 +85,7 @@ func Test次のテストケースの取り出し(t *testing.T) {
 
 	t.Run("テストケースの1個の場合", func(t *testing.T) {
 		var result []string
-		suite := NewTestSuite()
-		suite.Add(NewTestCase(func() { result = append(result, "test1") }))
+		suite := createTestSuite(NewTestCase(func() { result = append(result, "test1") }))
 		assert.Equal(t, nil, suite.NextTest())
 	})
 }

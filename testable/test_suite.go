@@ -5,15 +5,20 @@ type TestSuite struct {
 	setUpFunction *SetUpFunction
 }
 
-func NewTestSuite() *TestSuite {
-	return new(TestSuite)
-}
-
-func NewTestSuite2(tests []Testable, setUpFunction *SetUpFunction) *TestSuite {
+func NewTestSuite(tests []Testable, setUpFunction *SetUpFunction) *TestSuite {
 	return &TestSuite {
 		tests: tests,
 		setUpFunction: setUpFunction,
 	}
+}
+
+func (this *TestSuite) AddTest(test Testable) *TestSuite {
+	tests := append(this.tests, test)
+	return NewTestSuite(tests, this.setUpFunction)
+}
+
+func (this *TestSuite) SetSetUpFunction(setUpFunction *SetUpFunction) *TestSuite {
+	return NewTestSuite(this.tests, setUpFunction)
 }
 
 func (this *TestSuite) Execute() {
@@ -31,10 +36,10 @@ func (this *TestSuite) NextTest() Testable {
 		if(len(tests) == 0) {
 			return nil
 		}
-		return NewTestSuite2(tests, this.setUpFunction)
+		return NewTestSuite(tests, this.setUpFunction)
 	}
 	tests = append(tests, this.tests[1:]...)
-	return NewTestSuite2(tests, this.setUpFunction)
+	return NewTestSuite(tests, this.setUpFunction)
 }
 
 func (this *TestSuite) Add(test Testable) {
