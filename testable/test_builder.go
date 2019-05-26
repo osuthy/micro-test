@@ -5,9 +5,7 @@ type TestBuilder struct {
 }
 
 func NewTestBuilder() *TestBuilder {
-	builder := new(TestBuilder)
-	builder.suites = []*TestSuite{}
-	return builder
+	return &TestBuilder{suites: []*TestSuite{}}
 }
 
 func (this *TestBuilder) AddTestSuite() {
