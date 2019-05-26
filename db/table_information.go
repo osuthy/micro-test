@@ -15,8 +15,8 @@ type TableInformation struct {
 func TableName(tableName string) TableInformation {
 	return TableInformation{
 		tableName: tableName,
-		records: make([][]interface{}, 0),
-		defaultRecord: make(map[string]interface{})}
+		records: [][]interface{}{},
+		defaultRecord: map[string]interface{}{}}
 }
 
 func (this TableInformation) Columns(columnNames...string) TableInformation {
@@ -35,7 +35,7 @@ func (this TableInformation) DefaultValue(columnName string, value interface{}) 
 }
 
 func (this TableInformation) DefaultRow() *Row {
-	columns := make([]*Column, 0)
+	columns := []*Column{}
 	for columnName, value := range this.defaultRecord {
 		columns = append(columns, NewColumn(columnName, value))
 	}
@@ -44,9 +44,9 @@ func (this TableInformation) DefaultRow() *Row {
 }
 
 func (this TableInformation) ToTable() *Table {
-	rows := make([]*Row, 0)
+	rows := []*Row{}
 	for _, record := range this.records {
-		columns := make([]*Column, 0)
+		columns := []*Column{}
 		for i, name := range this.columnNames {
 			columns = append(columns, NewColumn(name, record[i]))
 		}

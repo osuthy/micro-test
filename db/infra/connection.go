@@ -11,9 +11,7 @@ type Connection struct {
 }
 
 func NewConnection(driver *sql.DB) *Connection {
-	this := new(Connection)
-	this.Driver = driver
-	return this
+	return &Connection{Driver: driver}
 }
 
 func (this *Connection) FindTable(tableName string) *Table {
