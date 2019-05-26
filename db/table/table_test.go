@@ -5,7 +5,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Testテブールとしての等価性の判定(t *testing.T) {
+func Testテーブルとしての等価性の判定(t *testing.T) {
 	t.Run("名前と行が完全に一致", func(t *testing.T) {
 		table1 := BuildTable("name").
 								WithRow(NewColumn("c1", 11), NewColumn("c2", 12)).
