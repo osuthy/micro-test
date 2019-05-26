@@ -1,10 +1,10 @@
 package infra
 
-import(
-	"testing"
-	"github.com/stretchr/testify/assert"
+import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func InsertIntoTest(rdbms, connectionInformation, column1Value, column2Value string) {

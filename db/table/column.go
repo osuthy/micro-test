@@ -1,7 +1,7 @@
 package table
 
 type Column struct {
-	Name string
+	Name  string
 	Value interface{}
 }
 

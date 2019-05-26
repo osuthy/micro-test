@@ -5,25 +5,25 @@ import (
 )
 
 type TableInformation struct {
-	tableName string
-	columnNames []string
-	records [][]interface{}
+	tableName     string
+	columnNames   []string
+	records       [][]interface{}
 	defaultRecord map[string]interface{}
 }
 
 func TableName(tableName string) TableInformation {
 	return TableInformation{
-		tableName: tableName,
-		records: [][]interface{}{},
+		tableName:     tableName,
+		records:       [][]interface{}{},
 		defaultRecord: map[string]interface{}{}}
 }
 
-func (this TableInformation) Columns(columnNames...string) TableInformation {
+func (this TableInformation) Columns(columnNames ...string) TableInformation {
 	this.columnNames = columnNames
 	return this
 }
 
-func (this TableInformation) Record(values...interface{}) TableInformation {
+func (this TableInformation) Record(values ...interface{}) TableInformation {
 	this.records = append(this.records, values)
 	return this
 }
@@ -52,4 +52,3 @@ func (this TableInformation) ToTable() *Table {
 	}
 	return NewTable(this.tableName, rows)
 }
-

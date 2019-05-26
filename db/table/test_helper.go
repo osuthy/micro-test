@@ -2,7 +2,7 @@ package table
 
 type TableBuilder struct {
 	tableName string
-	rows []*Row
+	rows      []*Row
 }
 
 func BuildTable(tableName string) TableBuilder {
@@ -21,4 +21,3 @@ func (builder TableBuilder) Build() *Table {
 func CreateRow(columns ...*Column) *Row {
 	return NewRow(columns)
 }
-
