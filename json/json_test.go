@@ -7,10 +7,9 @@ import(
 
 
 func Test文字をJSONに変換する(t *testing.T) {
-	aho := A{"aho"}
-	actual := aho.ToJson()
+	var obj Object = &A{"aho"}
 	expected := `["aho"]`
-
+	actual := obj.ToJson()
 	assert.Equal(t, expected, string(actual))
 }
 

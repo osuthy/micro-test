@@ -37,3 +37,7 @@ func WithJson(object O) []byte {
 	return object.ToJson()
 }
 
+// func WithJson(i interface{}) {
+// 	var obj Object = i
+// 	return obj.ToJson()
+// }
