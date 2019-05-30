@@ -16,7 +16,9 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 		defer wiremock.Reset("localhost:8080")
 		wiremock.Stubbing("localhost:8080", "/test", "GET",
 		`{ \"object\": \"value\" }`, 200, "test success")
-		status, body := http.Server("localhost:8080").
+
+		http.DefineServer("test_server", "localhost:8080")
+		status, body := http.Server("test_server").
 		ReceiveRequest("GET", "/test", http.WithJson(json.O{"object": "value"}))
 		assert.Equal(t, 200, status)
 		assert.Equal(t, "test success", body)
@@ -26,8 +28,26 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 		defer wiremock.Reset("localhost:8080")
 		wiremock.Stubbing("localhost:8080", "/test", "GET",
 		`[1, 2, 3]`, 200, "test success")
-		status, body := http.Server("localhost:8080").
+
+		http.DefineServer("test_server", "localhost:8080")
+		status, body := http.Server("test_server").
 		ReceiveRequest("GET", "/test", http.WithJson(json.A{1, 2, 3}))
+		assert.Equal(t, 200, status)
+		assert.Equal(t, "test success", body)
+	})
+}
+
+func TestHttpはサーバーにPOSTでリクエストを送ることができる(t *testing.T) {
+	wiremock.Reset("localhost:8080")
+
+	t.Run("Objectがトップレベルの階層の場合", func(t *testing.T) {
+		defer wiremock.Reset("localhost:8080")
+		wiremock.Stubbing("localhost:8080", "/test", "POST",
+		`{ \"object\": \"value\" }`, 200, "test success")
+
+		http.DefineServer("test_server", "localhost:8080")
+		status, body := http.Server("test_server").
+		ReceiveRequest("POST", "/test", http.WithJson(json.O{"object": "value"}))
 		assert.Equal(t, 200, status)
 		assert.Equal(t, "test success", body)
 	})
