@@ -14,7 +14,7 @@ func (this O) Print() {
   println("O")
 }
 
-func (this *O) ToJson() []byte {
+func (this O) ToJson() []byte {
 	json, _ := json.Marshal(this)
 	return json
 }
@@ -25,7 +25,7 @@ func (this A) Print() {
   println("A")
 }
 
-func (this *A) ToJson() []byte {
+func (this A) ToJson() []byte {
 	json, _ := json.Marshal(this)
 	return json
 }

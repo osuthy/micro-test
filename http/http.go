@@ -33,11 +33,6 @@ func (this Client) ReceiveRequest(methodType string, path string, json []byte) (
 	return resp.StatusCode, string(body)
 }
 
-func WithJson(object O) []byte {
-	return object.ToJson()
+func WithJson(i Object) []byte {
+	return i.ToJson()
 }
-
-// func WithJson(i interface{}) {
-// 	var obj Object = i
-// 	return obj.ToJson()
-// }
