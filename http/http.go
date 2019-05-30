@@ -8,18 +8,31 @@ import(
 	. "github.com/ShoichiroKitano/micro_test/json"
 )
 
+var clientInformations []*Client
+
 type Client struct {
-	Adress string
+	Name string
+	Url string
 }
 
-func Server(adress string) *Client {
+func DefineServer(serverName string, url string) {
 	client := new(Client)
-	client.Adress = adress
-	return client
+	client.Name = serverName
+	client.Url = url
+	clientInformations = append(clientInformations, client)
+}
+
+func Server(serverName string) *Client {
+	for _, clientInfo := range clientInformations {
+		if clientInfo.Name == serverName {
+			return clientInfo
+		}
+	}
+	return nil
 }
 
 func (this Client) ReceiveRequest(methodType string, path string, json []byte) (int, string) {
-	url := fmt.Sprintf("http://%s%s",this.Adress, path)
+	url := fmt.Sprintf("%s%s",this.Url, path)
 
 	request, _ := http.NewRequest(methodType, url, bytes.NewBuffer([]byte(json)))
 	resp, err := http.DefaultClient.Do(request)
