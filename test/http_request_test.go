@@ -9,6 +9,7 @@ import(
 	"github.com/ShoichiroKitano/micro_test/runner"
 
 	"github.com/ShoichiroKitano/micro_test/test/wiremock"
+
 )
 func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 	wiremock.Reset("localhost:8080")
@@ -19,9 +20,9 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 		`{ \"object\": \"value\" }`, 200, "test success")
 
 		http.DefineServer("test_server", "http://localhost:8080")
-		status, body := http.Server("test_server").
+		http.Server("test_server").
 		ReceiveRequest("GET", "/test", http.WithJson(json.O{"object": "value"})).
-			AndResponseShouldBe(Status(200).Text("test success"))
+			AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		assert.Equal(t, "success", runner.TestRunner.Result)
 	})
 
@@ -32,9 +33,9 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 		`[1, 2, 3]`, 200, "test success")
 
 		http.DefineServer("test_server", "http://localhost:8080")
-		status, body := http.Server("test_server").
+		http.Server("test_server").
 		ReceiveRequest("GET", "/test", http.WithJson(json.A{1, 2, 3})).
-			AndResponseShouldBe(Status(200).Text("test success"))
+			AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		assert.Equal(t, "success", runner.TestRunner.Result)
 	})
 }
@@ -50,7 +51,7 @@ func TestHttpはサーバーにPOSTでリクエストを送ることができる
 	http.DefineServer("test_server", "http://localhost:8080")
 	http.Server("test_server").
 		ReceiveRequest("POST", "/test", http.WithJson(json.O{"object": "value"})).
-		AndResponseShouldBe(Status(200).Text("test success"))
+		AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 	assert.Equal(t, "success", runner.TestRunner.Result)
 }
 
@@ -62,7 +63,7 @@ func TestHttpはサーバーはレスポンスが期待と異なる場合はテ�
 	http.DefineServer("test_server", "http://localhost:8080")
 	http.Server("test_server").
 		ReceiveRequest("POST", "/test", http.WithJson(json.O{"object": "value"})).
-		AndResponseShouldBe(Status(200).Text("test success"))
+		AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 	assert.Equal(t, "", runner.TestRunner.Result)
 }
 
