@@ -67,3 +67,20 @@ func TestHttpはサーバーはレスポンスが期待と異なる場合はテ�
 	assert.Equal(t, "", runner.TestRunner.Result)
 }
 
+
+func TestHttpはパラメータ付きのリクエストを送ることができる(t *testing.T) {
+	wiremock.Reset("localhost:8080")
+	runner.TestRunner.Result = "init"
+	defer wiremock.Reset("localhost:8080")
+
+	wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "POST",
+	`{ \"object\": \"value\" }`, 200, "test success")
+
+	http.DefineServer("test_server", "http://localhost:8080")
+	http.Server("test_server").
+		ReceiveRequest("POST", "/test",
+			http.WithPram("param1", "p1").
+			WithJson(json.O{"object": "value"}).
+			WithParam("param2", "p2")).AndResponseShouldBe(http.Status(200).TextPlain("test success"))
+	assert.Equal(t, "success", runner.TestRunner.Result)
+}
