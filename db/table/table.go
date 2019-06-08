@@ -42,3 +42,18 @@ func (this *Table) SelectAllQuery() string {
 	sql, _, _ := sq.Select("*").From(this.Name).ToSql()
 	return sql
 }
+
+func (this *Table) InsertQuery() string {
+	sql, _, _ := sq.Insert(this.Name).
+	Columns(this.Rows[0].ColumnNames()...).
+	Values(this.Rows[0].ColumnValues()...).ToSql()
+	return sql
+}
+
+func (this *Table) AllValues() [][]interface{} {
+	allValue := make([][]interface{}, 0, len(this.Rows))
+	for _, row := range this.Rows {
+		allValue = append(allValue, row.ColumnValues())
+	}
+	return allValue
+}

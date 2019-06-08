@@ -15,7 +15,6 @@ func NewConnection(driver *sql.DB) *Connection {
 }
 
 func (this *Connection) FindTable(table *Table) *Table {
-	//rows, _ := this.Driver.Query("SELECT * FROM " + tableName + ";")
 	rows, _ := this.Driver.Query(table.SelectAllQuery())
 	defer rows.Close()
 	types, _ := rows.ColumnTypes()
@@ -30,8 +29,9 @@ func (this *Connection) FindTable(table *Table) *Table {
 
 func (this *Connection) StoreTable(table *Table) {
 	tx, _ := this.Driver.Begin()
-	for _, row := range table.Rows {
-		tx.Exec("insert into test (" + row.Columns[0].Name + "," + row.Columns[1].Name + ") values (" + toLiteral(row.Columns[0]) + "," + toLiteral(row.Columns[1]) + ");")
+	stmt, _ := tx.Prepare(table.InsertQuery())
+	for _, values := range table.AllValues() {
+		stmt.Exec(values...)
 	}
 	tx.Commit()
 }
@@ -40,12 +40,6 @@ func (this *Connection) TruncateTable(tableName string) {
 	tx, _ := this.Driver.Begin()
 	tx.Exec("truncate table " + tableName + ";")
 	tx.Commit()
-}
-
-func toLiteral(column *Column) string {
-	refv := reflect.ValueOf(column.Value)
-	r, _ := refv.Interface().(string)
-	return "'" + r + "'"
 }
 
 func scanArgs(types []*sql.ColumnType) []interface{} {
