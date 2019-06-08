@@ -14,8 +14,9 @@ func NewConnection(driver *sql.DB) *Connection {
 	return &Connection{Driver: driver}
 }
 
-func (this *Connection) FindTable(tableName string) *Table {
-	rows, _ := this.Driver.Query("SELECT * FROM " + tableName + ";")
+func (this *Connection) FindTable(table *Table) *Table {
+	//rows, _ := this.Driver.Query("SELECT * FROM " + tableName + ";")
+	rows, _ := this.Driver.Query(table.SelectAllQuery())
 	defer rows.Close()
 	types, _ := rows.ColumnTypes()
 	dataPtrs := scanArgs(types)
@@ -24,7 +25,7 @@ func (this *Connection) FindTable(tableName string) *Table {
 		rows.Scan(dataPtrs...)
 		newRows = append(newRows, rowFrom(types, dataPtrs))
 	}
-	return NewTable(tableName, newRows)
+	return NewTable(table.Name, newRows)
 }
 
 func (this *Connection) StoreTable(table *Table) {

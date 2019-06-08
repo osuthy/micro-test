@@ -12,7 +12,7 @@ func TestDBのデータからTableオブジェクトを構築(t *testing.T) {
 	InsertIntoTest("mysql", "root:@/test_connection", "A1", "A2")
 	InsertIntoTest("mysql", "root:@/test_connection", "B1", "B2")
 
-	table := FindDBConnection("mysql", "root:@/test_connection").FindTable("test")
+	table := FindDBConnection("mysql", "root:@/test_connection").FindTable(NewTable("test", nil))
 
 	expected := BuildTable("test").
 		WithRow(NewColumn("column1", "A1"), NewColumn("column2", "A2")).
@@ -31,7 +31,7 @@ func Testテーブルのトランケート(t *testing.T) {
 }
 
 func verifyTableIsEmpty(t *testing.T, connection *Connection, tableName string) {
-	table := connection.FindTable(tableName)
+	table := connection.FindTable(NewTable(tableName, nil))
 	expected := BuildTable(tableName).Build()
 	assert.Equal(t, expected, table)
 }

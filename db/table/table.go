@@ -36,3 +36,7 @@ func (this *Table) rowsColumnsSorted() []*Row {
 	}
 	return sortedRows
 }
+
+func (this *Table) SelectAllQuery() string {
+	return "select * from " + this.Name + ";"
+}

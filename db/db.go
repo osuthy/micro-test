@@ -70,7 +70,7 @@ func (this DSL) HasRecords(fixture TableInformation) {
 
 func (this DSL) ShouldHaveTable(expected TableInformation) {
 	expectedTable := expected.ToTable()
-	resultTable := this.connection.FindTable(expectedTable.Name)
+	resultTable := this.connection.FindTable(expectedTable)
 	if expectedTable.IsSameAsTable(resultTable) {
 		runner.TestRunner.Result = "success"
 	} else {
