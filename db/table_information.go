@@ -42,9 +42,9 @@ func (this TableInformation) DefaultRow() *Row {
 }
 
 func (this TableInformation) ToTable() *Table {
-	rows := []*Row{}
+	rows := make([]*Row, 0, len(this.records))
 	for _, record := range this.records {
-		columns := []*Column{}
+		columns := make([]*Column, 0, len(this.columnNames))
 		for i, name := range this.columnNames {
 			columns = append(columns, NewColumn(name, record[i]))
 		}
