@@ -37,7 +37,6 @@ func (this *Connection) StoreTable(table *Table) {
 }
 
 func (this *Connection) TruncateTable(table *Table) {
-	//this.Driver.Exec("truncate table " + tableName + ";")
 	this.Driver.Exec(table.TruncateQuery())
 }
 

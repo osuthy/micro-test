@@ -12,7 +12,7 @@ func TestTableInformationをTableに変換する(t *testing.T) {
 		Columns("c1", "c2").
 		Record(11, 12).
 		Record(21, 22)
-	expected := BuildTable("name").
+	expected := BuildTable().WithName("name").
 		WithRow(NewColumn("c1", 11), NewColumn("c2", 12)).
 		WithRow(NewColumn("c1", 21), NewColumn("c2", 22)).Build()
 	assert.Equal(t, expected, tableInfo.ToTable())
@@ -23,7 +23,7 @@ func TestTableInformationをTableに変換する際にカラムは名前順に�
 		Columns("c2", "c1").
 		Record(12, 11).
 		Record(22, 21)
-	expected := BuildTable("name").
+	expected := BuildTable().WithName("name").
 		WithRow(NewColumn("c1", 11), NewColumn("c2", 12)).
 		WithRow(NewColumn("c1", 21), NewColumn("c2", 22)).Build()
 	assert.Equal(t, expected, tableInfo.ToTable())

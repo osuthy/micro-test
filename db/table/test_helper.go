@@ -5,17 +5,22 @@ type TableBuilder struct {
 	rows      []*Row
 }
 
-func BuildTable(tableName string) TableBuilder {
-	return TableBuilder{tableName, []*Row{}}
+func BuildTable() TableBuilder {
+	return TableBuilder{"", []*Row{}}
 }
 
-func (builder TableBuilder) WithRow(columns ...*Column) TableBuilder {
-	builder.rows = append(builder.rows, CreateRow(columns...))
-	return builder
+func (this TableBuilder) WithName(tableName string) TableBuilder {
+	this.tableName = tableName
+	return this
 }
 
-func (builder TableBuilder) Build() *Table {
-	return NewTable(builder.tableName, builder.rows)
+func (this TableBuilder) WithRow(columns ...*Column) TableBuilder {
+	this.rows = append(this.rows, CreateRow(columns...))
+	return this
+}
+
+func (this TableBuilder) Build() *Table {
+	return NewTable(this.tableName, this.rows)
 }
 
 func CreateRow(columns ...*Column) *Row {
