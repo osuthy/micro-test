@@ -2,6 +2,7 @@ package table
 
 import (
 	"reflect"
+	sq "github.com/Masterminds/squirrel"
 )
 
 type Table struct {
@@ -38,5 +39,6 @@ func (this *Table) rowsColumnsSorted() []*Row {
 }
 
 func (this *Table) SelectAllQuery() string {
-	return "select * from " + this.Name + ";"
+	sql, _, _ := sq.Select("*").From(this.Name).ToSql()
+	return sql
 }
