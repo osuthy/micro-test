@@ -3,6 +3,7 @@ package table
 import (
 	"reflect"
 	sq "github.com/Masterminds/squirrel"
+	"fmt"
 )
 
 type Table struct {
@@ -48,6 +49,10 @@ func (this *Table) InsertQuery() string {
 	Columns(this.Rows[0].ColumnNames()...).
 	Values(this.Rows[0].ColumnValues()...).ToSql()
 	return sql
+}
+
+func (this *Table) TruncateQuery() string {
+	return fmt.Sprintf("truncate table %s;", this.Name)
 }
 
 func (this *Table) AllValues() [][]interface{} {

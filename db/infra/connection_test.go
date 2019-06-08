@@ -8,6 +8,7 @@ import (
 )
 
 func TestDBのデータからTableオブジェクトを構築(t *testing.T) {
+	tearDown()
 	defer tearDown()
 	InsertIntoTest("mysql", "root:@/test_connection", "A1", "A2")
 	InsertIntoTest("mysql", "root:@/test_connection", "B1", "B2")
@@ -21,11 +22,12 @@ func TestDBのデータからTableオブジェクトを構築(t *testing.T) {
 }
 
 func Testテーブルのトランケート(t *testing.T) {
+	tearDown()
 	defer tearDown()
 	InsertIntoTest("mysql", "root:@/test_connection", "A1", "A2")
 
 	connection := FindDBConnection("mysql", "root:@/test_connection")
-	connection.TruncateTable("test")
+	connection.TruncateTable(BuildTable("test").Build())
 
 	verifyTableIsEmpty(t, connection, "test")
 }

@@ -19,7 +19,7 @@ func (this *Connection) FindTable(table *Table) *Table {
 	defer rows.Close()
 	types, _ := rows.ColumnTypes()
 	dataPtrs := scanArgs(types)
-	newRows := make([]*Row, 0)
+	newRows := []*Row{}
 	for rows.Next() {
 		rows.Scan(dataPtrs...)
 		newRows = append(newRows, rowFrom(types, dataPtrs))
@@ -36,10 +36,9 @@ func (this *Connection) StoreTable(table *Table) {
 	tx.Commit()
 }
 
-func (this *Connection) TruncateTable(tableName string) {
-	tx, _ := this.Driver.Begin()
-	tx.Exec("truncate table " + tableName + ";")
-	tx.Commit()
+func (this *Connection) TruncateTable(table *Table) {
+	//this.Driver.Exec("truncate table " + tableName + ";")
+	this.Driver.Exec(table.TruncateQuery())
 }
 
 func scanArgs(types []*sql.ColumnType) []interface{} {
