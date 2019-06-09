@@ -1,7 +1,6 @@
 package db
 
 import (
-	. "github.com/ShoichiroKitano/micro_test/db/table"
 	. "github.com/ShoichiroKitano/micro_test/db/infra"
 	"github.com/ShoichiroKitano/micro_test/runner"
 	_ "github.com/go-sql-driver/mysql"
@@ -80,5 +79,5 @@ func (this DSL) ShouldHaveTable(expected TableInformation) {
 }
 
 func (this DSL) Truncate(tableName string) {
-	this.connection.TruncateTable(NewTable(tableName, nil))
+	this.connection.TruncateTable(Table(tableName).ToTable())
 }

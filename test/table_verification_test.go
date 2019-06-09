@@ -19,7 +19,7 @@ func TestDBはカラムの値を正しいと判定する(t *testing.T) {
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").ShouldHaveTable(
-		db.TableName("test").
+		db.Table("test").
 			Columns("column1", "column2").
 			Record("A1", "A2").
 			Record("B1", "B2"),
@@ -36,7 +36,7 @@ func TestDBはカラムの値の誤りを検出する(t *testing.T) {
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").ShouldHaveTable(
-		db.TableName("test").
+		db.Table("test").
 			Columns("column1", "column2").
 			Record("A1", "A2").
 			Record("BUG", "B2"),
@@ -52,7 +52,7 @@ func TestDBはカラム順序は無視して検証する(t *testing.T) {
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").ShouldHaveTable(
-		db.TableName("test").
+		db.Table("test").
 			Columns("column2", "column1").
 			Record("B", "A"),
 	)
@@ -68,7 +68,7 @@ func TestDBは行の順序が期待値と異なる場合はテストを失敗さ
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").ShouldHaveTable(
-		db.TableName("test").
+		db.Table("test").
 			Columns("column1", "column2").
 			Record("B1", "B2").
 			Record("A1", "A2"),

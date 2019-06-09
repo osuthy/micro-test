@@ -1,7 +1,7 @@
 package db
 
 import (
-	. "github.com/ShoichiroKitano/micro_test/db/table"
+	tbl "github.com/ShoichiroKitano/micro_test/db/table"
 )
 
 type TableInformation struct {
@@ -11,7 +11,7 @@ type TableInformation struct {
 	defaultRecord map[string]interface{}
 }
 
-func TableName(tableName string) TableInformation {
+func Table(tableName string) TableInformation {
 	return TableInformation{
 		tableName:     tableName,
 		records:       [][]interface{}{},
@@ -33,22 +33,22 @@ func (this TableInformation) DefaultValue(columnName string, value interface{}) 
 	return this
 }
 
-func (this TableInformation) DefaultRow() *Row {
-	columns := []*Column{}
+func (this TableInformation) DefaultRow() *tbl.Row {
+	columns := []*tbl.Column{}
 	for columnName, value := range this.defaultRecord {
-		columns = append(columns, NewColumn(columnName, value))
+		columns = append(columns, tbl.NewColumn(columnName, value))
 	}
-	return NewRow(columns).Sorted()
+	return tbl.NewRow(columns).Sorted()
 }
 
-func (this TableInformation) ToTable() *Table {
-	rows := make([]*Row, 0, len(this.records))
+func (this TableInformation) ToTable() *tbl.Table {
+	rows := make([]*tbl.Row, 0, len(this.records))
 	for _, record := range this.records {
-		columns := make([]*Column, 0, len(this.columnNames))
+		columns := make([]*tbl.Column, 0, len(this.columnNames))
 		for i, name := range this.columnNames {
-			columns = append(columns, NewColumn(name, record[i]))
+			columns = append(columns, tbl.NewColumn(name, record[i]))
 		}
-		rows = append(rows, NewRow(columns).Sorted())
+		rows = append(rows, tbl.NewRow(columns).Sorted())
 	}
-	return NewTable(this.tableName, rows)
+	return tbl.NewTable(this.tableName, rows)
 }
