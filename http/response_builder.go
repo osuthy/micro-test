@@ -2,7 +2,7 @@ package http
 
 type ExpectedResponseBuilder struct {
 	Status int
-	Body string
+	Body   string
 }
 
 func Status(statusCode int) ExpectedResponseBuilder {
@@ -17,4 +17,3 @@ func (this ExpectedResponseBuilder) TextPlain(body string) *Response {
 func (this ExpectedResponseBuilder) Build() *Response {
 	return NewResponse(this.Status, this.Body)
 }
-

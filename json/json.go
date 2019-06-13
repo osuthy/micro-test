@@ -1,6 +1,6 @@
 package json
 
-import(
+import (
 	"encoding/json"
 )
 
@@ -11,7 +11,7 @@ type Object interface {
 type O map[string]interface{}
 
 func (this O) Print() {
-  println("O")
+	println("O")
 }
 
 func (this O) ToJson() []byte {
@@ -22,7 +22,7 @@ func (this O) ToJson() []byte {
 type A []interface{}
 
 func (this A) Print() {
-  println("A")
+	println("A")
 }
 
 func (this A) ToJson() []byte {

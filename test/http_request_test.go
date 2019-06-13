@@ -1,27 +1,27 @@
 package test
 
-import(
-	"testing"
+import (
 	"github.com/stretchr/testify/assert"
+	"testing"
 
 	"github.com/ShoichiroKitano/micro_test/http"
 	"github.com/ShoichiroKitano/micro_test/json"
 	"github.com/ShoichiroKitano/micro_test/runner"
 
 	"github.com/ShoichiroKitano/micro_test/test/wiremock"
-
 )
+
 func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 	wiremock.Reset("localhost:8080")
 
 	t.Run("Objectがトップレベルの階層の場合", func(t *testing.T) {
 		defer wiremock.Reset("localhost:8080")
 		wiremock.Stubbing("localhost:8080", "/test", "GET",
-		`{ \"object\": \"value\" }`, 200, "test success")
+			`{ \"object\": \"value\" }`, 200, "test success")
 
 		http.DefineServer("test_server", "http://localhost:8080")
 		http.Server("test_server").
-		ReceiveRequest("GET", "/test", http.WithJson(json.O{"object": "value"})).
+			ReceiveRequest("GET", "/test", http.WithJson(json.O{"object": "value"})).
 			AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		assert.Equal(t, "success", runner.TestRunner.Result)
 	})
@@ -30,11 +30,11 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 		runner.TestRunner.Result = "init"
 		defer wiremock.Reset("localhost:8080")
 		wiremock.Stubbing("localhost:8080", "/test", "GET",
-		`[1, 2, 3]`, 200, "test success")
+			`[1, 2, 3]`, 200, "test success")
 
 		http.DefineServer("test_server", "http://localhost:8080")
 		http.Server("test_server").
-		ReceiveRequest("GET", "/test", http.WithJson(json.A{1, 2, 3})).
+			ReceiveRequest("GET", "/test", http.WithJson(json.A{1, 2, 3})).
 			AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		assert.Equal(t, "success", runner.TestRunner.Result)
 	})
@@ -46,7 +46,7 @@ func TestHttpはサーバーにPOSTでリクエストを送ることができる
 	defer wiremock.Reset("localhost:8080")
 
 	wiremock.Stubbing("localhost:8080", "/test", "POST",
-	`{ \"object\": \"value\" }`, 200, "test success")
+		`{ \"object\": \"value\" }`, 200, "test success")
 
 	http.DefineServer("test_server", "http://localhost:8080")
 	http.Server("test_server").
@@ -73,13 +73,13 @@ func TestHttpはパラメータ付きのリクエストを送ることができ�
 	defer wiremock.Reset("localhost:8080")
 
 	wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "POST",
-	`{ \"object\": \"value\" }`, 200, "test success")
+		`{ \"object\": \"value\" }`, 200, "test success")
 
 	http.DefineServer("test_server", "http://localhost:8080")
 	http.Server("test_server").
 		ReceiveRequest("POST", "/test",
 			http.WithParam("param1", "p1").
-			WithJson(json.O{"object": "value"}).
-			WithParam("param2", "p2")).AndResponseShouldBe(http.Status(200).TextPlain("test success"))
+				WithJson(json.O{"object": "value"}).
+				WithParam("param2", "p2")).AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 	assert.Equal(t, "success", runner.TestRunner.Result)
 }

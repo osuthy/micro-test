@@ -2,9 +2,9 @@ package infra
 
 import (
 	"database/sql"
+	. "github.com/ShoichiroKitano/micro_test/db/table"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/stretchr/testify/assert"
-	. "github.com/ShoichiroKitano/micro_test/db/table"
 	"testing"
 )
 

@@ -1,22 +1,22 @@
 package http
 
-import(
-	"fmt"
-	"net/http"
+import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
+	"net/http"
 )
 
 var clientInformations []*Client
 
 type Client struct {
-	Name string
-	Url string
+	Name    string
+	Url     string
 	Request Request
 }
 
 func DefineServer(serverName string, url string) {
-	clientInformations = append(clientInformations, &Client{Name:serverName, Url:url})
+	clientInformations = append(clientInformations, &Client{Name: serverName, Url: url})
 }
 
 func Server(serverName string) *Client {

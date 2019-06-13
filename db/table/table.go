@@ -1,9 +1,9 @@
 package table
 
 import (
-	"reflect"
-	sq "github.com/Masterminds/squirrel"
 	"fmt"
+	sq "github.com/Masterminds/squirrel"
+	"reflect"
 )
 
 type Table struct {
@@ -46,8 +46,8 @@ func (this *Table) SelectAllQuery() string {
 
 func (this *Table) InsertQuery() string {
 	sql, _, _ := sq.Insert(this.Name).
-	Columns(this.Rows[0].ColumnNames()...).
-	Values(this.Rows[0].ColumnValues()...).ToSql()
+		Columns(this.Rows[0].ColumnNames()...).
+		Values(this.Rows[0].ColumnValues()...).ToSql()
 	return sql
 }
 

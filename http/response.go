@@ -2,7 +2,7 @@ package http
 
 type Response struct {
 	Status int
-	Body string
+	Body   string
 }
 
 func NewResponse(status int, body string) *Response {

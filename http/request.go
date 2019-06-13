@@ -1,18 +1,18 @@
 package http
 
-import(
-	. "github.com/ShoichiroKitano/micro_test/json"
+import (
 	"fmt"
+	. "github.com/ShoichiroKitano/micro_test/json"
 	"strings"
 )
 
 type Request struct {
-	Json []byte
+	Json   []byte
 	Params []*Param
 }
 
 type Param struct {
-	Name string
+	Name  string
 	Value string
 }
 
@@ -21,13 +21,13 @@ func (this Param) ToParam() string {
 }
 
 func (this Request) ToQueryParam() string {
-	if len(this.Params)>0 {
+	if len(this.Params) > 0 {
 		var builder strings.Builder
 		for _, param := range this.Params {
 			builder.WriteString(param.ToParam())
 			builder.WriteString("&")
 		}
-		return builder.String()[:len(builder.String()) - 1]
+		return builder.String()[:len(builder.String())-1]
 	}
 	return ""
 }
@@ -49,5 +49,3 @@ func (this Request) WithParam(name string, value string) Request {
 	this.Params = append(this.Params, &Param{Name: name, Value: value})
 	return this
 }
-
-
