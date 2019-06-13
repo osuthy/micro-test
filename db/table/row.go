@@ -39,3 +39,19 @@ func (this *Row) hasSameName(column *Column) bool {
 	}
 	return false
 }
+
+func (this *Row) ColumnNames() []string {
+	names := make([]string, 0, len(this.Columns))
+	for _, column := range this.Columns {
+		names = append(names, column.Name)
+	}
+	return names
+}
+
+func (this *Row) ColumnValues() []interface{} {
+	values := make([]interface{}, 0, len(this.Columns))
+	for _, column := range this.Columns {
+		values = append(values, column.Value)
+	}
+	return values
+}

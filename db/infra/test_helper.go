@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/stretchr/testify/assert"
+	. "github.com/ShoichiroKitano/micro_test/db/table"
 	"testing"
 )
 
@@ -14,7 +15,7 @@ func InsertIntoTest(rdbms, connectionInformation, column1Value, column2Value str
 }
 
 func TruncateTable(rdbms, connectionInformation, tableName string) {
-	FindDBConnection(rdbms, connectionInformation).TruncateTable(tableName)
+	FindDBConnection(rdbms, connectionInformation).TruncateTable(NewTable(tableName, nil))
 }
 
 func Select(rdbms, connectionInformation, tableName string) *sql.Rows {
@@ -27,7 +28,7 @@ func AssertNextRow(t *testing.T, rows *sql.Rows, columnValue1, columnValue2 stri
 	assert.True(t, rows.Next(), "fail next")
 	rows.Scan(&column1, &column2)
 	assert.Equal(t, columnValue1, column1, "fail column1")
-	assert.Equal(t, columnValue2, column2, "fail column1")
+	assert.Equal(t, columnValue2, column2, "fail column2")
 }
 
 func AssertNextIsNone(t *testing.T, rows *sql.Rows) {
