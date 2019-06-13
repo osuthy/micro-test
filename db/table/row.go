@@ -39,7 +39,6 @@ func (this *Row) hasSameName(column *Column) bool {
 	}
 	return false
 }
-
 func (this *Row) ColumnNames() []string {
 	names := make([]string, 0, len(this.Columns))
 	for _, column := range this.Columns {
