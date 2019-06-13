@@ -2,6 +2,8 @@ package http
 
 import(
 	. "github.com/ShoichiroKitano/micro_test/json"
+	"fmt"
+	"strings"
 )
 
 type Request struct {
@@ -12,6 +14,22 @@ type Request struct {
 type Param struct {
 	Name string
 	Value string
+}
+
+func (this Param) ToParam() string {
+	return fmt.Sprintf("%s=%s", this.Name, this.Value)
+}
+
+func (this Request) ToQueryParam() string {
+	if len(this.Params)>0 {
+		var builder strings.Builder
+		for _, param := range this.Params {
+			builder.WriteString(param.ToParam())
+			builder.WriteString("&")
+		}
+		return builder.String()[:len(builder.String()) - 1]
+	}
+	return ""
 }
 
 func WithJson(i Object) Request {

@@ -5,7 +5,6 @@ import(
 	"net/http"
 	"bytes"
 	"io/ioutil"
-	"strings"
 )
 
 var clientInformations []*Client
@@ -34,24 +33,7 @@ func Server(serverName string) *Client {
 
 
 func (this Client) ReceiveRequest(methodType string, path string, requestBody Request) *Response {
-
-	var params string
-
-	if len(requestBody.Params)>0 {
-		var builder strings.Builder
-		for _, param := range requestBody.Params {
-			if builder.String() != "" {
-				p := fmt.Sprintf("&%s=%s", param.Name, param.Value)
-				builder.WriteString(p)
-			} else {
-				p := fmt.Sprintf("%s=%s", param.Name, param.Value)
-				builder.WriteString(p)
-			}
-		}
-		params = builder.String()
-	}
-
-	url := fmt.Sprintf("%s%s?%s", this.Url, path, params)
+	url := fmt.Sprintf("%s%s?%s", this.Url, path, requestBody.ToQueryParam())
 	fmt.Println(url)
 		
 	request, _ := http.NewRequest(methodType, url, bytes.NewBuffer([]byte(requestBody.Json)))
