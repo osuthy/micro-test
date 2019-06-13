@@ -30,7 +30,6 @@ func Server(serverName string) *Client {
 
 func (this Client) ReceiveRequest(methodType string, path string, requestBody Request) *Response {
 	url := fmt.Sprintf("%s%s?%s", this.Url, path, requestBody.ToQueryParam())
-	fmt.Println(url)
 
 	request, _ := http.NewRequest(methodType, url, bytes.NewBuffer([]byte(requestBody.Json)))
 	resp, err := http.DefaultClient.Do(request)

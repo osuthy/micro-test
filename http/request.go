@@ -33,8 +33,7 @@ func (this Request) ToQueryParam() string {
 }
 
 func WithJson(i Object) Request {
-	request := Request{Json: i.ToJson()}
-	return request
+	return Request{Json: i.ToJson()}
 }
 
 func (this Request) WithJson(i Object) Request {
@@ -43,14 +42,11 @@ func (this Request) WithJson(i Object) Request {
 }
 
 func WithParam(name string, value string) Request {
-	param := &Param{Name: name, Value: value}
-	request := Request{Params: []*Param{param}}
-	return request
+	return Request{Params: []*Param{&Param{Name: name, Value: value}}}
 }
 
 func (this Request) WithParam(name string, value string) Request {
-	param := &Param{Name: name, Value: value}
-	this.Params = append(this.Params, param)
+	this.Params = append(this.Params, &Param{Name: name, Value: value})
 	return this
 }
 

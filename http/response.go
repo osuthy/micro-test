@@ -8,3 +8,13 @@ type Response struct {
 func NewResponse(status int, body string) *Response {
 	return &Response{Status: status, Body: body}
 }
+
+func (this Response) Equal(other *Response) bool {
+	if this.Status != other.Status {
+		return false
+	}
+	if this.Body != other.Body {
+		return false
+	}
+	return true
+}

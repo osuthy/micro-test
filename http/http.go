@@ -5,19 +5,10 @@ import(
 )
 
 func (this Response) AndResponseShouldBe(expected *Response) (int, string) {
-	if this.IsSame(expected) {
-		runner.TestRunner.Result = "success"
-		return 200, "test success"
-	} else {
+	if !this.Equal(expected) {
 		runner.TestRunner.Result = ""
 		return 500, ""
 	}
-}
-
-func (this Response) IsSame(expected *Response) bool {
-	if this.Status == expected.Status && this.Body == expected.Body {
-		return true
-	} else {
-		return false
-	}
+	runner.TestRunner.Result = "success"
+	return 200, "test success"
 }
