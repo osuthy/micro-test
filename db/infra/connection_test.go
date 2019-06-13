@@ -8,32 +8,33 @@ import (
 )
 
 func TestDBのデータからTableオブジェクトを構築(t *testing.T) {
+	tearDown()
 	defer tearDown()
 	InsertIntoTest("mysql", "root:@/test_connection", "A1", "A2")
 	InsertIntoTest("mysql", "root:@/test_connection", "B1", "B2")
 
-	table := FindDBConnection("mysql", "root:@/test_connection").FindTable("test")
+	table := FindDBConnection("mysql", "root:@/test_connection").FindTable(BuildTable().WithName("test").Build())
 
-	expected := BuildTable("test").
+	expected := BuildTable().WithName("test").
 		WithRow(NewColumn("column1", "A1"), NewColumn("column2", "A2")).
 		WithRow(NewColumn("column1", "B1"), NewColumn("column2", "B2")).Build()
 	assert.Equal(t, expected, table)
 }
 
 func Testテーブルのトランケート(t *testing.T) {
+	tearDown()
 	defer tearDown()
 	InsertIntoTest("mysql", "root:@/test_connection", "A1", "A2")
 
 	connection := FindDBConnection("mysql", "root:@/test_connection")
-	connection.TruncateTable("test")
+	connection.TruncateTable(BuildTable().WithName("test").Build())
 
 	verifyTableIsEmpty(t, connection, "test")
 }
 
 func verifyTableIsEmpty(t *testing.T, connection *Connection, tableName string) {
-	table := connection.FindTable(tableName)
-	expected := BuildTable(tableName).Build()
-	assert.Equal(t, expected, table)
+	expected := BuildTable().WithName(tableName).Build()
+	assert.Equal(t, expected, connection.FindTable(expected))
 }
 
 func tearDown() {

@@ -2,6 +2,8 @@ package table
 
 import (
 	"reflect"
+	sq "github.com/Masterminds/squirrel"
+	"fmt"
 )
 
 type Table struct {
@@ -35,4 +37,28 @@ func (this *Table) rowsColumnsSorted() []*Row {
 		sortedRows = append(sortedRows, row.Sorted())
 	}
 	return sortedRows
+}
+
+func (this *Table) SelectAllQuery() string {
+	sql, _, _ := sq.Select("*").From(this.Name).ToSql()
+	return sql
+}
+
+func (this *Table) InsertQuery() string {
+	sql, _, _ := sq.Insert(this.Name).
+	Columns(this.Rows[0].ColumnNames()...).
+	Values(this.Rows[0].ColumnValues()...).ToSql()
+	return sql
+}
+
+func (this *Table) TruncateQuery() string {
+	return fmt.Sprintf("truncate table %s;", this.Name)
+}
+
+func (this *Table) AllValues() [][]interface{} {
+	allValue := make([][]interface{}, 0, len(this.Rows))
+	for _, row := range this.Rows {
+		allValue = append(allValue, row.ColumnValues())
+	}
+	return allValue
 }
