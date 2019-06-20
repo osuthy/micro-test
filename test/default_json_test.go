@@ -2,11 +2,12 @@ package test
 
 import (
 	"testing"
-
-	. "github.com/ShoichiroKitano/micro_test/db/infra"
-
+	"github.com/stretchr/testify/assert"
+	
 	"github.com/ShoichiroKitano/micro_test/test/wiremock"
-	"github.com/ShoichiroKitano/micro_test/db"
+	"github.com/ShoichiroKitano/micro_test/http"
+	"github.com/ShoichiroKitano/micro_test/json"
+	"github.com/ShoichiroKitano/micro_test/runner"
 )
 
 func TestDBはデフォルト値を使ってデータのセットアップができる(t *testing.T) {

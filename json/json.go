@@ -19,6 +19,12 @@ func (this O) ToJson() []byte {
 	return json
 }
 
+func (this O) Override(key string, value string) O {
+	o := this
+	this[key] = value
+	return o
+}
+
 type A []interface{}
 
 func (this A) Print() {

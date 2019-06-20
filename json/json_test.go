@@ -51,3 +51,11 @@ func Test配列を持つ入れ子構造のオブジェクトをJSONに変換す�
 
 	assert.Equal(t, expected, string(actual))
 }
+
+func TestJsonの要素を上書きする(t *testing.T) {
+	o := O{"key1": "value1", "key2": "value2"}
+	actual := o.Override("key1", "value100")
+	expected := O{"key1": "value100", "key2": "value2"}
+
+	assert.Equal(t, expected, actual)
+}
