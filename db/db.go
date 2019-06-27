@@ -4,7 +4,7 @@ import (
 	. "github.com/ShoichiroKitano/micro_test/db/infra"
 	"github.com/ShoichiroKitano/micro_test/runner"
 	_ "github.com/go-sql-driver/mysql"
-	"reflect"
+//	"reflect"
 )
 
 var connectionInformations = [](*ConnectionInformation){}
@@ -34,6 +34,10 @@ func findConnectionInformation(connectionName string) *ConnectionInformation {
 
 var defaultValues = []TableInformation{}
 
+func ResetDefalultValue() {
+	defaultValues = []TableInformation{}
+}
+
 func (this DSL) DefineDefaultValue(defaultValue TableInformation) {
 	defaultValues = append(defaultValues, defaultValue)
 }
@@ -59,13 +63,14 @@ func DB(connectionName string) DSL {
 
 func (this DSL) HasRecords(fixture TableInformation) {
 	fixtureTable := fixture.ToTable()
-	defaultValue := findDefaultValueOf(fixtureTable.Name)
-	if !reflect.DeepEqual(defaultValue, TableInformation{}) {
-		completedTable := fixtureTable.FilledTableWith(defaultValue.DefaultRow())
-		this.connection.StoreTable(completedTable)
-	} else {
-		this.connection.StoreTable(fixtureTable)
-	}
+	definition := this.connection.FindColumnDefinition(fixtureTable)
+	//defaultValue := findDefaultValueOf(fixtureTable.Name)
+	//if !reflect.DeepEqual(defaultValue, TableInformation{}) {
+	completedTable := definition.TableFilledByDefaultValue(fixtureTable)
+	this.connection.StoreTable(completedTable)
+	//} else {
+	//	this.connection.StoreTable(fixtureTable)
+	//}
 }
 
 func (this DSL) ShouldHaveTable(expected TableInformation) {

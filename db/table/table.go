@@ -62,3 +62,8 @@ func (this *Table) AllValues() [][]interface{} {
 	}
 	return allValue
 }
+
+func (this *Table) MysqlColumnDefinitionQuery() string {
+	return fmt.Sprintf("show columns from %s;", this.Name)
+}
+

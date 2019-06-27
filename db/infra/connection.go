@@ -8,10 +8,11 @@ import (
 
 type Connection struct {
 	Driver *sql.DB
+	rdbms string
 }
 
-func NewConnection(driver *sql.DB) *Connection {
-	return &Connection{Driver: driver}
+func NewConnection(driver *sql.DB, rdbms string) *Connection {
+	return &Connection{Driver: driver, rdbms: rdbms}
 }
 
 func (this *Connection) FindTable(table *Table) *Table {
@@ -25,6 +26,41 @@ func (this *Connection) FindTable(table *Table) *Table {
 		newRows = append(newRows, rowFrom(types, dataPtrs))
 	}
 	return NewTable(table.Name, newRows)
+}
+
+func (this *Connection) FindColumnDefinition(table *Table) *ColumnDefinition {
+	return this.mysqlColumnDefinition(table)
+}
+
+func (this *Connection) mysqlColumnDefinition(table *Table) *ColumnDefinition {
+	rows, _ := this.Driver.Query(table.MysqlColumnDefinitionQuery())
+	defer rows.Close()
+	infos := []*ColumnMetaInformation{}
+	types, _ := rows.ColumnTypes()
+	dataPtrs := scanArgs(types)
+	newRows := []*Row{}
+	for rows.Next() {
+		rows.Scan(dataPtrs...)
+		newRows = append(newRows, rowFrom(types, dataPtrs))
+	}
+	for _, row := range newRows {
+		infos = append(infos, NewColumnMetaInformation(
+			row.ColumnValueOf("Field").(string),
+			row.ColumnValueOf("Type").(string),
+			row.ColumnValueOf("Key").(string),
+			isNullable(row.ColumnValueOf("Null").(string)),
+			row.ColumnValueOf("Default"),
+			row.ColumnValueOf("Extra").(string),
+		})
+	}
+	return NewColumnDefinition(this.rdbms, table.Name, infos)
+}
+
+func isNullable(value string) bool {
+	if value == "YES" {
+		return true
+	}
+	return false // NO
 }
 
 func (this *Connection) StoreTable(table *Table) {

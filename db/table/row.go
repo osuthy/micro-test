@@ -54,3 +54,12 @@ func (this *Row) ColumnValues() []interface{} {
 	}
 	return values
 }
+
+func (this *Row) ColumnValueOf(columnName string) interface{} {
+	for _, column := range this.Columns {
+		if column.Name == columnName {
+			return column.Value
+		}
+	}
+	return nil
+}

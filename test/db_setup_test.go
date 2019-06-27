@@ -10,6 +10,7 @@ import (
 
 func TestDBはデータのセットアップができる(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
+	db.ResetDefalultValue()
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").HasRecords(
@@ -26,16 +27,11 @@ func TestDBはデータのセットアップができる(t *testing.T) {
 	AssertNextIsNone(t, rows)
 }
 
-func TestDBはデフォルト値をつかってデータのセットアップができる(t *testing.T) {
+func TestDBはデフォルト値をつかってMysqlのデータのセットアップができる(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
+	db.ResetDefalultValue()
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
-	db.DB("conName").DefineDefaultValue(
-		db.Table("test").
-			DefaultValue("column1", "default1").
-			DefaultValue("column2", "default2"),
-	)
-
 	db.DB("conName").HasRecords(
 		db.Table("test").
 			Columns("column1").
@@ -45,7 +41,33 @@ func TestDBはデフォルト値をつかってデータのセットアップが
 
 	rows := Select("mysql", "root:@/test_micro_test", "test")
 	defer rows.Close()
-	AssertNextRow(t, rows, "A1", "default2")
-	AssertNextRow(t, rows, "B1", "default2")
+	AssertNextRow(t, rows, "A1", "")
+	AssertNextRow(t, rows, "B1", "")
 	AssertNextIsNone(t, rows)
 }
+
+//func TestDBはデフォルト値上書きしてデータのセットアップができる(t *testing.T) {
+//}
+//func TestDBはデフォルト値をつかってデータのセットアップができる(t *testing.T) {
+//	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
+//
+//	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
+//	db.DB("conName").DefineDefaultValue(
+//		db.Table("test").
+//			DefaultValue("column1", "default1").
+//			DefaultValue("column2", "default2"),
+//	)
+//
+//	db.DB("conName").HasRecords(
+//		db.Table("test").
+//			Columns("column1").
+//			Record("A1").
+//			Record("B1"),
+//	)
+//
+//	rows := Select("mysql", "root:@/test_micro_test", "test")
+//	defer rows.Close()
+//	AssertNextRow(t, rows, "A1", "default2")
+//	AssertNextRow(t, rows, "B1", "default2")
+//	AssertNextIsNone(t, rows)
+//}
