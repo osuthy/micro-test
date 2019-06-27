@@ -8,6 +8,7 @@ import (
 	"github.com/ShoichiroKitano/micro_test/http"
 	"github.com/ShoichiroKitano/micro_test/json"
 	"github.com/ShoichiroKitano/micro_test/runner"
+	"fmt"
 )
 
 func TestDBはデフォルト値を使ってデータのセットアップができる(t *testing.T) {
@@ -31,13 +32,15 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 			`{
 					\"o1\": {
 						\"o2\": {
-							\"o3"\: \"v3\"
+							\"o3\": \"v3\"
 						}
-					},
+					}
 			 }`,200, "test success")
 
 		http.DefineServer("test_server", "http://localhost:8080")
 		defaultJson := json.O{"o1": json.O{"o2": json.O{"o3": "d3"} }}
+
+					fmt.Println(defaultJson.Override("o1", "o2", "o3", "v3"))
 
 		http.Server("test_server").
 			ReceiveRequest("GET", "/test", http.WithJson(defaultJson.Override("o1", "o2", "o3", "v3"))).
