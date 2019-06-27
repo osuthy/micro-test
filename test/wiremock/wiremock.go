@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 func Reset(url string) {
@@ -12,7 +13,7 @@ func Reset(url string) {
 }
 
 func Stubbing(url string, path string, method string, json string, status int, body string) {
-	jsonForWiremock = strings.Replace(json, "\"", "\\\"", -1)
+	jsonForWiremock := strings.Replace(json, "\"", "\\\"", -1)
 	req, _ := http.NewRequest("POST", "http://"+url+"/__admin/mappings/new",
 		bytes.NewBuffer([]byte(`
 		{
@@ -21,7 +22,7 @@ func Stubbing(url string, path string, method string, json string, status int, b
 					"url": "`+path+`",
 					"method": "`+method+`",
 					"bodyPatterns": [{
-						"equalToJson": "`+jsonForWiremock+`"
+						"equalToJson": "`+ jsonForWiremock +`"
 					}]
 				},
 			"response":

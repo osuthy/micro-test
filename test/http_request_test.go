@@ -17,7 +17,7 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 	t.Run("Objectがトップレベルの階層の場合", func(t *testing.T) {
 		defer wiremock.Reset("localhost:8080")
 		wiremock.Stubbing("localhost:8080", "/test", "GET",
-			`{ \"object\": \"value\" }`, 200, "test success")
+			`{ "object": "value" }`, 200, "test success")
 
 		http.DefineServer("test_server", "http://localhost:8080")
 		http.Server("test_server").
@@ -46,7 +46,7 @@ func TestHttpはサーバーにPOSTでリクエストを送ることができる
 	defer wiremock.Reset("localhost:8080")
 
 	wiremock.Stubbing("localhost:8080", "/test", "POST",
-		`{ \"object\": \"value\" }`, 200, "test success")
+		`{ "object": "value" }`, 200, "test success")
 
 	http.DefineServer("test_server", "http://localhost:8080")
 	http.Server("test_server").
@@ -73,7 +73,7 @@ func TestHttpはパラメータ付きのリクエストを送ることができ�
 	defer wiremock.Reset("localhost:8080")
 
 	wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "POST",
-		`{ \"object\": \"value\" }`, 200, "test success")
+		`{ "object": "value" }`, 200, "test success")
 
 	http.DefineServer("test_server", "http://localhost:8080")
 	http.Server("test_server").
