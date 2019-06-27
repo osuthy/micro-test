@@ -20,7 +20,7 @@ func (this O) ToJson() []byte {
 }
 
 
-func (this O) Override(elements ...string) O {
+func (this O) OverrideByStrings(elements ...string) O {
 	o := make(O)
 	for k, v := range this {
 		o[k] = v
@@ -33,12 +33,26 @@ func (this O) Override(elements ...string) O {
 		return o
 	}
 
-	x :=  o[first].(O).Override(elements[1:]...)
+	x :=  o[first].(O).OverrideByStrings(elements[1:]...)
 	o[first] = x
 
 	return o
 
 }
+
+
+func (this O) Override(elements ...interface{}) O {
+	if _, ok := elements[0].(string); ok {
+		r := []string{}
+		for _, e := range elements {
+			r = append(r, e.(string))
+		}
+		return this.OverrideByStrings(r...)
+	}
+	return O{}
+}
+
+
 
 type A []interface{}
 
