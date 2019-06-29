@@ -1,6 +1,7 @@
 package wiremock
 
 import (
+	"fmt"
 	"bytes"
 	"net/http"
 	"strconv"
@@ -14,6 +15,9 @@ func Reset(url string) {
 
 func Stubbing(url string, path string, method string, json string, status int, body string) {
 	jsonForWiremock := strings.Replace(json, "\"", "\\\"", -1)
+	jsonForWiremock2 := strings.Replace(jsonForWiremock, "\t", "", -1)
+	jsonForWiremock3 := strings.Replace(jsonForWiremock2, "\n", "", -1)
+	fmt.Println(jsonForWiremock3)
 	req, _ := http.NewRequest("POST", "http://"+url+"/__admin/mappings/new",
 		bytes.NewBuffer([]byte(`
 		{
@@ -22,7 +26,7 @@ func Stubbing(url string, path string, method string, json string, status int, b
 					"url": "`+path+`",
 					"method": "`+method+`",
 					"bodyPatterns": [{
-						"equalToJson": "`+ jsonForWiremock +`"
+						"equalToJson": "`+ jsonForWiremock3 +`"
 					}]
 				},
 			"response":
