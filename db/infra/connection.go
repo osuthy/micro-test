@@ -51,16 +51,16 @@ func (this *Connection) mysqlColumnDefinition(table *Table) *ColumnDefinition {
 			isNullable(row.ColumnValueOf("Null").(string)),
 			row.ColumnValueOf("Default"),
 			row.ColumnValueOf("Extra").(string),
-		})
+		))
 	}
-	return NewColumnDefinition(this.rdbms, table.Name, infos)
+	return NewColumnDefinition(infos)
 }
 
 func isNullable(value string) bool {
 	if value == "YES" {
 		return true
 	}
-	return false // NO
+	return false // else if "NO"
 }
 
 func (this *Connection) StoreTable(table *Table) {

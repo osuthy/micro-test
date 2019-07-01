@@ -66,7 +66,7 @@ func (this DSL) HasRecords(fixture TableInformation) {
 	definition := this.connection.FindColumnDefinition(fixtureTable)
 	//defaultValue := findDefaultValueOf(fixtureTable.Name)
 	//if !reflect.DeepEqual(defaultValue, TableInformation{}) {
-	completedTable := definition.TableFilledByDefaultValue(fixtureTable)
+	completedTable := definition.FillTableWithDefaultValue(fixtureTable)
 	this.connection.StoreTable(completedTable)
 	//} else {
 	//	this.connection.StoreTable(fixtureTable)
