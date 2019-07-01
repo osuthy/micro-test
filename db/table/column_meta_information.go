@@ -5,7 +5,7 @@ type ColumnMetaInformation struct {
 	dataType string
 	preferredKeyConstraint string
 	additional string
-	isNullable bool
+	isNotNull bool
 	hasDefaultValue bool
 }
 
@@ -14,7 +14,7 @@ func NewColumnMetaInformation(
 	dataType string,
 	preferredKeyConstraint string,
 	additional string,
-	isNullable bool,
+	isNotNull bool,
 	hasDefaultValue bool) *ColumnMetaInformation {
 	return &ColumnMetaInformation {
 		name: name,
@@ -22,7 +22,7 @@ func NewColumnMetaInformation(
 		preferredKeyConstraint: preferredKeyConstraint,
 		additional: additional,
 		hasDefaultValue: hasDefaultValue,
-		isNullable: isNullable,
+		isNotNull: isNotNull,
 	}
 }
 
