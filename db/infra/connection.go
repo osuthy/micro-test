@@ -25,7 +25,7 @@ func (this *Connection) FindTable(table *Table) *Table {
 		rows.Scan(dataPtrs...)
 		newRows = append(newRows, rowFrom(types, dataPtrs))
 	}
-	return NewTable(table.Name, newRows)
+	return NewTable(table.Name(), newRows)
 }
 
 func (this *Connection) FindColumnDefinition(table *Table) *ColumnDefinition {
@@ -35,7 +35,6 @@ func (this *Connection) FindColumnDefinition(table *Table) *ColumnDefinition {
 func (this *Connection) mysqlColumnDefinition(table *Table) *ColumnDefinition {
 	rows, _ := this.Driver.Query(table.MysqlColumnDefinitionQuery())
 	defer rows.Close()
-	infos := []*ColumnMetaInformation{}
 	types, _ := rows.ColumnTypes()
 	dataPtrs := scanArgs(types)
 	newRows := []*Row{}
@@ -43,24 +42,29 @@ func (this *Connection) mysqlColumnDefinition(table *Table) *ColumnDefinition {
 		rows.Scan(dataPtrs...)
 		newRows = append(newRows, rowFrom(types, dataPtrs))
 	}
+	infos := []*ColumnMetaInformation{}
 	for _, row := range newRows {
 		infos = append(infos, NewColumnMetaInformation(
 			row.ColumnValueOf("Field").(string),
 			row.ColumnValueOf("Type").(string),
-			row.ColumnValueOf("Key").(string),
-			isNullable(row.ColumnValueOf("Null").(string)),
-			row.ColumnValueOf("Default"),
-			row.ColumnValueOf("Extra").(string),
+			"",
+			"",
+			true,
+			false,
+			//row.ColumnValueOf("Key").(string),
+			//row.ColumnValueOf("Extra").(string),
+			//isNotNullFlag(row.ColumnValueOf("Null").(string)),
+			//row.ColumnValueOf("Default"),
 		))
 	}
 	return NewColumnDefinition(infos)
 }
 
-func isNullable(value string) bool {
+func isNotNullFlag(value string) bool {
 	if value == "YES" {
-		return true
+		return false
 	}
-	return false // else if "NO"
+	return true // else if "NO"
 }
 
 func (this *Connection) StoreTable(table *Table) {
@@ -81,11 +85,22 @@ func scanArgs(types []*sql.ColumnType) []interface{} {
 	for i := range types {
 		if types[i].DatabaseTypeName() == "INT" {
 			dataPtrs[i] = new(int)
-		} else if types[i].DatabaseTypeName() == "CHAR" {
-			dataPtrs[i] = new(string)
+		} else if isStringTypeName(types[i].DatabaseTypeName()) {
+			if _, ok := types[i].Nullable(); ok {
+				dataPtrs[i] = new(sql.NullString)
+			} else {
+				dataPtrs[i] = new(string)
+			}
 		}
 	}
 	return dataPtrs
+}
+
+func isStringTypeName(typeName string) bool {
+	switch typeName {
+		case "CHAR", "VARCHAR", "TEXT": return true
+		default: return false
+	}
 }
 
 func rowFrom(types []*sql.ColumnType, dataPtrs []interface{}) *Row {
@@ -97,6 +112,9 @@ func rowFrom(types []*sql.ColumnType, dataPtrs []interface{}) *Row {
 		}
 		if r, ok := refv.Interface().(*string); ok {
 			columns[i] = NewColumn(types[i].Name(), *r)
+		}
+		if r, ok := refv.Interface().(*sql.NullString); ok {
+			columns[i] = NewColumn(types[i].Name(), r.String)
 		}
 	}
 	return NewRow(columns)

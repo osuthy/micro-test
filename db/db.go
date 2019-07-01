@@ -4,7 +4,6 @@ import (
 	. "github.com/ShoichiroKitano/micro_test/db/infra"
 	"github.com/ShoichiroKitano/micro_test/runner"
 	_ "github.com/go-sql-driver/mysql"
-//	"reflect"
 )
 
 var connectionInformations = [](*ConnectionInformation){}
@@ -30,16 +29,6 @@ func findConnectionInformation(connectionName string) *ConnectionInformation {
 		}
 	}
 	return nil
-}
-
-var defaultValues = []TableInformation{}
-
-func ResetDefalultValue() {
-	defaultValues = []TableInformation{}
-}
-
-func (this DSL) DefineDefaultValue(defaultValue TableInformation) {
-	defaultValues = append(defaultValues, defaultValue)
 }
 
 func findDefaultValueOf(tableName string) TableInformation {
@@ -86,3 +75,15 @@ func (this DSL) ShouldHaveTable(expected TableInformation) {
 func (this DSL) Truncate(tableName string) {
 	this.connection.TruncateTable(Table(tableName).ToTable())
 }
+
+// 以下は一旦不要
+func (this DSL) DefineDefaultValue(defaultValue TableInformation) {
+	defaultValues = append(defaultValues, defaultValue)
+}
+
+var defaultValues = []TableInformation{}
+
+func ResetDefalultValue() {
+	defaultValues = []TableInformation{}
+}
+

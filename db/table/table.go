@@ -15,6 +15,10 @@ func NewTable(name string, rows []*Row) *Table {
 	return &Table{name: name, rows: rows}
 }
 
+func (this *Table) Name() string {
+	return this.name
+}
+
 func (this *Table) IsSameAsTable(other *Table) bool {
 	if this.name != other.name {
 		return false
