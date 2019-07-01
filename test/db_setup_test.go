@@ -3,6 +3,7 @@ package test
 import (
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	. "github.com/ShoichiroKitano/micro_test/db/infra"
 
 	"github.com/ShoichiroKitano/micro_test/db"
@@ -10,7 +11,6 @@ import (
 
 func TestDBはデータのセットアップができる(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
-	db.ResetDefalultValue()
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").HasRecords(
@@ -27,22 +27,33 @@ func TestDBはデータのセットアップができる(t *testing.T) {
 	AssertNextIsNone(t, rows)
 }
 
-func TestDBはデフォルト値をつかってMysqlのデータのセットアップができる(t *testing.T) {
-	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
-	db.ResetDefalultValue()
+func Test事前条件のデータの補完(t *testing.T) {
+	defer TruncateTable("mysql", "root:@/test_micro_test", "record_completion_all_type")
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").HasRecords(
-		db.Table("test").
-			Columns("column1").
-			Record("A1").
-			Record("B1"),
+		db.Table("record_completion_all_type").
+			Columns("dummy").
+			Record("dummy1").
+			Record("dummy2"),
 	)
 
-	rows := Select("mysql", "root:@/test_micro_test", "test")
+	rows := Select("mysql", "root:@/test_micro_test", "record_completion_all_type")
 	defer rows.Close()
-	AssertNextRow(t, rows, "A1", "")
-	AssertNextRow(t, rows, "B1", "")
+	var (
+		dummy string
+		tinyintc int
+	)
+	rows.Next()
+	rows.Scan(&dummy, &tinyintc)
+	assert.Equal(t, "dummy1", dummy)
+	assert.Equal(t, 0, tinyintc)
+
+	rows.Next()
+	rows.Scan(&dummy, &tinyintc)
+	assert.Equal(t, "dummy2", dummy)
+	assert.Equal(t, 0, tinyintc)
+
 	AssertNextIsNone(t, rows)
 }
 

@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	. "github.com/ShoichiroKitano/micro_test/db/table"
 	"reflect"
+	"strings"
 )
 
 type Connection struct {
@@ -32,6 +33,37 @@ func (this *Connection) FindColumnDefinition(table *Table) *ColumnDefinition {
 	return this.mysqlColumnDefinition(table)
 }
 
+func (this *Connection) StoreTable(table *Table) {
+	tx, _ := this.Driver.Begin()
+	stmt, _ := tx.Prepare(table.InsertQuery())
+	for _, values := range table.AllValues() {
+		stmt.Exec(values...)
+	}
+	tx.Commit()
+}
+
+func (this *Connection) TruncateTable(table *Table) {
+	this.Driver.Exec(table.TruncateQuery())
+}
+
+func rowFrom(types []*sql.ColumnType, dataPtrs []interface{}) *Row {
+	columns := make([]*Column, len(types))
+	for i := range types {
+		refv := reflect.ValueOf(dataPtrs[i])
+		if r, ok := refv.Interface().(*int); ok {
+			columns[i] = NewColumn(types[i].Name(), *r)
+		}
+		if r, ok := refv.Interface().(*string); ok {
+			columns[i] = NewColumn(types[i].Name(), *r)
+		}
+		if r, ok := refv.Interface().(*sql.NullString); ok {
+			columns[i] = NewColumn(types[i].Name(), r.String)
+		}
+	}
+	return NewRow(columns)
+}
+
+// for mysql
 func (this *Connection) mysqlColumnDefinition(table *Table) *ColumnDefinition {
 	rows, _ := this.Driver.Query(table.MysqlColumnDefinitionQuery())
 	defer rows.Close()
@@ -46,7 +78,7 @@ func (this *Connection) mysqlColumnDefinition(table *Table) *ColumnDefinition {
 	for _, row := range newRows {
 		infos = append(infos, NewColumnMetaInformation(
 			row.ColumnValueOf("Field").(string),
-			row.ColumnValueOf("Type").(string),
+			toDataTypeNameForMysql(row.ColumnValueOf("Type").(string)),
 			"",
 			"",
 			true,
@@ -60,24 +92,18 @@ func (this *Connection) mysqlColumnDefinition(table *Table) *ColumnDefinition {
 	return NewColumnDefinition(infos)
 }
 
-func isNotNullFlag(value string) bool {
+func toDataTypeNameForMysql(mysqlType string) string {
+	if strings.Contains(mysqlType, "int") {
+		return "int"
+	}
+	return "string"
+}
+
+func isNotNullFlagForMysql(value string) bool {
 	if value == "YES" {
 		return false
 	}
 	return true // else if "NO"
-}
-
-func (this *Connection) StoreTable(table *Table) {
-	tx, _ := this.Driver.Begin()
-	stmt, _ := tx.Prepare(table.InsertQuery())
-	for _, values := range table.AllValues() {
-		stmt.Exec(values...)
-	}
-	tx.Commit()
-}
-
-func (this *Connection) TruncateTable(table *Table) {
-	this.Driver.Exec(table.TruncateQuery())
 }
 
 func scanArgs(types []*sql.ColumnType) []interface{} {
@@ -103,19 +129,3 @@ func isStringTypeName(typeName string) bool {
 	}
 }
 
-func rowFrom(types []*sql.ColumnType, dataPtrs []interface{}) *Row {
-	columns := make([]*Column, len(types))
-	for i := range types {
-		refv := reflect.ValueOf(dataPtrs[i])
-		if r, ok := refv.Interface().(*int); ok {
-			columns[i] = NewColumn(types[i].Name(), *r)
-		}
-		if r, ok := refv.Interface().(*string); ok {
-			columns[i] = NewColumn(types[i].Name(), *r)
-		}
-		if r, ok := refv.Interface().(*sql.NullString); ok {
-			columns[i] = NewColumn(types[i].Name(), r.String)
-		}
-	}
-	return NewRow(columns)
-}

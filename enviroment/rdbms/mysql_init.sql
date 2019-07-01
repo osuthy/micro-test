@@ -9,12 +9,17 @@ create table if not exists test (
   primary key (column1)
 );
 
-drop table if exists default_value_test;
-create table if not exists default_value_test (
-  tiny1 tinyint(1),
-  tiny2 tinyint unsigned,
-  primary key (tiny1, tiny2)
+drop table if exists record_completion_all_type;
+create table if not exists record_completion_all_type (
+  dummy char(30),
+  tinyintc tinyint not null
 );
+-- auto_inc
+-- nullable
+-- default value
+-- primary
+-- uniq
+-- compound primary key
 
 drop database if exists test_connection_repository;
 create database if not exists test_connection_repository;
