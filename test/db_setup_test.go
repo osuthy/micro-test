@@ -28,6 +28,7 @@ func TestDBはデータのセットアップができる(t *testing.T) {
 }
 
 func Test事前条件のデータの補完(t *testing.T) {
+	TruncateTable("mysql", "root:@/test_micro_test", "record_completion_all_type")
 	defer TruncateTable("mysql", "root:@/test_micro_test", "record_completion_all_type")
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
@@ -43,16 +44,19 @@ func Test事前条件のデータの補完(t *testing.T) {
 	var (
 		dummy string
 		tinyintc int
+		intc int
 	)
 	rows.Next()
-	rows.Scan(&dummy, &tinyintc)
+	rows.Scan(&dummy, &tinyintc, &intc)
 	assert.Equal(t, "dummy1", dummy)
 	assert.Equal(t, 0, tinyintc)
+	assert.Equal(t, 0, intc)
 
 	rows.Next()
-	rows.Scan(&dummy, &tinyintc)
+	rows.Scan(&dummy, &tinyintc, &intc)
 	assert.Equal(t, "dummy2", dummy)
 	assert.Equal(t, 0, tinyintc)
+	assert.Equal(t, 0, intc)
 
 	AssertNextIsNone(t, rows)
 }
