@@ -68,6 +68,12 @@ func Test事前条件のデータの補完(t *testing.T) {
 		yearc string
 
 		bitc uint8
+		binaryc uint8
+		varbinaryc uint8
+		tinyblobc uint8
+		blobc uint8
+		mediumblobc uint8
+		longblobc uint8
 	)
 	rows.Next()
 	rows.Scan(
@@ -96,6 +102,12 @@ func Test事前条件のデータの補完(t *testing.T) {
 		&yearc,
 
 		&bitc,
+		&binaryc,
+		&varbinaryc,
+		&tinyblobc,
+		&blobc,
+		&mediumblobc,
+		&longblobc,
 	)
 	assert.Equal(t, "dummy1", dummy)
 	assert.Equal(t, 0, tinyintc)
@@ -122,6 +134,12 @@ func Test事前条件のデータの補完(t *testing.T) {
 	assert.Equal(t, "1901", yearc)
 
 	assert.Equal(t,	uint8(0x0), bitc)
+	assert.Equal(t, uint8(0x0), binaryc)
+	assert.Equal(t, uint8(0x0), varbinaryc)
+	assert.Equal(t, uint8(0x0), tinyblobc)
+	assert.Equal(t, uint8(0x0), blobc)
+	assert.Equal(t, uint8(0x0), mediumblobc)
+	assert.Equal(t, uint8(0x0), longblobc)
 
 	rows.Next()
 	rows.Scan(
@@ -150,6 +168,12 @@ func Test事前条件のデータの補完(t *testing.T) {
 		&yearc,
 
 		&bitc,
+		&binaryc,
+		&varbinaryc,
+		&tinyblobc,
+		&blobc,
+		&mediumblobc,
+		&longblobc,
 	)
 	assert.Equal(t, "dummy2", dummy)
 	assert.Equal(t, 0, tinyintc)
@@ -176,6 +200,12 @@ func Test事前条件のデータの補完(t *testing.T) {
 	assert.Equal(t, "1901", yearc)
 
 	assert.Equal(t,	uint8(0x0), bitc)
+	assert.Equal(t, uint8(0x0), binaryc)
+	assert.Equal(t, uint8(0x0), varbinaryc)
+	assert.Equal(t, uint8(0x0), tinyblobc)
+	assert.Equal(t, uint8(0x0), blobc)
+	assert.Equal(t, uint8(0x0), mediumblobc)
+	assert.Equal(t, uint8(0x0), longblobc)
 
 	AssertNextIsNone(t, rows)
 }

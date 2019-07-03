@@ -106,7 +106,9 @@ func toDataTypeNameForMysql(mysqlDataType string) string {
 	strings.Contains(mysqlDataType, "double") ||
 	strings.Contains(mysqlDataType, "decimal") {
 		return "decimal"
-	} else if strings.Contains(mysqlDataType, "bit") {
+	} else if strings.Contains(mysqlDataType, "bit") ||
+		strings.Contains(mysqlDataType, "binary") ||
+		strings.Contains(mysqlDataType, "varbinary") {
 		return "binary"
 	}
 	return "time"

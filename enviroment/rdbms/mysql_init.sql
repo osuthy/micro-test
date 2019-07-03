@@ -37,7 +37,13 @@ create table if not exists record_completion_all_type (
   timec time(6) not null,
   yearc year not null,
 
-  bitc bit(1) not null
+  bitc bit(1) not null,
+	binaryc binary(255) not null,
+	varbinaryc varbinary(255) not null,
+	tinyblobc tinyblob not null,
+	blobc blob not null,
+	mediumblobc mediumblob not null,
+	longblobc longblob not null
 );
 -- auto_inc
 -- nullable
