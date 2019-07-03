@@ -30,6 +30,7 @@ func NewColumnMetaInformation(
 	}
 }
 
+// mysql専用にした方が良い？
 func (this *ColumnMetaInformation) defaultColumn() *Column {
 	var value interface{}
 	if this.dataType == "string" {
@@ -37,7 +38,9 @@ func (this *ColumnMetaInformation) defaultColumn() *Column {
 	} else if this.dataType == "int" {
 		value = 0
 	} else if this.dataType == "time" {
-		value = time.Unix(0, 0)
+		value = time.Unix(0, 0).Add(time.Hour * 10) //timestampがエラーを吐くので10時間追加
+	} else if this.dataType == "year" {
+		value = "1901"
 	}
 	return NewColumn(this.name, value)
 }

@@ -27,7 +27,11 @@ create table if not exists record_completion_all_type (
 	mediumtextc mediumtext not null,
 	longtextc longtext not null,
 
-  datec date not null
+  datec date not null,
+	datetimec datetime(0) not null,
+	timestampc timestamp(1) not null,
+	timec time(6) not null,
+	yearc year not null
 );
 -- auto_inc
 -- nullable
