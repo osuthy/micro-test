@@ -35,7 +35,9 @@ create table if not exists record_completion_all_type (
   datetimec datetime(0) not null,
   timestampc timestamp(1) not null,
   timec time(6) not null,
-  yearc year not null
+  yearc year not null,
+
+  bitc bit(1) not null
 );
 -- auto_inc
 -- nullable

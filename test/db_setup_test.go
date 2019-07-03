@@ -66,6 +66,8 @@ func Test事前条件のデータの補完(t *testing.T) {
 		timestampc string
 		timec string
 		yearc string
+
+		bitc uint8
 	)
 	rows.Next()
 	rows.Scan(
@@ -92,6 +94,8 @@ func Test事前条件のデータの補完(t *testing.T) {
 		&timestampc,
 		&timec,
 		&yearc,
+
+		&bitc,
 	)
 	assert.Equal(t, "dummy1", dummy)
 	assert.Equal(t, 0, tinyintc)
@@ -117,6 +121,8 @@ func Test事前条件のデータの補完(t *testing.T) {
 	assert.Equal(t, "10:00:00.000000", timec)
 	assert.Equal(t, "1901", yearc)
 
+	assert.Equal(t,	uint8(0x0), bitc)
+
 	rows.Next()
 	rows.Scan(
 		&dummy,
@@ -142,6 +148,8 @@ func Test事前条件のデータの補完(t *testing.T) {
 		&timestampc,
 		&timec,
 		&yearc,
+
+		&bitc,
 	)
 	assert.Equal(t, "dummy2", dummy)
 	assert.Equal(t, 0, tinyintc)
@@ -166,6 +174,8 @@ func Test事前条件のデータの補完(t *testing.T) {
 	assert.Equal(t, "1970-01-01 10:00:00.0", timestampc)
 	assert.Equal(t, "10:00:00.000000", timec)
 	assert.Equal(t, "1901", yearc)
+
+	assert.Equal(t,	uint8(0x0), bitc)
 
 	AssertNextIsNone(t, rows)
 }

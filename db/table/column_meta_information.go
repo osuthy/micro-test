@@ -43,6 +43,8 @@ func (this *ColumnMetaInformation) defaultColumn() *Column {
 		value = "1901"
 	} else if this.dataType == "decimal" {
 		value = 0.0
+	} else if this.dataType == "binary" {
+		value = 0x0
 	}
 	return NewColumn(this.name, value)
 }
