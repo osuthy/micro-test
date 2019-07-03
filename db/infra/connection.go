@@ -102,6 +102,10 @@ func toDataTypeNameForMysql(mysqlDataType string) string {
 		return "string"
 	} else if strings.Contains(mysqlDataType, "year") {
 		return "year"
+	} else if strings.Contains(mysqlDataType, "float") ||
+	strings.Contains(mysqlDataType, "double") ||
+	strings.Contains(mysqlDataType, "decimal") {
+		return "decimal"
 	}
 	return "time"
 }

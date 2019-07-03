@@ -50,6 +50,10 @@ func Test事前条件のデータの補完(t *testing.T) {
 		intc int
 		bigintc int
 
+		floatc float64
+		doublec float64
+		decimalc float64
+
 		charc string
 		varcharc string
 		tinytextc string
@@ -72,6 +76,10 @@ func Test事前条件のデータの補完(t *testing.T) {
 		&intc,
 		&bigintc,
 
+		&floatc,
+		&doublec,
+		&decimalc,
+
 		&charc,
 		&varcharc,
 		&tinytextc,
@@ -91,6 +99,10 @@ func Test事前条件のデータの補完(t *testing.T) {
 	assert.Equal(t, 0, mediumintc)
 	assert.Equal(t, 0, intc)
 	assert.Equal(t, 0, bigintc)
+
+	assert.Equal(t, 0.0, floatc)
+	assert.Equal(t, 0.0, doublec)
+	assert.Equal(t, 0.0, decimalc)
 
 	assert.Equal(t, "", charc)
 	assert.Equal(t, "", varcharc)
@@ -114,6 +126,10 @@ func Test事前条件のデータの補完(t *testing.T) {
 		&intc,
 		&bigintc,
 
+		&floatc,
+		&doublec,
+		&decimalc,
+
 		&charc,
 		&varcharc,
 		&tinytextc,
@@ -133,6 +149,10 @@ func Test事前条件のデータの補完(t *testing.T) {
 	assert.Equal(t, 0, mediumintc)
 	assert.Equal(t, 0, intc)
 	assert.Equal(t, 0, bigintc)
+
+	assert.Equal(t, 0.0, floatc)
+	assert.Equal(t, 0.0, doublec)
+	assert.Equal(t, 0.0, decimalc)
 
 	assert.Equal(t, "", charc)
 	assert.Equal(t, "", varcharc)

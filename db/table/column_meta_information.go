@@ -41,6 +41,8 @@ func (this *ColumnMetaInformation) defaultColumn() *Column {
 		value = time.Unix(0, 0).Add(time.Hour * 10) //timestampがエラーを吐くので10時間追加
 	} else if this.dataType == "year" {
 		value = "1901"
+	} else if this.dataType == "decimal" {
+		value = 0.0
 	}
 	return NewColumn(this.name, value)
 }

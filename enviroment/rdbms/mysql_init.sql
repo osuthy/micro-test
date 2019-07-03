@@ -19,6 +19,10 @@ create table if not exists record_completion_all_type (
   intc int not null,
   bigintc bigint not null,
 
+  floatc float(1, 1) not null,
+  doublec double(1, 1) not null,
+  decimalc decimal(1, 1) not null,
+
   charc char(1) not null,
   varcharc varchar(1) not null,
 
