@@ -15,6 +15,7 @@ create table if not exists record_completion_all_type (
 
   tinyintc tinyint not null,
   smallintc smallint not null,
+	mediumintc mediumint not null,
   intc int not null,
 
   datec date not null

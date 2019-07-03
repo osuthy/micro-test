@@ -45,22 +45,25 @@ func Test事前条件のデータの補完(t *testing.T) {
 		dummy string
 		tinyintc int
 		smallintc int
+		mediumintc int
 		intc int
 		datec string
 	)
 	rows.Next()
-	rows.Scan(&dummy, &tinyintc, &smallintc, &intc, &datec)
+	rows.Scan(&dummy, &tinyintc, &smallintc, &mediumintc, &intc, &datec)
 	assert.Equal(t, "dummy1", dummy)
 	assert.Equal(t, 0, tinyintc)
 	assert.Equal(t, 0, smallintc)
+	assert.Equal(t, 0, mediumintc)
 	assert.Equal(t, 0, intc)
 	assert.Equal(t, "1970-01-01", datec)
 
 	rows.Next()
-	rows.Scan(&dummy, &tinyintc, &smallintc, &intc, &datec)
+	rows.Scan(&dummy, &tinyintc, &smallintc, &mediumintc, &intc, &datec)
 	assert.Equal(t, "dummy2", dummy)
 	assert.Equal(t, 0, tinyintc)
 	assert.Equal(t, 0, smallintc)
+	assert.Equal(t, 0, mediumintc)
 	assert.Equal(t, 0, intc)
 	assert.Equal(t, "1970-01-01", datec)
 
