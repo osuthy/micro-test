@@ -19,6 +19,14 @@ create table if not exists record_completion_all_type (
   intc int not null,
 	bigintc bigint not null,
 
+	charc char(1) not null,
+	varcharc varchar(1) not null,
+
+	tinytextc tinytext not null,
+	textc text not null,
+	mediumtextc mediumtext not null,
+	longtextc longtext not null,
+
   datec date not null
 );
 -- auto_inc

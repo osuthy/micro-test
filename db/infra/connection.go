@@ -92,10 +92,10 @@ func (this *Connection) mysqlColumnDefinition(table *Table) *ColumnDefinition {
 	return NewColumnDefinition(infos)
 }
 
-func toDataTypeNameForMysql(mysqlType string) string {
-	if strings.Contains(mysqlType, "int") {
+func toDataTypeNameForMysql(mysqlDataType string) string {
+	if strings.Contains(mysqlDataType, "int") {
 		return "int"
-	} else if strings.Contains(mysqlType, "char") {
+	} else if strings.Contains(mysqlDataType, "char") || strings.Contains(mysqlDataType, "text") {
 		return "string"
 	}
 	return "time"

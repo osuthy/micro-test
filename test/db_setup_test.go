@@ -43,31 +43,88 @@ func Test事前条件のデータの補完(t *testing.T) {
 	defer rows.Close()
 	var (
 		dummy string
+
 		tinyintc int
 		smallintc int
 		mediumintc int
 		intc int
 		bigintc int
+
+		charc string
+		varcharc string
+		tinytextc string
+		textc string
+		mediumtextc string
+		longtextc string
+
 		datec string
 	)
 	rows.Next()
-	rows.Scan(&dummy, &tinyintc, &smallintc, &mediumintc, &intc, &bigintc, &datec)
+	rows.Scan(
+		&dummy,
+		&tinyintc,
+		&smallintc,
+		&mediumintc,
+		&intc,
+		&bigintc,
+
+		&charc,
+		&varcharc,
+		&tinytextc,
+		&textc,
+		&mediumtextc,
+		&longtextc,
+
+		&datec,
+	)
 	assert.Equal(t, "dummy1", dummy)
 	assert.Equal(t, 0, tinyintc)
 	assert.Equal(t, 0, smallintc)
 	assert.Equal(t, 0, mediumintc)
 	assert.Equal(t, 0, intc)
 	assert.Equal(t, 0, bigintc)
+
+	assert.Equal(t, "", charc)
+	assert.Equal(t, "", varcharc)
+	assert.Equal(t, "", tinytextc)
+	assert.Equal(t, "", textc)
+	assert.Equal(t, "", mediumtextc)
+	assert.Equal(t, "", longtextc)
+
 	assert.Equal(t, "1970-01-01", datec)
 
 	rows.Next()
-	rows.Scan(&dummy, &tinyintc, &smallintc, &mediumintc, &intc, &bigintc, &datec)
+	rows.Scan(
+		&dummy,
+		&tinyintc,
+		&smallintc,
+		&mediumintc,
+		&intc,
+		&bigintc,
+
+		&charc,
+		&varcharc,
+		&tinytextc,
+		&textc,
+		&mediumtextc,
+		&longtextc,
+
+		&datec,
+	)
 	assert.Equal(t, "dummy2", dummy)
 	assert.Equal(t, 0, tinyintc)
 	assert.Equal(t, 0, smallintc)
 	assert.Equal(t, 0, mediumintc)
 	assert.Equal(t, 0, intc)
 	assert.Equal(t, 0, bigintc)
+
+	assert.Equal(t, "", charc)
+	assert.Equal(t, "", varcharc)
+	assert.Equal(t, "", tinytextc)
+	assert.Equal(t, "", textc)
+	assert.Equal(t, "", mediumtextc)
+	assert.Equal(t, "", longtextc)
+
 	assert.Equal(t, "1970-01-01", datec)
 
 	AssertNextIsNone(t, rows)
