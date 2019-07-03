@@ -47,24 +47,27 @@ func Test事前条件のデータの補完(t *testing.T) {
 		smallintc int
 		mediumintc int
 		intc int
+		bigintc int
 		datec string
 	)
 	rows.Next()
-	rows.Scan(&dummy, &tinyintc, &smallintc, &mediumintc, &intc, &datec)
+	rows.Scan(&dummy, &tinyintc, &smallintc, &mediumintc, &intc, &bigintc, &datec)
 	assert.Equal(t, "dummy1", dummy)
 	assert.Equal(t, 0, tinyintc)
 	assert.Equal(t, 0, smallintc)
 	assert.Equal(t, 0, mediumintc)
 	assert.Equal(t, 0, intc)
+	assert.Equal(t, 0, bigintc)
 	assert.Equal(t, "1970-01-01", datec)
 
 	rows.Next()
-	rows.Scan(&dummy, &tinyintc, &smallintc, &mediumintc, &intc, &datec)
+	rows.Scan(&dummy, &tinyintc, &smallintc, &mediumintc, &intc, &bigintc, &datec)
 	assert.Equal(t, "dummy2", dummy)
 	assert.Equal(t, 0, tinyintc)
 	assert.Equal(t, 0, smallintc)
 	assert.Equal(t, 0, mediumintc)
 	assert.Equal(t, 0, intc)
+	assert.Equal(t, 0, bigintc)
 	assert.Equal(t, "1970-01-01", datec)
 
 	AssertNextIsNone(t, rows)
