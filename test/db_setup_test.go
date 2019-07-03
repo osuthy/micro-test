@@ -2,7 +2,6 @@ package test
 
 import (
 	"testing"
-
 	"github.com/stretchr/testify/assert"
 	. "github.com/ShoichiroKitano/micro_test/db/infra"
 
@@ -45,18 +44,21 @@ func Test事前条件のデータの補完(t *testing.T) {
 		dummy string
 		tinyintc int
 		intc int
+		datec string
 	)
 	rows.Next()
-	rows.Scan(&dummy, &tinyintc, &intc)
+	rows.Scan(&dummy, &tinyintc, &intc, &datec)
 	assert.Equal(t, "dummy1", dummy)
 	assert.Equal(t, 0, tinyintc)
 	assert.Equal(t, 0, intc)
+	assert.Equal(t, "1970-01-01", datec)
 
 	rows.Next()
-	rows.Scan(&dummy, &tinyintc, &intc)
+	rows.Scan(&dummy, &tinyintc, &intc, &datec)
 	assert.Equal(t, "dummy2", dummy)
 	assert.Equal(t, 0, tinyintc)
 	assert.Equal(t, 0, intc)
+	assert.Equal(t, "1970-01-01", datec)
 
 	AssertNextIsNone(t, rows)
 }

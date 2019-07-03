@@ -1,5 +1,9 @@
 package table
 
+import (
+	"time"
+)
+
 type ColumnMetaInformation struct {
 	name string
 	dataType string
@@ -32,6 +36,8 @@ func (this *ColumnMetaInformation) defaultColumn() *Column {
 		value = ""
 	} else if this.dataType == "int" {
 		value = 0
+	} else if this.dataType == "time" {
+		value = time.Unix(0, 0)
 	}
 	return NewColumn(this.name, value)
 }

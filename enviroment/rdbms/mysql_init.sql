@@ -13,7 +13,8 @@ drop table if exists record_completion_all_type;
 create table if not exists record_completion_all_type (
   dummy char(30),
   tinyintc tinyint not null,
-  intc int not null
+  intc int not null,
+  datec date not null
 );
 -- auto_inc
 -- nullable

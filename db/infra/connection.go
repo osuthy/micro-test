@@ -95,8 +95,10 @@ func (this *Connection) mysqlColumnDefinition(table *Table) *ColumnDefinition {
 func toDataTypeNameForMysql(mysqlType string) string {
 	if strings.Contains(mysqlType, "int") {
 		return "int"
+	} else if strings.Contains(mysqlType, "char") {
+		return "string"
 	}
-	return "string"
+	return "time"
 }
 
 func isNotNullFlagForMysql(value string) bool {
