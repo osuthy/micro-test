@@ -15,23 +15,23 @@ create table if not exists record_completion_all_type (
 
   tinyintc tinyint not null,
   smallintc smallint not null,
-	mediumintc mediumint not null,
+  mediumintc mediumint not null,
   intc int not null,
-	bigintc bigint not null,
+  bigintc bigint not null,
 
-	charc char(1) not null,
-	varcharc varchar(1) not null,
+  charc char(1) not null,
+  varcharc varchar(1) not null,
 
-	tinytextc tinytext not null,
-	textc text not null,
-	mediumtextc mediumtext not null,
-	longtextc longtext not null,
+  tinytextc tinytext not null,
+  textc text not null,
+  mediumtextc mediumtext not null,
+  longtextc longtext not null,
 
   datec date not null,
-	datetimec datetime(0) not null,
-	timestampc timestamp(1) not null,
-	timec time(6) not null,
-	yearc year not null
+  datetimec datetime(0) not null,
+  timestampc timestamp(1) not null,
+  timec time(6) not null,
+  yearc year not null
 );
 -- auto_inc
 -- nullable
