@@ -9,6 +9,7 @@ import (
 )
 
 func TestDBはデータのセットアップができる(t *testing.T) {
+	TruncateTable("mysql", "root:@/test_micro_test", "test")
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
@@ -43,20 +44,23 @@ func Test事前条件のデータの補完(t *testing.T) {
 	var (
 		dummy string
 		tinyintc int
+		smallintc int
 		intc int
 		datec string
 	)
 	rows.Next()
-	rows.Scan(&dummy, &tinyintc, &intc, &datec)
+	rows.Scan(&dummy, &tinyintc, &smallintc, &intc, &datec)
 	assert.Equal(t, "dummy1", dummy)
 	assert.Equal(t, 0, tinyintc)
+	assert.Equal(t, 0, smallintc)
 	assert.Equal(t, 0, intc)
 	assert.Equal(t, "1970-01-01", datec)
 
 	rows.Next()
-	rows.Scan(&dummy, &tinyintc, &intc, &datec)
+	rows.Scan(&dummy, &tinyintc, &smallintc, &intc, &datec)
 	assert.Equal(t, "dummy2", dummy)
 	assert.Equal(t, 0, tinyintc)
+	assert.Equal(t, 0, smallintc)
 	assert.Equal(t, 0, intc)
 	assert.Equal(t, "1970-01-01", datec)
 

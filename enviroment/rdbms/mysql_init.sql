@@ -12,8 +12,11 @@ create table if not exists test (
 drop table if exists record_completion_all_type;
 create table if not exists record_completion_all_type (
   dummy char(30),
+
   tinyintc tinyint not null,
+  smallintc smallint not null,
   intc int not null,
+
   datec date not null
 );
 -- auto_inc
