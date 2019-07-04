@@ -48,13 +48,14 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 	t.Run("階層が2つの場合", func(t *testing.T) {
 		defer wiremock.Reset("localhost:8080")
 		wiremock.Stubbing("localhost:8080", "/test", "GET",
-		`{ "o1": { "o12": { "o13": "v13" } } "o2": "v21"}`,200, "test success")
+		`{ "o1": { "o12": { "o13": "v13" } }, "o2": "v21"}`,200, "test success")
 
 		http.DefineServer("test_server", "http://localhost:8080")
-		defaultJson := json.O{"o1": json.O{"o12": json.O{"o13": "d13"} } "o2": "d21"}
+		defaultJson := json.O{"o1": json.O{"o12": json.O{"o13": "d13"} }, "o2": "d21"}
 
 		http.Server("test_server").
-		ReceiveRequest("GET", "/test", http.WithJson(defaultJson.Override(O{ "o1": O{"o12": O{"o13": "v13"}}, "o2": "v21"}))).
+		// ReceiveRequest("GET", "/test", http.WithJson(defaultJson.Override(json.O{ "o1": json.O{"o12": json.O{"o13": "v13"}}, "o2": "v21"}))).
+		ReceiveRequest("GET", "/test", http.WithJson(defaultJson.Override(json.O{ "o1": json.O{"o12": json.O{"o13": "v13"}}}))).
 			AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		assert.Equal(t, "success", runner.TestRunner.Result)
 	})
