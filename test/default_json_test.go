@@ -54,9 +54,8 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 		defaultJson := json.O{"o1": json.O{"o12": json.O{"o13": "d13"} }, "o2": "d21"}
 
 		http.Server("test_server").
-		// ReceiveRequest("GET", "/test", http.WithJson(defaultJson.Override(json.O{ "o1": json.O{"o12": json.O{"o13": "v13"}}, "o2": "v21"}))).
-		ReceiveRequest("GET", "/test", http.WithJson(defaultJson.Override(json.O{ "o1": json.O{"o12": json.O{"o13": "v13"}}}))).
-			AndResponseShouldBe(http.Status(200).TextPlain("test success"))
+		ReceiveRequest("GET", "/test", http.WithJson(defaultJson.Override(json.O{ "o1": json.O{"o12": json.O{"o13": "v13"}}, "o2": "v21"}))).
+		AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		assert.Equal(t, "success", runner.TestRunner.Result)
 	})
 }

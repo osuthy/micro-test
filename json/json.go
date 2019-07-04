@@ -42,38 +42,19 @@ func (this O) OverrideByStrings(elements ...string) O {
 
 }
 
+func (this O) overrideByObject(other O) O {
 
-func (this O) OverrideByObject(elements ...string) []string {
-	o := make(O)
-	for k, v := range this {
-		o[k] = v
-	}
-
-	r := []string{}
-	r = append(r, elements...)
-	
-	for key, obj := range this {
-
-		if _, ok := obj.(O); ok {
-			r = append(r, key)
-			obj.(O).OverrideByObject(r...)
-		}
-
-		if _, ok := obj.(string); ok {
-			r = append(r, key)
-			r = append(r, obj.(string))
-			p("--------------")
-			p(r)
-			return r
+	for k, v := range other {
+		if json, ok := v.(O); ok {
+			newO := this[k].(O).overrideByObject(json)
+			this[k] = newO
+		} else {
+			this[k] = v
 		}
 	}
 
-	p("--------------!!!!")
-	p(this)
-	return []string{}
-
+	return this
 }
-
 
 func (this O) Override(elements ...interface{}) O {
 	if _, ok := elements[0].(string); ok {
@@ -84,19 +65,7 @@ func (this O) Override(elements ...interface{}) O {
 		return this.OverrideByStrings(r...)
 	}
 
-	if _, ok := elements[0].(O); ok {
-		// for _, o := range elements {
-		// 	a := o.(O).OverrideByObject()
-		// 	p("1kaettekita")
-		// 	p(a)
-		// }
-		p(elements[0])
-		elements[0].(O).OverrideByObject()
-		p("asdfharhfliawruhg")
-		// return this.OverrideByObject()
-	}
-
-	return O{}
+	return this.overrideByObject(elements[0].(O))
 }
 
 
