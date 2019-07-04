@@ -67,7 +67,7 @@ func TestHttpはサーバーはレスポンスが期待と異なる場合はテ�
 	assert.Equal(t, "", runner.TestRunner.Result)
 }
 
-func TestHttpはパラメータ付きのリクエストを送ることができる(t *testing.T) {
+func TestHttpはパラメータ付きのPOSTのリクエストを送ることができる(t *testing.T) {
 	wiremock.Reset("localhost:8080")
 	runner.TestRunner.Result = "init"
 	defer wiremock.Reset("localhost:8080")
@@ -78,6 +78,57 @@ func TestHttpはパラメータ付きのリクエストを送ることができ�
 	http.DefineServer("test_server", "http://localhost:8080")
 	http.Server("test_server").
 		ReceiveRequest("POST", "/test",
+			http.WithParam("param1", "p1").
+				WithJson(json.O{"object": "value"}).
+				WithParam("param2", "p2")).AndResponseShouldBe(http.Status(200).TextPlain("test success"))
+	assert.Equal(t, "success", runner.TestRunner.Result)
+}
+
+func TestHttpはパラメータ付きのPATCHのリクエストを送ることができる(t *testing.T) {
+	wiremock.Reset("localhost:8080")
+	runner.TestRunner.Result = "init"
+	defer wiremock.Reset("localhost:8080")
+
+	wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "PATCH",
+		`{ "object": "value" }`, 200, "test success")
+
+	http.DefineServer("test_server", "http://localhost:8080")
+	http.Server("test_server").
+		ReceiveRequest("PATCH", "/test",
+			http.WithParam("param1", "p1").
+				WithJson(json.O{"object": "value"}).
+				WithParam("param2", "p2")).AndResponseShouldBe(http.Status(200).TextPlain("test success"))
+	assert.Equal(t, "success", runner.TestRunner.Result)
+}
+
+func TestHttpはパラメータ付きのPUTのリクエストを送ることができる(t *testing.T) {
+	wiremock.Reset("localhost:8080")
+	runner.TestRunner.Result = "init"
+	defer wiremock.Reset("localhost:8080")
+
+	wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "PUT",
+		`{ "object": "value" }`, 200, "test success")
+
+	http.DefineServer("test_server", "http://localhost:8080")
+	http.Server("test_server").
+		ReceiveRequest("PUT", "/test",
+			http.WithParam("param1", "p1").
+				WithJson(json.O{"object": "value"}).
+				WithParam("param2", "p2")).AndResponseShouldBe(http.Status(200).TextPlain("test success"))
+	assert.Equal(t, "success", runner.TestRunner.Result)
+}
+
+func TestHttpはパラメータ付きのDELETEのリクエストを送ることができる(t *testing.T) {
+	wiremock.Reset("localhost:8080")
+	runner.TestRunner.Result = "init"
+	defer wiremock.Reset("localhost:8080")
+
+	wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "DELETE",
+		`{ "object": "value" }`, 200, "test success")
+
+	http.DefineServer("test_server", "http://localhost:8080")
+	http.Server("test_server").
+		ReceiveRequest("DELETE", "/test",
 			http.WithParam("param1", "p1").
 				WithJson(json.O{"object": "value"}).
 				WithParam("param2", "p2")).AndResponseShouldBe(http.Status(200).TextPlain("test success"))
