@@ -2,6 +2,8 @@ package json
 
 import (
 	"encoding/json"
+	// "fmt"
+	// "reflect"
 )
 
 type Object interface {
@@ -41,6 +43,38 @@ func (this O) OverrideByStrings(elements ...string) O {
 }
 
 
+func (this O) OverrideByObject(elements ...string) []string {
+	o := make(O)
+	for k, v := range this {
+		o[k] = v
+	}
+
+	r := []string{}
+	r = append(r, elements...)
+	
+	for key, obj := range this {
+
+		if _, ok := obj.(O); ok {
+			r = append(r, key)
+			obj.(O).OverrideByObject(r...)
+		}
+
+		if _, ok := obj.(string); ok {
+			r = append(r, key)
+			r = append(r, obj.(string))
+			p("--------------")
+			p(r)
+			return r
+		}
+	}
+
+	p("--------------!!!!")
+	p(this)
+	return []string{}
+
+}
+
+
 func (this O) Override(elements ...interface{}) O {
 	if _, ok := elements[0].(string); ok {
 		r := []string{}
@@ -49,6 +83,19 @@ func (this O) Override(elements ...interface{}) O {
 		}
 		return this.OverrideByStrings(r...)
 	}
+
+	if _, ok := elements[0].(O); ok {
+		// for _, o := range elements {
+		// 	a := o.(O).OverrideByObject()
+		// 	p("1kaettekita")
+		// 	p(a)
+		// }
+		p(elements[0])
+		elements[0].(O).OverrideByObject()
+		p("asdfharhfliawruhg")
+		// return this.OverrideByObject()
+	}
+
 	return O{}
 }
 
