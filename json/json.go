@@ -2,8 +2,9 @@ package json
 
 import (
 	"encoding/json"
-	// "fmt"
+	"fmt"
 	// "reflect"
+	"bytes"
 )
 
 type Object interface {
@@ -79,4 +80,19 @@ func (this A) Print() {
 func (this A) ToJson() []byte {
 	json, _ := json.Marshal(this)
 	return json
+}
+
+func (this O) Generate(num int) A {
+	a := A{}
+	for k, v := range this {
+		for i := 1; i <= num; i++ {
+			var buffer bytes.Buffer
+			buffer.WriteString(v.(string))
+			buffer.WriteString(fmt.Sprint(i))
+
+			o := O{k:buffer.String()}
+			a = append(a, o)
+		}
+	}
+	return a
 }

@@ -64,14 +64,14 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 		wiremock.Stubbing("localhost:8080", "/test", "GET",
 		`{
 			"array": [
-				{ "o": "v1"}, {"o": "v2"}
+				{"o": "v1"}, {"o": "v2"}
 				]
 		}`, 200, "test success")
 
 		http.DefineServer("test_server", "http://localhost:8080")
 
 		http.Server("test_server").
-		ReceiveRequest("GET", "/test", http.WithJson(json.O{"array:" json.O{ "o": "v" }.Generate(2)})).
+		ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o": "v"}.Generate(2)})).
 		AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		assert.Equal(t, "success", runner.TestRunner.Result)
 	})
