@@ -59,36 +59,36 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 		assert.Equal(t, "success", runner.TestRunner.Result)
 	})
 
-	// t.Run("jsonが複数ある場合", func(t *testing.T) {
-	// 	defer wiremock.Reset("localhost:8080")
-	// 	wiremock.Stubbing("localhost:8080", "/test", "GET",
-	// 	`{
-	// 		"array": [
-	// 			{"o": "v1"}, {"o": "v2"}
-	// 			]
-	// 	}`, 200, "test success")
-
-	// 	http.DefineServer("test_server", "http://localhost:8080")
-
-	// 	http.Server("test_server").
-	// 	ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o": "v"}.Generate(2)})).
-	// 	AndResponseShouldBe(http.Status(200).TextPlain("test success"))
-	// 	assert.Equal(t, "success", runner.TestRunner.Result)
-	// })
-
-	t.Run("jsonの値が数値の場合", func(t *testing.T) {
+	t.Run("jsonが複数ある場合", func(t *testing.T) {
 		defer wiremock.Reset("localhost:8080")
 		wiremock.Stubbing("localhost:8080", "/test", "GET",
 		`{
 			"array": [
-				{"o1": 11, "o2", 11.100000}, {"o1": 12, "o2": 12.100000}
+				{"o": "v1"}, {"o": "v2"}
 				]
 		}`, 200, "test success")
 
 		http.DefineServer("test_server", "http://localhost:8080")
 
 		http.Server("test_server").
-		ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o1": 10, "o2": 10.1}.Generate(2)})).
+		ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o": "v"}.Generate(2)})).
+		AndResponseShouldBe(http.Status(200).TextPlain("test success"))
+		assert.Equal(t, "success", runner.TestRunner.Result)
+	})
+
+	t.Run("jsonの値が数値の場合", func(t *testing.T) {
+		defer wiremock.Reset("localhost:8080")
+		wiremock.Stubbing("localhost:8080", "/test", "GET",
+		`{
+			"array": [
+				{"o1": 11}, {"o1": 12}
+				]
+		}`, 200, "test success")
+
+		http.DefineServer("test_server", "http://localhost:8080")
+
+		http.Server("test_server").
+		ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o1": 10}.Generate(2)})).
 		AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		assert.Equal(t, "success", runner.TestRunner.Result)
 	})

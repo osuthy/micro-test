@@ -22,21 +22,20 @@ func (this O) ToJson() []byte {
 	return json
 }
 
-
 func (this O) OverrideByStrings(elements ...string) O {
 	o := make(O)
 	for k, v := range this {
 		o[k] = v
 	}
-	
+
 	first := elements[0]
 
-	if(len(elements) == 2) {
+	if len(elements) == 2 {
 		o[first] = elements[1]
 		return o
 	}
 
-	x :=  o[first].(O).OverrideByStrings(elements[1:]...)
+	x := o[first].(O).OverrideByStrings(elements[1:]...)
 	o[first] = x
 
 	return o
@@ -69,8 +68,6 @@ func (this O) Override(elements ...interface{}) O {
 	return this.overrideByObject(elements[0].(O))
 }
 
-
-
 type A []interface{}
 
 func (this A) Print() {
@@ -85,34 +82,24 @@ func (this A) ToJson() []byte {
 func (this O) Generate(num int) A {
 	a := A{}
 
-	// this is 
-	// json.O{
-	// 	"o1": 10,
-	// 	"o2": 10.100000,
-	//   }
-
 	for i := 1; i <= num; i++ {
 		o := O{}
-	for k, v := range this {
 
-			if _, ok := v.(string); ok {
+		for k, v := range this {
+
+			switch value := v.(type) {
+			case string:
 				var buffer bytes.Buffer
-				buffer.WriteString(v.(string))
+				buffer.WriteString(value)
 				buffer.WriteString(fmt.Sprint(i))
 				o[k] = buffer.String()
-			}
-
-			if _, ok := v.(int); ok {
-				o[k] = v.(int)+i
-			}
-
-			if _, ok := v.(float64); ok {
-				o[k] = v.(float64)+float64(i)
-				fmt.Printf("%.1f\n", v.(float64)+float64(i))
+			case int:
+				o[k] = value + i
+			case float64:
+				o[k] = value + float64(i)
 			}
 		}
 		a = append(a, o)
 	}
-	p(a)
 	return a
 }
