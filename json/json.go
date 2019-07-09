@@ -84,13 +84,35 @@ func (this A) ToJson() []byte {
 
 func (this O) Generate(num int) A {
 	a := A{}
+
+	// this is 
+	// json.O{
+	// 	"o1": 10,
+	// 	"o2": 10.100000,
+	//   }
+
+	for i := 1; i <= num; i++ {
+		o := O{}
 	for k, v := range this {
-		for i := 1; i <= num; i++ {
-			var buffer bytes.Buffer
-			buffer.WriteString(v.(string))
-			buffer.WriteString(fmt.Sprint(i))
-			a = append(a, O{k:buffer.String()})
+
+			if _, ok := v.(string); ok {
+				var buffer bytes.Buffer
+				buffer.WriteString(v.(string))
+				buffer.WriteString(fmt.Sprint(i))
+				o[k] = buffer.String()
+			}
+
+			if _, ok := v.(int); ok {
+				o[k] = v.(int)+i
+			}
+
+			if _, ok := v.(float64); ok {
+				o[k] = v.(float64)+float64(i)
+				fmt.Printf("%.1f\n", v.(float64)+float64(i))
+			}
 		}
+		a = append(a, o)
 	}
+	p(a)
 	return a
 }
