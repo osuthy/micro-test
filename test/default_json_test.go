@@ -75,4 +75,21 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 		AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		assert.Equal(t, "success", runner.TestRunner.Result)
 	})
+
+	t.Run("jsonの値が数値の場合", func(t *testing.T) {
+		defer wiremock.Reset("localhost:8080")
+		wiremock.Stubbing("localhost:8080", "/test", "GET",
+		`{
+			"array": [
+				{"o1": "11", "o2", "11.1"}, {"o1": "12", "o2": "12.1"}
+				]
+		}`, 200, "test success")
+
+		http.DefineServer("test_server", "http://localhost:8080")
+
+		http.Server("test_server").
+		ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o1": 10, "o2" 10.1}.Generate(2)})).
+		AndResponseShouldBe(http.Status(200).TextPlain("test success"))
+		assert.Equal(t, "success", runner.TestRunner.Result)
+	})
 }
