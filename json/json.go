@@ -89,9 +89,7 @@ func (this O) Generate(num int) A {
 			var buffer bytes.Buffer
 			buffer.WriteString(v.(string))
 			buffer.WriteString(fmt.Sprint(i))
-
-			o := O{k:buffer.String()}
-			a = append(a, o)
+			a = append(a, O{k:buffer.String()})
 		}
 	}
 	return a
