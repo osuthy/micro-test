@@ -60,10 +60,26 @@ func TestJsonの要素を上書きする(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
-func Test要素がfloatのjsonをインクリメントして返却する(t *testing.T) {
+func Test要素がint型のjsonをインクリメントして返却する(t *testing.T) {
+	o := O{"o": 10}
+	actual := o.Generate(2)
+	expected := A{O{"o":11}, O{"o":12}}
+
+	assert.Equal(t, expected, actual)
+}
+
+func Test要素がfloat型のjsonをインクリメントして返却する(t *testing.T) {
 	o := O{"o": 10.1}
 	actual := o.Generate(2)
 	expected := A{O{"o":11.1}, O{"o":12.1}}
+
+	assert.Equal(t, expected, actual)
+}
+
+func Test要素がT型のjsonをインクリメントせずにそのまま返却する(t *testing.T) {
+	o := O{"o": T("2001-12-20 23:59:59")}
+	actual := o.Generate(2)
+	expected := A{O{"o":T("2001-12-20 23:59:59")}, O{"o":T("2001-12-20 23:59:59")}}
 
 	assert.Equal(t, expected, actual)
 }

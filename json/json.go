@@ -79,6 +79,8 @@ func (this A) ToJson() []byte {
 	return json
 }
 
+type T string
+
 func (this O) Generate(num int) A {
 	a := A{}
 
@@ -86,7 +88,6 @@ func (this O) Generate(num int) A {
 		o := O{}
 
 		for k, v := range this {
-
 			switch value := v.(type) {
 			case string:
 				var buffer bytes.Buffer
@@ -97,6 +98,8 @@ func (this O) Generate(num int) A {
 				o[k] = value + i
 			case float64:
 				o[k] = value + float64(i)
+			case T:
+				o[k] = value
 			}
 		}
 		a = append(a, o)

@@ -92,4 +92,21 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 		AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		assert.Equal(t, "success", runner.TestRunner.Result)
 	})
+
+	t.Run("jsonの値が日付の場合", func(t *testing.T) {
+		defer wiremock.Reset("localhost:8080")
+		wiremock.Stubbing("localhost:8080", "/test", "GET",
+		`{
+			"array": [
+				{"o1": "2001-12-20 23:59:59"}, {"o1": "2001-12-20 23:59:59"}
+				]
+		}`, 200, "test success")
+
+		http.DefineServer("test_server", "http://localhost:8080")
+
+		http.Server("test_server").
+		ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o1": json.T("2001-12-20 23:59:59")}.Generate(2)})).
+		AndResponseShouldBe(http.Status(200).TextPlain("test success"))
+		assert.Equal(t, "success", runner.TestRunner.Result)
+	})
 }
