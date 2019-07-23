@@ -22,11 +22,16 @@ func (this O) ToJson() []byte {
 	return json
 }
 
-func (this O) OverrideByStrings(elements ...string) O {
+func (this O) clone() O {
 	o := make(O)
 	for k, v := range this {
 		o[k] = v
 	}
+	return o
+}
+
+func (this O) OverrideByStrings(elements ...string) O {
+	o := this.clone()
 
 	first := elements[0]
 
@@ -43,11 +48,9 @@ func (this O) OverrideByStrings(elements ...string) O {
 }
 
 func (this O) overrideByObject(other O) O {
-
 	for k, v := range other {
 		if json, ok := v.(O); ok {
-			newO := this[k].(O).overrideByObject(json)
-			this[k] = newO
+			this[k] = this[k].(O).overrideByObject(json)
 		} else {
 			this[k] = v
 		}
