@@ -14,7 +14,6 @@ type Object interface {
 type O map[string]interface{}
 
 func (this O) Print() {
-	println("O")
 }
 
 func (this O) ToJson() []byte {
@@ -30,7 +29,7 @@ func (this O) clone() O {
 	return o
 }
 
-func (this O) OverrideByStrings(elements ...string) O {
+func (this O) overrideByStrings(elements ...string) O {
 	o := this.clone()
 
 	first := elements[0]
@@ -40,7 +39,7 @@ func (this O) OverrideByStrings(elements ...string) O {
 		return o
 	}
 
-	x := o[first].(O).OverrideByStrings(elements[1:]...)
+	x := o[first].(O).overrideByStrings(elements[1:]...)
 	o[first] = x
 
 	return o
@@ -65,7 +64,7 @@ func (this O) Override(elements ...interface{}) O {
 		for _, e := range elements {
 			r = append(r, e.(string))
 		}
-		return this.OverrideByStrings(r...)
+		return this.overrideByStrings(r...)
 	}
 
 	return this.overrideByObject(elements[0].(O))
@@ -74,7 +73,6 @@ func (this O) Override(elements ...interface{}) O {
 type A []interface{}
 
 func (this A) Print() {
-	println("A")
 }
 
 func (this A) ToJson() []byte {
