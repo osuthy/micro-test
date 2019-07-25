@@ -36,10 +36,8 @@ func (this *Connection) FindColumnDefinition(table *Table) *ColumnDefinition {
 func (this *Connection) StoreTable(table *Table) {
 	tx, _ := this.Driver.Begin()
 	stmt, _ := tx.Prepare(table.InsertQuery())
-	p(table.InsertQuery())
 	for _, values := range table.AllValues() {
-		_, err :=  stmt.Exec(values...)
-		p(err)
+		 stmt.Exec(values...)
 	}
 	tx.Commit()
 }
@@ -95,7 +93,6 @@ func (this *Connection) mysqlColumnDefinition(table *Table) *ColumnDefinition {
 }
 
 func toDataTypeNameForMysql(mysqlDataType string) string {
-	p(mysqlDataType)
 	if strings.Contains(mysqlDataType, "int") {
 		return "int"
 	} else if strings.Contains(mysqlDataType, "char") || strings.Contains(mysqlDataType, "text") {
