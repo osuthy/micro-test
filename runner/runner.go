@@ -8,6 +8,8 @@ type testRunner struct {
 	Result string
 }
 
+var Queue DifferenceQueue = DifferenceQueue{}
+
 var TestRunner testRunner = testRunner{}
 
 func Run() {
@@ -15,6 +17,11 @@ func Run() {
 		s := suite
 		for {
 			s.Execute()
+			if !Queue.isEmpty() {
+				for _, v := range Queue.queue {
+					printer.Println(v)
+				}
+			}
 			if !s.HasNextTest() {
 				break
 			}

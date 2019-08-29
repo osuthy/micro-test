@@ -44,7 +44,7 @@ func TestDBはカラムの値を正しいと判定する(t *testing.T) {
 		})
 	})
 
-	assert.Equal(t, 1, len(spy.results))
+	assert.Equal(t, 0, len(spy.results))
 }
 
 func TestDBはカラムの値の誤りを検出する(t *testing.T) {
