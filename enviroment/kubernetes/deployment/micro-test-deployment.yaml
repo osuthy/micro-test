@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: micro-test
-  namespace: micro-test-ns
+  namespace: $NAME_SPACE
 spec:
   replicas: 1
   selector:

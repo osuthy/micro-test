@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: micro-test
-  namespace: micro-test-ns
+  namespace: $NAME_SPACE
 spec:
   selector:
     app: micro-test
