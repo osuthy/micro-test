@@ -11,3 +11,4 @@ spec:
     port: 4000
     targetPort: 80
   type: NodePort
+
