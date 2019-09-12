@@ -30,11 +30,11 @@ func (this *TestBuilder) AddTestCase(testFunction func()) {
 }
 
 func (this *TestBuilder) Build() *TestSuite {
-	root := NewTestSuite(toTestable(this.suites[0].testCases), this.suites[0].setUpFunction)
+	root := NewTestSuite("", toTestable(this.suites[0].testCases), this.suites[0].setUpFunction)
 	for i := 1; i < len(this.suites); i++ {
 		testables := toTestable(this.suites[i].testCases)
 		testables = append(testables, root)
-		suite := NewTestSuite(testables, this.suites[i].setUpFunction)
+		suite := NewTestSuite("", testables, this.suites[i].setUpFunction)
 		root = suite
 	}
 	return root

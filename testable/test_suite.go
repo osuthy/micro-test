@@ -5,7 +5,7 @@ type TestSuite struct {
 	setUpFunction *SetUpFunction
 }
 
-func NewTestSuite(tests []Testable, setUpFunction *SetUpFunction) *TestSuite {
+func NewTestSuite(name string, tests []Testable, setUpFunction *SetUpFunction) *TestSuite {
 	return &TestSuite{
 		tests:         tests,
 		setUpFunction: setUpFunction,
@@ -29,10 +29,10 @@ func (this *TestSuite) NextTest() Testable {
 		if len(tests) == 0 {
 			return nil
 		}
-		return NewTestSuite(tests, this.setUpFunction)
+		return NewTestSuite("", tests, this.setUpFunction)
 	}
 	tests = append(tests, this.tests[1:]...)
-	return NewTestSuite(tests, this.setUpFunction)
+	return NewTestSuite("", tests, this.setUpFunction)
 }
 
 func (this *TestSuite) HasNextTest() bool {
