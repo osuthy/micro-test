@@ -31,10 +31,10 @@ func (this *TestSuite) NextTest() Testable {
 		if len(tests) == 0 {
 			return nil
 		}
-		return NewTestSuite("", tests, this.setUpFunction)
+		return NewTestSuite(this.description, tests, this.setUpFunction)
 	}
 	tests = append(tests, this.tests[1:]...)
-	return NewTestSuite("", tests, this.setUpFunction)
+	return NewTestSuite(this.description, tests, this.setUpFunction)
 }
 
 func (this *TestSuite) HasNextTest() bool {

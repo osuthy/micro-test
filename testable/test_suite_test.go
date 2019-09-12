@@ -40,6 +40,33 @@ func Test実行対象のテストケースの説明を取得(t *testing.T) {
 		result := createTestSuiteWithDescription("A", NewTestCase("B", func() {})).Descriptions()
 		assert.Equal(t, []string{"A", "B"}, result)
 	})
+
+	t.Run("実行対象を次のテストケースに変更した場合", func(t *testing.T) {
+		result := createTestSuiteWithDescription("A",
+			NewTestCase("B1", func() {}),
+			NewTestCase("B2", func() {}),
+		).NextTest().Descriptions()
+		assert.Equal(t, []string{"A", "B2"}, result)
+	})
+
+	t.Run("ネストされたテストケースの場合", func(t *testing.T) {
+		result := createTestSuiteWithDescription("A",
+			createTestSuiteWithDescription("B",
+				NewTestCase("C", func() {}),
+			)).Descriptions()
+		assert.Equal(t, []string{"A", "B", "C"}, result)
+	})
+
+	t.Run("実行対象を次のテストスイートに変更した場合", func(t *testing.T) {
+		result := createTestSuiteWithDescription("A",
+			createTestSuiteWithDescription("B1",
+				NewTestCase("C1", func() {})),
+			createTestSuiteWithDescription("B2",
+				NewTestCase("C2", func() {}),
+				NewTestCase("C3", func() {}),
+			)).NextTest().Descriptions()
+		assert.Equal(t, []string{"A", "B2", "C2"}, result)
+	})
 }
 
 func Test次のテストケースの取り出し(t *testing.T) {
