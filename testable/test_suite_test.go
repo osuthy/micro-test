@@ -35,16 +35,12 @@ func Testテストケースの実行(t *testing.T) {
 	})
 }
 
-// func Test実行対象のテストケースの名前の取得(t *testing.T) {
-// 	t.Run("ネストされていないテストケースの場合", func(t *testing.T) {
-// 		var result []string
-// 		suite := createTestSuite(
-// 			NewTestCase("", func() { result = append(result, "test1") }),
-// 			NewTestCase("", func() { result = append(result, "test2") }))
-// 		suite.Execute()
-// 		assert.Equal(t, []string{"test1"}, result)
-// 	})
-// }
+func Test実行対象のテストケースの説明を取得(t *testing.T) {
+	t.Run("ネストされていないテストケースの場合", func(t *testing.T) {
+		result := createTestSuiteWithDescription("A", NewTestCase("B", func() {})).Descriptions()
+		assert.Equal(t, []string{"A", "B"}, result)
+	})
+}
 
 func Test次のテストケースの取り出し(t *testing.T) {
 	t.Run("次のテストケースがある場合", func(t *testing.T) {
@@ -159,5 +155,9 @@ func Test次のテストケースがあるか判定(t *testing.T) {
 }
 
 func createTestSuite(tests ...Testable) *TestSuite {
-	return NewTestSuite("", tests, nil)
+	return createTestSuiteWithDescription("", tests...)
+}
+
+func createTestSuiteWithDescription(description string, tests ...Testable) *TestSuite {
+	return NewTestSuite(description, tests, nil)
 }

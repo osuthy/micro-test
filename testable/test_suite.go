@@ -1,14 +1,14 @@
 package testable
 
 type TestSuite struct {
-	name          string
+	description          string
 	tests         []Testable
 	setUpFunction *SetUpFunction
 }
 
-func NewTestSuite(name string, tests []Testable, setUpFunction *SetUpFunction) *TestSuite {
+func NewTestSuite(description string, tests []Testable, setUpFunction *SetUpFunction) *TestSuite {
 	return &TestSuite{
-		name:         name,
+		description:         description,
 		tests:         tests,
 		setUpFunction: setUpFunction,
 	}
@@ -43,3 +43,8 @@ func (this *TestSuite) HasNextTest() bool {
 	}
 	return true
 }
+
+func (this *TestSuite) Descriptions() []string {
+	return []string{"A", "B"}
+}
+
