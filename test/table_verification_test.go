@@ -30,8 +30,8 @@ func TestDBはカラムの値を正しいと判定する(t *testing.T) {
 	spy := NewPrinterSpy()
 	runner.SetPrinter(spy)
 
-	Feature("test", func() {
-		Test("test", func() {
+	Describe("test", func() {
+		It("test", func() {
 			runner.TestRunner.Result = "init"
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
 			InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
@@ -55,8 +55,8 @@ func TestDBはカラムの値の誤りを検出する(t *testing.T) {
 	spy := NewPrinterSpy()
 	runner.SetPrinter(spy)
 
-	Feature("test", func() {
-		Test("test", func() {
+	Describe("test", func() {
+		It("test", func() {
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
 			InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
 
@@ -80,8 +80,8 @@ func TestDBはカラム順序は無視して検証する(t *testing.T) {
 	spy := NewPrinterSpy()
 	runner.SetPrinter(spy)
 
-	Feature("test", func() {
-		Test("test", func() {
+	Describe("test", func() {
+		It("test", func() {
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A", "B")
 
 			db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
@@ -104,8 +104,8 @@ func TestDBは行の順序が期待値と異なる場合はテストを失敗さ
 	spy := NewPrinterSpy()
 	runner.SetPrinter(spy)
 
-	Feature("test", func() {
-		Test("test", func() {
+	Describe("test", func() {
+		It("test", func() {
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
 			InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
 

@@ -5,13 +5,13 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/ShoichiroKitano/micro_test"
+	. "github.com/ShoichiroKitano/micro_test"
 	"github.com/ShoichiroKitano/micro_test/runner"
 	"github.com/ShoichiroKitano/micro_test/testable"
 )
 
 func resetSuites() {
-	micro_test.Suites = []testable.Testable{}
+	Suites = []testable.Testable{}
 }
 
 func Test定義したテストを実行できる(t *testing.T) {
@@ -19,12 +19,12 @@ func Test定義したテストを実行できる(t *testing.T) {
 	resetSuites()
 
 	results := []string{}
-	micro_test.Feature("feature description", func() {
-		micro_test.Test("test dscription1", func() {
+	Describe("feature description", func() {
+		It("test dscription1", func() {
 			results = append(results, "test1")
 		})
 
-		micro_test.Test("test dscription2", func() {
+		It("test dscription2", func() {
 			results = append(results, "test2")
 		})
 	})
@@ -39,21 +39,21 @@ func TestImplicitSetUpをテスト毎に行える(t *testing.T) {
 	resetSuites()
 
 	results := []string{}
-	micro_test.Feature("feature description", func() {
-		micro_test.Before(func() {
+	Describe("feature description", func() {
+		Before(func() {
 			results = append(results, "setUp1")
 		})
 
-		micro_test.Feature("sub feature description", func() {
-			micro_test.Before(func() {
+		Describe("sub feature description", func() {
+			Before(func() {
 				results = append(results, "setUp2")
 			})
 
-			micro_test.Test("test dscription1", func() {
+			It("test dscription1", func() {
 				results = append(results, "description1")
 			})
 
-			micro_test.Test("test dscription2", func() {
+			It("test dscription2", func() {
 				results = append(results, "description2")
 			})
 		})
@@ -69,14 +69,14 @@ func Testトップレベルの宣言ごとにテストSuiteが構築される(t 
 	resetSuites()
 
 	results := []string{}
-	micro_test.Feature("feature description1", func() {
-		micro_test.Test("test dscription1", func() {
+	Describe("feature description1", func() {
+		It("test dscription1", func() {
 			results = append(results, "test1")
 		})
 	})
 
-	micro_test.Feature("feature description2", func() {
-		micro_test.Test("test dscription2", func() {
+	Describe("feature description2", func() {
+		It("test dscription2", func() {
 			results = append(results, "test2")
 		})
 	})
