@@ -18,6 +18,16 @@ func Run() {
 		for {
 			s.Execute()
 			if !Queue.isEmpty() {
+				desc := ""
+				for i, v := range s.Descriptions() {
+					if i == 0 {
+						desc = v
+					} else {
+						desc = desc + " " + v
+					}
+				}
+				printer.Println(desc)
+
 				for _, v := range Queue.queue {
 					printer.Println(v)
 				}

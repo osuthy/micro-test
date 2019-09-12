@@ -30,8 +30,8 @@ func TestDBはカラムの値を正しいと判定する(t *testing.T) {
 	spy := NewPrinterSpy()
 	runner.SetPrinter(spy)
 
-	Describe("test", func() {
-		It("test", func() {
+	Describe("A", func() {
+		It("B", func() {
 			runner.TestRunner.Result = "init"
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
 			InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
@@ -55,8 +55,8 @@ func TestDBはカラムの値の誤りを検出する(t *testing.T) {
 	spy := NewPrinterSpy()
 	runner.SetPrinter(spy)
 
-	Describe("test", func() {
-		It("test", func() {
+	Describe("A", func() {
+		It("B", func() {
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
 			InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
 
@@ -70,7 +70,8 @@ func TestDBはカラムの値の誤りを検出する(t *testing.T) {
 		})
 	})
 	runner.Run()
-	assert.Equal(t, 1, len(spy.results))
+	assert.Equal(t, "A B", spy.results[0])
+	assert.Equal(t, 2, len(spy.results))
 }
 
 func TestDBはカラム順序は無視して検証する(t *testing.T) {
@@ -104,8 +105,8 @@ func TestDBは行の順序が期待値と異なる場合はテストを失敗さ
 	spy := NewPrinterSpy()
 	runner.SetPrinter(spy)
 
-	Describe("test", func() {
-		It("test", func() {
+	Describe("A", func() {
+		It("B", func() {
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
 			InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
 
@@ -120,5 +121,6 @@ func TestDBは行の順序が期待値と異なる場合はテストを失敗さ
 	})
 
 	runner.Run()
-	assert.Equal(t, 1, len(spy.results))
+	assert.Equal(t, "A B", spy.results[0])
+	assert.Equal(t, 2, len(spy.results))
 }

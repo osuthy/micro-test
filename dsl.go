@@ -19,7 +19,7 @@ func Describe(description string, testFunction func()) interface{} {
 		buildLock = lock
 	}
 
-	testBuilder.AddTestSuite()
+	testBuilder.AddTestSuite(description)
 	testFunction()
 
 	if buildLock == lock {
@@ -31,6 +31,6 @@ func Describe(description string, testFunction func()) interface{} {
 }
 
 func It(description string, testFunction func()) interface{} {
-	testBuilder.AddTestCase(testFunction)
+	testBuilder.AddTestCase(description, testFunction)
 	return nil
 }
