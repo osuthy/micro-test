@@ -124,3 +124,30 @@ func TestDBは行の順序が期待値と異なる場合はテストを失敗さ
 	assert.Equal(t, "A B", spy.results[0])
 	assert.Equal(t, 2, len(spy.results))
 }
+
+func Test失敗したテストに省略記法を使った場合(t *testing.T) {
+	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
+	defer resetSuites()
+	resetSuites()
+	spy := NewPrinterSpy()
+	runner.SetPrinter(spy)
+
+	Describe("A", func() {
+		It(func() {
+			InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
+			InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
+
+			db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
+			db.DB("conName").ShouldHaveTable(
+				db.Table("test").
+					Columns("column1", "column2").
+					Record("B1", "B2").
+					Record("A1", "A2"),
+			)
+		})
+	})
+
+	runner.Run()
+	assert.Equal(t, "A", spy.results[0])
+	assert.Equal(t, 2, len(spy.results))
+}

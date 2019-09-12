@@ -30,7 +30,13 @@ func Describe(description string, testFunction func()) interface{} {
 	return nil
 }
 
-func It(description string, testFunction func()) interface{} {
-	testBuilder.AddTestCase(description, testFunction)
+func It(params ...interface{}) interface{} {
+	if description, ok := params[0].(string); ok {
+		function, _ := params[1].(func())
+		testBuilder.AddTestCase(description, function)
+	} else {
+		function, _ := params[0].(func())
+		testBuilder.AddTestCase("", function)
+	}
 	return nil
 }

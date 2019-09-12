@@ -18,16 +18,7 @@ func Run() {
 		for {
 			s.Execute()
 			if !Queue.isEmpty() {
-				desc := ""
-				for i, v := range s.Descriptions() {
-					if i == 0 {
-						desc = v
-					} else {
-						desc = desc + " " + v
-					}
-				}
-				printer.Println(desc)
-
+				printer.Println(toFormatedDescription(s.Descriptions()))
 				for _, v := range Queue.queue {
 					printer.Println(v)
 				}
@@ -41,3 +32,14 @@ func Run() {
 	}
 }
 
+func toFormatedDescription(descriptions []string) string {
+	desc := ""
+	for i, v := range descriptions {
+		if i == 0 {
+			desc = v
+		} else if v != "" {
+			desc = desc + " " + v
+		}
+	}
+	return desc
+}
