@@ -31,15 +31,6 @@ func findConnectionInformation(connectionName string) *ConnectionInformation {
 	return nil
 }
 
-func findDefaultValueOf(tableName string) TableInformation {
-	for _, tableInformation := range defaultValues {
-		if tableInformation.tableName == tableName {
-			return tableInformation
-		}
-	}
-	return TableInformation{}
-}
-
 type DSL struct {
 	connection *Connection
 }
@@ -53,13 +44,8 @@ func DB(connectionName string) DSL {
 func (this DSL) HasRecords(fixture TableInformation) {
 	fixtureTable := fixture.ToTable()
 	definition := this.connection.FindColumnDefinition(fixtureTable)
-	//defaultValue := findDefaultValueOf(fixtureTable.Name)
-	//if !reflect.DeepEqual(defaultValue, TableInformation{}) {
 	completedTable := definition.FillTableWithDefaultValue(fixtureTable)
 	this.connection.StoreTable(completedTable)
-	//} else {
-	//	this.connection.StoreTable(fixtureTable)
-	//}
 }
 
 func (this DSL) ShouldHaveTable(expected TableInformation) {
@@ -72,16 +58,5 @@ func (this DSL) ShouldHaveTable(expected TableInformation) {
 
 func (this DSL) Truncate(tableName string) {
 	this.connection.TruncateTable(Table(tableName).ToTable())
-}
-
-// 以下は一旦不要
-func (this DSL) DefineDefaultValue(defaultValue TableInformation) {
-	defaultValues = append(defaultValues, defaultValue)
-}
-
-var defaultValues = []TableInformation{}
-
-func ResetDefalultValue() {
-	defaultValues = []TableInformation{}
 }
 
