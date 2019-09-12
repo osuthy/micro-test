@@ -8,7 +8,7 @@ type testRunner struct {
 	Result string
 }
 
-var Queue DifferenceQueue = DifferenceQueue{}
+var Queue *DifferenceQueue = &DifferenceQueue{}
 
 var TestRunner testRunner = testRunner{}
 
@@ -22,6 +22,7 @@ func Run() {
 					printer.Println(v)
 				}
 			}
+			Queue = &DifferenceQueue{}
 			if !s.HasNextTest() {
 				break
 			}
