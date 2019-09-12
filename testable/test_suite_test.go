@@ -30,7 +30,7 @@ func Test一番最初に入力されたテストケースのみを実行(t *test
 }
 
 func Test次のテストケースの取り出し(t *testing.T) {
-	t.Run("テストケースがある場合", func(t *testing.T) {
+	t.Run("次のテストケースがある場合", func(t *testing.T) {
 		var result []string
 		suite := createTestSuite(
 			NewTestCase(func() { result = append(result, "test1") }),
@@ -43,7 +43,7 @@ func Test次のテストケースの取り出し(t *testing.T) {
 		assert.Equal(t, []string{"test2"}, result)
 	})
 
-	t.Run("テストケースの個数分取り出す場合", func(t *testing.T) {
+	t.Run("テストケースを全て取り出す場合", func(t *testing.T) {
 		var result []string
 		suite := createTestSuite(
 			NewTestCase(func() { result = append(result, "test1") }),
@@ -56,7 +56,7 @@ func Test次のテストケースの取り出し(t *testing.T) {
 		assert.Equal(t, []string{"test3"}, result)
 	})
 
-	t.Run("テストスイートがある場合", func(t *testing.T) {
+	t.Run("テストスイートをネストしている場合", func(t *testing.T) {
 		var result []string
 		suite := createTestSuite(
 			createTestSuite(
@@ -83,9 +83,25 @@ func Test次のテストケースの取り出し(t *testing.T) {
 		assert.Equal(t, []string{"test3"}, result)
 	})
 
-	t.Run("テストケースの1個の場合", func(t *testing.T) {
+	t.Run("複数のテストスイートが存在する場合", func(t *testing.T) {
 		var result []string
-		suite := createTestSuite(NewTestCase(func() { result = append(result, "test1") }))
+		suite := createTestSuite(
+			createTestSuite(
+				NewTestCase(func() { result = append(result, "test1") }),
+				NewTestCase(func() { result = append(result, "test2") })),
+			createTestSuite(
+				NewTestCase(func() { result = append(result, "test3") })),
+			)
+		last := suite.NextTest().NextTest()
+
+		last.Execute()
+		assert.Equal(t, []string{"test3"}, result)
+	})
+
+	t.Run("次のテストケースが無い場合", func(t *testing.T) {
+		var result []string
+		suite := createTestSuite(
+			NewTestCase(func() { result = append(result, "test1") }))
 		assert.Equal(t, nil, suite.NextTest())
 	})
 }
@@ -114,6 +130,13 @@ func Test次のテストケースがあるか判定(t *testing.T) {
 			createTestSuite(
 				NewTestCase(func() {}),
 				NewTestCase(func() {})))
+		assert.True(t, suite.HasNextTest())
+	})
+
+	t.Run("入れ子のテストスイートが複数の場合", func(t *testing.T) {
+		suite := createTestSuite(
+			createTestSuite(NewTestCase(func() {})),
+			createTestSuite(NewTestCase(func() {})))
 		assert.True(t, suite.HasNextTest())
 	})
 }
