@@ -45,6 +45,6 @@ func (this *TestSuite) HasNextTest() bool {
 }
 
 func (this *TestSuite) Descriptions() []string {
-	return []string{"A", "B"}
+	return append([]string{this.description}, this.tests[0].Descriptions()...)
 }
 

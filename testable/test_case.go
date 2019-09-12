@@ -23,3 +23,7 @@ func (this *TestCase) HasNextTest() bool {
 func (this *TestCase) NextTest() Testable {
 	return nil
 }
+
+func (this *TestCase) Descriptions() []string {
+	return []string{this.description}
+}
