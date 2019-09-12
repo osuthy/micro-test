@@ -26,7 +26,7 @@ func (this *TestBuilder) AddSetUpFunction(setUpFunction func()) {
 }
 
 func (this *TestBuilder) AddTestCase(testFunction func()) {
-	this.suites[0].testCases = append(this.suites[0].testCases, NewTestCase(testFunction))
+	this.suites[0].testCases = append(this.suites[0].testCases, NewTestCase("", testFunction))
 }
 
 func (this *TestBuilder) Build() *TestSuite {

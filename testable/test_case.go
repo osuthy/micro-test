@@ -1,11 +1,15 @@
 package testable
 
 type TestCase struct {
+	name string
 	function func()
 }
 
-func NewTestCase(function func()) *TestCase {
-	return &TestCase{function: function}
+func NewTestCase(name string, function func()) *TestCase {
+	return &TestCase{
+		name: name,
+		function: function,
+	}
 }
 
 func (this *TestCase) Execute() {

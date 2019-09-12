@@ -1,12 +1,14 @@
 package testable
 
 type TestSuite struct {
+	name          string
 	tests         []Testable
 	setUpFunction *SetUpFunction
 }
 
 func NewTestSuite(name string, tests []Testable, setUpFunction *SetUpFunction) *TestSuite {
 	return &TestSuite{
+		name:         name,
 		tests:         tests,
 		setUpFunction: setUpFunction,
 	}
