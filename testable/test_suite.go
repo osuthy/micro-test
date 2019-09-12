@@ -12,11 +12,6 @@ func NewTestSuite(tests []Testable, setUpFunction *SetUpFunction) *TestSuite {
 	}
 }
 
-func (this *TestSuite) AddTest(test Testable) *TestSuite {
-	tests := append(this.tests, test)
-	return NewTestSuite(tests, this.setUpFunction)
-}
-
 func (this *TestSuite) Execute() {
 	if this.setUpFunction != nil {
 		this.setUpFunction.Execute()

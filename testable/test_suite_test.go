@@ -147,8 +147,14 @@ func Test次のテストケースがあるか判定(t *testing.T) {
 	})
 }
 
-//func Test(t *testing.T) {
+//func Test実行対象のテスト名の取得(t *testing.T) {
 //	t.Run("テストケースの場合", func(t *testing.T) {
+//		var result []string
+//		suite := createTestSuite(
+//			NewTestCase(func() { result = append(result, "test1") }),
+//			NewTestCase(func() { result = append(result, "test2") }))
+//		suite.Execute()
+//		assert.Equal(t, []string{"test1"}, result)
 //	})
 //}
 
