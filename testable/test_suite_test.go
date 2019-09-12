@@ -5,11 +5,7 @@ import (
 	"testing"
 )
 
-func createTestSuite(tests ...Testable) *TestSuite {
-	return NewTestSuite(tests, nil)
-}
-
-func Test一番最初に入力されたテストケースのみを実行(t *testing.T) {
+func Testテストケースの実行(t *testing.T) {
 	t.Run("テストケースの場合", func(t *testing.T) {
 		var result []string
 		suite := createTestSuite(
@@ -17,6 +13,16 @@ func Test一番最初に入力されたテストケースのみを実行(t *test
 			NewTestCase(func() { result = append(result, "test2") }))
 		suite.Execute()
 		assert.Equal(t, []string{"test1"}, result)
+	})
+
+	t.Run("複数回実行する場合も常に同じテストケースが実行される", func(t *testing.T) {
+		var result []string
+		suite := createTestSuite(
+			NewTestCase(func() { result = append(result, "test1") }),
+			NewTestCase(func() { result = append(result, "test2") }))
+		suite.Execute()
+		suite.Execute()
+		assert.Equal(t, []string{"test1", "test1"}, result)
 	})
 
 	t.Run("テストスイートの場合", func(t *testing.T) {
@@ -140,3 +146,13 @@ func Test次のテストケースがあるか判定(t *testing.T) {
 		assert.True(t, suite.HasNextTest())
 	})
 }
+
+//func Test(t *testing.T) {
+//	t.Run("テストケースの場合", func(t *testing.T) {
+//	})
+//}
+
+func createTestSuite(tests ...Testable) *TestSuite {
+	return NewTestSuite(tests, nil)
+}
+
