@@ -23,12 +23,17 @@ func (this *PrinterSpy) Println(str string) {
 	this.results = append(this.results, str)
 }
 
+func setUpSpy() *PrinterSpy {
+	spy := NewPrinterSpy()
+	runner.SetPrinter(spy)
+	return spy
+}
+
 func TestDBはカラムの値を正しいと判定する(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 	defer resetSuites()
 	resetSuites()
-	spy := NewPrinterSpy()
-	runner.SetPrinter(spy)
+	spy := setUpSpy()
 
 	Describe("A", func() {
 		It("B", func() {
@@ -52,8 +57,7 @@ func TestDBはカラムの値の誤りを検出する(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 	defer resetSuites()
 	resetSuites()
-	spy := NewPrinterSpy()
-	runner.SetPrinter(spy)
+	spy := setUpSpy()
 
 	Describe("A", func() {
 		It("B", func() {
@@ -78,8 +82,7 @@ func TestDBはカラム順序は無視して検証する(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 	defer resetSuites()
 	resetSuites()
-	spy := NewPrinterSpy()
-	runner.SetPrinter(spy)
+	spy := setUpSpy()
 
 	Describe("test", func() {
 		It("test", func() {
@@ -102,8 +105,7 @@ func TestDBは行の順序が期待値と異なる場合はテストを失敗さ
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 	defer resetSuites()
 	resetSuites()
-	spy := NewPrinterSpy()
-	runner.SetPrinter(spy)
+	spy := setUpSpy()
 
 	Describe("A", func() {
 		It("B", func() {
@@ -129,8 +131,7 @@ func Test失敗したテストに省略記法を使った場合(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 	defer resetSuites()
 	resetSuites()
-	spy := NewPrinterSpy()
-	runner.SetPrinter(spy)
+	spy := setUpSpy()
 
 	Describe("A", func() {
 		It(func() {

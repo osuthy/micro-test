@@ -7,6 +7,7 @@ import (
 	"github.com/ShoichiroKitano/micro_test/http"
 	"github.com/ShoichiroKitano/micro_test/json"
 	"github.com/ShoichiroKitano/micro_test/runner"
+	. "github.com/ShoichiroKitano/micro_test"
 
 	"github.com/ShoichiroKitano/micro_test/test/wiremock"
 )
@@ -16,14 +17,24 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 
 	t.Run("Objectがトップレベルの階層の場合", func(t *testing.T) {
 		defer wiremock.Reset("localhost:8080")
-		wiremock.Stubbing("localhost:8080", "/test", "GET",
-			`{ "object": "value" }`, 200, "test success")
+		defer resetSuites()
+		resetSuites()
+		spy := setUpSpy()
 
-		http.DefineServer("test_server", "http://localhost:8080")
-		http.Server("test_server").
-			ReceiveRequest("GET", "/test", http.WithJson(json.O{"object": "value"})).
-			AndResponseShouldBe(http.Status(200).TextPlain("test success"))
-		assert.Equal(t, "success", runner.TestRunner.Result)
+		Describe("A", func() {
+			It("B", func() {
+				wiremock.Stubbing("localhost:8080", "/test", "GET",
+					`{ "object": "value" }`, 200, "test success")
+
+				http.DefineServer("test_server", "http://localhost:8080")
+				http.Server("test_server").
+					ReceiveRequest("GET", "/test", http.WithJson(json.O{"object": "value"})).
+					AndResponseShouldBe(http.Status(200).TextPlain("test success"))
+			})
+		})
+
+		runner.Run()
+		assert.Equal(t, 0, len(spy.results))
 	})
 
 	t.Run("Arrayがトップレベルの階層の場合", func(t *testing.T) {

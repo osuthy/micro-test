@@ -2,6 +2,7 @@ package runner
 
 import (
 	"github.com/ShoichiroKitano/micro_test"
+	"github.com/ShoichiroKitano/micro_test/tastable"
 )
 
 type testRunner struct {
@@ -14,21 +15,27 @@ var TestRunner testRunner = testRunner{}
 
 func Run() {
 	for _, suite := range micro_test.Suites {
-		s := suite
-		for {
-			s.Execute()
-			if !Queue.isEmpty() {
-				printer.Println(toFormatedDescription(s.Descriptions()))
-				for _, v := range Queue.queue {
-					printer.Println(v)
-				}
+		executeSuite(suite)
+	}
+}
+
+func executeSuite(suite testable.TestSuite) {
+	s := suite
+	for {
+		s.Execute()
+		if !Queue.isEmpty() {
+			printer.Println(toFormatedDescription(s.Descriptions()))
+			for _, v := range Queue.queue {
+				printer.Println(v)
 			}
-			Queue = &DifferenceQueue{}
-			if !s.HasNextTest() {
-				break
-			}
-			s = s.NextTest()
 		}
+		Queue = &DifferenceQueue{}
+
+		if !s.HasNextTest() {
+			return
+		}
+
+		s = s.NextTest()
 	}
 }
 
