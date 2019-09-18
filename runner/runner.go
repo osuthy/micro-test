@@ -2,7 +2,7 @@ package runner
 
 import (
 	"github.com/ShoichiroKitano/micro_test"
-	"github.com/ShoichiroKitano/micro_test/tastable"
+	"github.com/ShoichiroKitano/micro_test/testable"
 )
 
 type testRunner struct {
@@ -19,7 +19,7 @@ func Run() {
 	}
 }
 
-func executeSuite(suite testable.TestSuite) {
+func executeSuite(suite testable.Testable) {
 	s := suite
 	for {
 		s.Execute()
