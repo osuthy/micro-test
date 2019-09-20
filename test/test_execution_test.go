@@ -7,12 +7,7 @@ import (
 
 	. "github.com/ShoichiroKitano/micro_test"
 	"github.com/ShoichiroKitano/micro_test/runner"
-	"github.com/ShoichiroKitano/micro_test/testable"
 )
-
-func resetSuites() {
-	Suites = []testable.Testable{}
-}
 
 func Test定義したテストを実行できる(t *testing.T) {
 	defer resetSuites()

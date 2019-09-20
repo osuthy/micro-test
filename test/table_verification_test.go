@@ -11,24 +11,6 @@ import (
 	"github.com/ShoichiroKitano/micro_test/runner"
 )
 
-type PrinterSpy struct {
-	results []string
-}
-
-func NewPrinterSpy() *PrinterSpy {
-	return new(PrinterSpy)
-}
-
-func (this *PrinterSpy) Println(str string) {
-	this.results = append(this.results, str)
-}
-
-func setUpSpy() *PrinterSpy {
-	spy := NewPrinterSpy()
-	runner.SetPrinter(spy)
-	return spy
-}
-
 func TestDBはカラムの値を正しいと判定する(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 	defer resetSuites()
