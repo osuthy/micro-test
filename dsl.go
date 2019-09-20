@@ -1,11 +1,11 @@
 package micro_test
 
 import (
+	"runtime"
 	. "github.com/ShoichiroKitano/micro_test/testable"
 )
 
 var testBuilder *TestBuilder = NewTestBuilder()
-var buildLock interface{} = nil
 
 var Suites []Testable = []Testable{}
 
@@ -14,20 +14,18 @@ func Before(setUpFunction func()) {
 }
 
 func Describe(description string, testFunction func()) interface{} {
-	lock := new(interface{})
-	if buildLock == nil {
-		buildLock = lock
-	}
-
 	testBuilder.AddTestSuite(description)
 	testFunction()
-
-	if buildLock == lock {
+	if !calledByDescribeForDescribe() {
 		Suites = append(Suites, testBuilder.Build())
 		testBuilder = NewTestBuilder()
-		buildLock = nil
 	}
 	return nil
+}
+
+func calledByDescribeForDescribe() bool {
+	pc, _, _, _ := runtime.Caller(3)
+	return runtime.FuncForPC(pc).Name() == "github.com/ShoichiroKitano/micro_test.Describe"
 }
 
 func It(params ...interface{}) interface{} {
