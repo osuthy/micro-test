@@ -9,8 +9,8 @@ import (
 )
 
 func TestDBはデータのセットアップができる(t *testing.T) {
-	TruncateTable("mysql", "root:@/test_micro_test", "test")
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
+	TruncateTable("mysql", "root:@/test_micro_test", "test")
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").HasRecords(
@@ -28,8 +28,8 @@ func TestDBはデータのセットアップができる(t *testing.T) {
 }
 
 func Test事前条件のデータの補完(t *testing.T) {
-	TruncateTable("mysql", "root:@/test_micro_test", "record_completion_all_type")
 	defer TruncateTable("mysql", "root:@/test_micro_test", "record_completion_all_type")
+	TruncateTable("mysql", "root:@/test_micro_test", "record_completion_all_type")
 
 	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").HasRecords(
