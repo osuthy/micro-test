@@ -19,7 +19,7 @@ func FindDBConnection(driverName, connectionInformation string) *Connection {
 		}
 	}
 	driver, _ := sql.Open(driverName, connectionInformation)
-	newConnection := NewConnection(driver)
+	newConnection := NewConnection(driver, driverName)
 	maps = append(maps, ConnectionMap{driverName, connectionInformation, newConnection})
 	return newConnection
 }

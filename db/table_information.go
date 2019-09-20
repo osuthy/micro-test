@@ -8,14 +8,13 @@ type TableInformation struct {
 	tableName     string
 	columnNames   []string
 	records       [][]interface{}
-	defaultRecord map[string]interface{}
 }
 
 func Table(tableName string) TableInformation {
 	return TableInformation{
 		tableName:     tableName,
 		records:       [][]interface{}{},
-		defaultRecord: map[string]interface{}{}}
+	}
 }
 
 func (this TableInformation) Columns(columnNames ...string) TableInformation {
@@ -26,19 +25,6 @@ func (this TableInformation) Columns(columnNames ...string) TableInformation {
 func (this TableInformation) Record(values ...interface{}) TableInformation {
 	this.records = append(this.records, values)
 	return this
-}
-
-func (this TableInformation) DefaultValue(columnName string, value interface{}) TableInformation {
-	this.defaultRecord[columnName] = value
-	return this
-}
-
-func (this TableInformation) DefaultRow() *tbl.Row {
-	columns := []*tbl.Column{}
-	for columnName, value := range this.defaultRecord {
-		columns = append(columns, tbl.NewColumn(columnName, value))
-	}
-	return tbl.NewRow(columns).Sorted()
 }
 
 func (this TableInformation) ToTable() *tbl.Table {

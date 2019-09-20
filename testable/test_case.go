@@ -1,11 +1,15 @@
 package testable
 
 type TestCase struct {
+	description string
 	function func()
 }
 
-func NewTestCase(function func()) *TestCase {
-	return &TestCase{function: function}
+func NewTestCase(description string, function func()) *TestCase {
+	return &TestCase{
+		description: description,
+		function: function,
+	}
 }
 
 func (this *TestCase) Execute() {
@@ -18,4 +22,8 @@ func (this *TestCase) HasNextTest() bool {
 
 func (this *TestCase) NextTest() Testable {
 	return nil
+}
+
+func (this *TestCase) Descriptions() []string {
+	return []string{this.description}
 }

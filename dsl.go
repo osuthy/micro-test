@@ -13,13 +13,13 @@ func Before(setUpFunction func()) {
 	testBuilder.AddSetUpFunction(setUpFunction)
 }
 
-func Feature(description string, testFunction func()) interface{} {
+func Describe(description string, testFunction func()) interface{} {
 	lock := new(interface{})
 	if buildLock == nil {
 		buildLock = lock
 	}
 
-	testBuilder.AddTestSuite()
+	testBuilder.AddTestSuite(description)
 	testFunction()
 
 	if buildLock == lock {
@@ -30,7 +30,13 @@ func Feature(description string, testFunction func()) interface{} {
 	return nil
 }
 
-func Test(description string, testFunction func()) interface{} {
-	testBuilder.AddTestCase(testFunction)
+func It(params ...interface{}) interface{} {
+	if description, ok := params[0].(string); ok {
+		function, _ := params[1].(func())
+		testBuilder.AddTestCase(description, function)
+	} else {
+		function, _ := params[0].(func())
+		testBuilder.AddTestCase("", function)
+	}
 	return nil
 }
