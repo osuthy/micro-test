@@ -5,13 +5,7 @@ import (
 	"github.com/ShoichiroKitano/micro_test/testable"
 )
 
-type testRunner struct {
-	Result string
-}
-
-var Queue *DifferenceQueue = &DifferenceQueue{}
-
-var TestRunner testRunner = testRunner{}
+var Diffs *Differences = &Differences{}
 
 func Run() {
 	for _, suite := range micro_test.Suites {
@@ -23,13 +17,13 @@ func executeSuite(suite testable.Testable) {
 	s := suite
 	for {
 		s.Execute()
-		if !Queue.isEmpty() {
+		if !Diffs.isEmpty() {
 			printer.Println(toFormatedDescription(s.Descriptions()))
-			for _, v := range Queue.queue {
+			for _, v := range Diffs.slice {
 				printer.Println(v)
 			}
 		}
-		Queue = &DifferenceQueue{}
+		Diffs = &Differences{}
 
 		if !s.HasNextTest() {
 			return

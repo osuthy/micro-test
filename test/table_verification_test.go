@@ -37,7 +37,6 @@ func TestDBはカラムの値を正しいと判定する(t *testing.T) {
 
 	Describe("A", func() {
 		It("B", func() {
-			runner.TestRunner.Result = "init"
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
 			InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
 			db.DefineConnection("conName", "mysql", "root:@/test_micro_test")

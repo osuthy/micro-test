@@ -52,7 +52,7 @@ func (this DSL) ShouldHaveTable(expected TableInformation) {
 	expectedTable := expected.ToTable()
 	resultTable := this.connection.FindTable(expectedTable)
 	if !expectedTable.IsSameAsTable(resultTable) {
-		runner.Queue.Push("assert is fail")
+		runner.Diffs.Push("assert is fail")
 	}
 }
 
