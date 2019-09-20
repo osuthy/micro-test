@@ -98,7 +98,6 @@ func TestHttpはサーバーはレスポンスが期待と異なる場合はテ�
 			http.Server("test_server").
 				ReceiveRequest("POST", "/test", http.WithJson(json.O{"object": "value"})).
 				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
-			assert.Equal(t, "", runner.TestRunner.Result)
 		})
 	})
 	runner.Run()
