@@ -110,7 +110,7 @@ func Test次のテストケースの取り出し(t *testing.T) {
 		assert.Equal(t, []string{"test2"}, result)
 	})
 
-	t.Run("テストスイートからテストケースの個数分取り出す場合", func(t *testing.T) {
+	t.Run("テストスイートから最後のテストケースを取り出す場合", func(t *testing.T) {
 		var result []string
 		suite := createTestSuite(
 			createTestSuite(
