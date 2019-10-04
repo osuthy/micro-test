@@ -13,6 +13,10 @@ func Before(setUpFunction func()) {
 	testBuilder.AddSetUpFunction(setUpFunction)
 }
 
+func After(tearDownFunction func()) {
+	testBuilder.AddTearDownFunction(tearDownFunction)
+}
+
 func Describe(description string, testFunction func()) interface{} {
 	testBuilder.AddTestSuite(description)
 	testFunction()
