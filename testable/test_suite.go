@@ -4,13 +4,15 @@ type TestSuite struct {
 	description          string
 	tests         []Testable
 	setUpFunction *SetUpFunction
+	tearDownFunction *TearDownFunction
 }
 
-func NewTestSuite(description string, tests []Testable, setUpFunction *SetUpFunction) *TestSuite {
+func NewTestSuite(description string, tests []Testable, setUpFunction *SetUpFunction, tearDownFunction *TearDownFunction) *TestSuite {
 	return &TestSuite{
 		description:         description,
 		tests:         tests,
 		setUpFunction: setUpFunction,
+		tearDownFunction: tearDownFunction,
 	}
 }
 
@@ -19,6 +21,9 @@ func (this *TestSuite) Execute() {
 		this.setUpFunction.Execute()
 	}
 	this.tests[0].Execute()
+	if this.tearDownFunction != nil {
+		this.tearDownFunction.Execute()
+	}
 }
 
 func (this *TestSuite) NextTest() Testable {
@@ -31,10 +36,10 @@ func (this *TestSuite) NextTest() Testable {
 		if len(tests) == 0 {
 			return nil
 		}
-		return NewTestSuite(this.description, tests, this.setUpFunction)
+		return NewTestSuite(this.description, tests, this.setUpFunction, this.tearDownFunction)
 	}
 	tests = append(tests, this.tests[1:]...)
-	return NewTestSuite(this.description, tests, this.setUpFunction)
+	return NewTestSuite(this.description, tests, this.setUpFunction, this.tearDownFunction)
 }
 
 func (this *TestSuite) HasNextTest() bool {

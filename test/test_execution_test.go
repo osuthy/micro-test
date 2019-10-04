@@ -80,3 +80,33 @@ func Testトップレベルの宣言ごとにテストSuiteが構築される(t 
 
 	assert.Equal(t, []string{"test1", "test2"}, results)
 }
+
+func TestImplicitTearDownをテスト毎に行える(t *testing.T) {
+	defer resetSuites()
+	resetSuites()
+
+	results := []string{}
+	Describe("feature description", func() {
+		After(func() {
+			results = append(results, "tearDown2")
+		})
+
+		Describe("sub feature description", func() {
+			After(func() {
+				results = append(results, "tearDown1")
+			})
+
+			It("test dscription1", func() {
+				results = append(results, "description1")
+			})
+
+			It("test dscription2", func() {
+				results = append(results, "description2")
+			})
+		})
+	})
+
+	runner.Run()
+
+	assert.Equal(t, []string{"description1", "tearDown1", "tearDown2", "description2", "tearDown1", "tearDown2"}, results)
+}

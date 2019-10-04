@@ -186,5 +186,5 @@ func createTestSuite(tests ...Testable) *TestSuite {
 }
 
 func createTestSuiteWithDescription(description string, tests ...Testable) *TestSuite {
-	return NewTestSuite(description, tests, nil)
+	return NewTestSuite(description, tests, nil, nil)
 }
