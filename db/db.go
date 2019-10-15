@@ -1,8 +1,8 @@
 package db
 
 import (
-	. "github.com/ShoichiroKitano/micro_test/db/infra"
-	"github.com/ShoichiroKitano/micro_test/runner"
+	. "github.com/osuthy/micro-test/db/infra"
+	"github.com/osuthy/micro-test/runner"
 	_ "github.com/go-sql-driver/mysql"
 )
 

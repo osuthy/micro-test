@@ -4,12 +4,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"testing"
 
-	"github.com/ShoichiroKitano/micro_test/http"
-	"github.com/ShoichiroKitano/micro_test/json"
-	"github.com/ShoichiroKitano/micro_test/runner"
-	. "github.com/ShoichiroKitano/micro_test"
+	"github.com/osuthy/micro-test/http"
+	"github.com/osuthy/micro-test/json"
+	"github.com/osuthy/micro-test/runner"
+	. "github.com/osuthy/micro-test"
 
-	"github.com/ShoichiroKitano/micro_test/test/wiremock"
+	"github.com/osuthy/micro-test/test/wiremock"
 )
 
 func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {

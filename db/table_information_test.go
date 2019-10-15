@@ -1,7 +1,7 @@
 package db
 
 import (
-	tbl "github.com/ShoichiroKitano/micro_test/db/table"
+	tbl "github.com/osuthy/micro-test/db/table"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

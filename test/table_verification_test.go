@@ -4,11 +4,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"testing"
 
-	. "github.com/ShoichiroKitano/micro_test/db/infra"
-	. "github.com/ShoichiroKitano/micro_test"
+	. "github.com/osuthy/micro-test/db/infra"
+	. "github.com/osuthy/micro-test"
 
-	"github.com/ShoichiroKitano/micro_test/db"
-	"github.com/ShoichiroKitano/micro_test/runner"
+	"github.com/osuthy/micro-test/db"
+	"github.com/osuthy/micro-test/runner"
 )
 
 func TestDBはカラムの値を正しいと判定する(t *testing.T) {

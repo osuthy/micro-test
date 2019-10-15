@@ -5,9 +5,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"testing"
 
-	. "github.com/ShoichiroKitano/micro_test/db/infra"
+	. "github.com/osuthy/micro-test/db/infra"
 
-	"github.com/ShoichiroKitano/micro_test/db"
+	"github.com/osuthy/micro-test/db"
 )
 
 func TestDBは指定したテーブルをtruncateできる(t *testing.T) {

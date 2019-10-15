@@ -1,14 +1,14 @@
 package runner
 
 import (
-	"github.com/ShoichiroKitano/micro_test"
-	"github.com/ShoichiroKitano/micro_test/testable"
+	"github.com/osuthy/micro-test"
+	"github.com/osuthy/micro-test/testable"
 )
 
 var Diffs *Differences = &Differences{}
 
 func Run() {
-	for _, suite := range micro_test.Suites {
+	for _, suite := range microtest.Suites {
 		executeSuite(suite)
 	}
 }

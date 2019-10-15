@@ -1,8 +1,8 @@
-package micro_test
+package microtest
 
 import (
 	"runtime"
-	. "github.com/ShoichiroKitano/micro_test/testable"
+	. "github.com/osuthy/micro-test/testable"
 )
 
 var testBuilder *TestBuilder = NewTestBuilder()
@@ -29,7 +29,7 @@ func Describe(description string, testFunction func()) interface{} {
 
 func calledByDescribeForDescribe() bool {
 	pc, _, _, _ := runtime.Caller(3)
-	return runtime.FuncForPC(pc).Name() == "github.com/ShoichiroKitano/micro_test.Describe"
+	return runtime.FuncForPC(pc).Name() == "github.com/osuthy/micro-test.Describe"
 }
 
 func It(params ...interface{}) interface{} {

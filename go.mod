@@ -1,4 +1,4 @@
-module github.com/ShoichiroKitano/micro_test
+module github.com/osuthy/micro-test
 
 go 1.12
 

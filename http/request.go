@@ -2,7 +2,7 @@ package http
 
 import (
 	"fmt"
-	. "github.com/ShoichiroKitano/micro_test/json"
+	. "github.com/osuthy/micro-test/json"
 	"strings"
 )
 

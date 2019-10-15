@@ -1,4 +1,4 @@
-package micro_test
+package microtest
 
 import (
 	"github.com/k0kubun/pp"

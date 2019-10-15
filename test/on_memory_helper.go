@@ -1,9 +1,9 @@
 package test
 
 import (
-	"github.com/ShoichiroKitano/micro_test/testable"
-	"github.com/ShoichiroKitano/micro_test/runner"
-	"github.com/ShoichiroKitano/micro_test"
+	"github.com/osuthy/micro-test/testable"
+	"github.com/osuthy/micro-test/runner"
+	"github.com/osuthy/micro-test"
 )
 
 type PrinterSpy struct {
@@ -25,6 +25,6 @@ func setUpSpy() *PrinterSpy {
 }
 
 func resetSuites() {
-	micro_test.Suites = []testable.Testable{}
+	microtest.Suites = []testable.Testable{}
 }
 

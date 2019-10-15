@@ -3,9 +3,9 @@ package test
 import (
 	"testing"
 	"github.com/stretchr/testify/assert"
-	. "github.com/ShoichiroKitano/micro_test/db/infra"
+	. "github.com/osuthy/micro-test/db/infra"
 
-	"github.com/ShoichiroKitano/micro_test/db"
+	"github.com/osuthy/micro-test/db"
 )
 
 func TestDBはデータのセットアップができる(t *testing.T) {

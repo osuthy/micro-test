@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	. "github.com/ShoichiroKitano/micro_test"
-	"github.com/ShoichiroKitano/micro_test/runner"
+	. "github.com/osuthy/micro-test"
+	"github.com/osuthy/micro-test/runner"
 )
 
 func Test定義したテストを実行できる(t *testing.T) {

@@ -1,7 +1,7 @@
 package http
 
 import (
-	"github.com/ShoichiroKitano/micro_test/runner"
+	"github.com/osuthy/micro-test/runner"
 )
 
 func (this Response) AndResponseShouldBe(expected *Response) {
