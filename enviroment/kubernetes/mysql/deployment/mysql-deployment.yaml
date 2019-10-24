@@ -1,22 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: micro-test
+  name: mysql
   namespace: $NAME_SPACE
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: micro-test
+      app: mysql
   template:
     metadata:
       labels:
-        app: micro-test
+        app: mysql
     spec:
       containers:
-      - name: micro-test
-        image: "sample-server:1.0"
+      - name: mysql
+        image: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: micro-test
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 80
-
+        - containerPort: 3306
