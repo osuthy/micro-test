@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: micro-test
+  namespace: $NAME_SPACE
+spec:
+  selector:
+    app: micro-test
+  ports:
+  - protocol: TCP
+    port: 4000
+    targetPort: 80
+  type: NodePort
+
