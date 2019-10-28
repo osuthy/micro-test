@@ -3,16 +3,31 @@ package test
 import (
 	"testing"
 	"github.com/stretchr/testify/assert"
-	. "github.com/osuthy/micro-test/db/infra"
-
 	"github.com/osuthy/micro-test/db"
+	. "github.com/osuthy/micro-test/db/infra"
+	. "github.com/osuthy/micro-test"
 )
 
 func TestDBはデータのセットアップができる(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 	TruncateTable("mysql", "root:@/test_micro_test", "test")
 
-	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
+	db.DefineConnection2(C{
+			"name": "conName",
+			"driver": "mysql",
+			"database": "test_micro_test",
+			"local": C{
+				"host": "localhost",
+				"port": "3306",
+				"user": "root",
+				"password": "",
+			},
+			"k8s": C{ //k8s用のrepositoryに格納する
+				"clusterIp": MinikubeIp(), // 動的にminikubeとその他のクラスタを変更できるようにする
+				"user": "root",
+				"password": "",
+			},
+		})
 	db.DB("conName").HasRecords(
 		db.Table("test").
 			Columns("column1", "column2").
