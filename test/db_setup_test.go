@@ -5,29 +5,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/osuthy/micro-test/db"
 	. "github.com/osuthy/micro-test/db/infra"
-	. "github.com/osuthy/micro-test"
 )
 
 func TestDBはデータのセットアップができる(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 	TruncateTable("mysql", "root:@/test_micro_test", "test")
 
-	db.DefineConnection2(C{
-			"name": "conName",
-			"driver": "mysql",
-			"database": "test_micro_test",
-			"local": C{
-				"host": "localhost",
-				"port": "3306",
-				"user": "root",
-				"password": "",
-			},
-			"k8s": C{ //k8s用のrepositoryに格納する
-				"clusterIp": MinikubeIp(), // 動的にminikubeとその他のクラスタを変更できるようにする
-				"user": "root",
-				"password": "",
-			},
-		})
 	db.DB("conName").HasRecords(
 		db.Table("test").
 			Columns("column1", "column2").
@@ -46,7 +29,6 @@ func Test事前条件のデータの補完(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "record_completion_all_type")
 	TruncateTable("mysql", "root:@/test_micro_test", "record_completion_all_type")
 
-	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").HasRecords(
 		db.Table("record_completion_all_type").
 			Columns("dummy").
