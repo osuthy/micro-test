@@ -21,7 +21,6 @@ func TestDBはカラムの値を正しいと判定する(t *testing.T) {
 		It("B", func() {
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
 			InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
-			db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 			db.DB("conName").ShouldHaveTable(
 				db.Table("test").
 					Columns("column1", "column2").
@@ -45,7 +44,6 @@ func TestDBはカラムの値の誤りを検出する(t *testing.T) {
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
 			InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
 
-			db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 			db.DB("conName").ShouldHaveTable(
 				db.Table("test").
 					Columns("column1", "column2").
@@ -69,7 +67,6 @@ func TestDBはカラム順序は無視して検証する(t *testing.T) {
 		It("test", func() {
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A", "B")
 
-			db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 			db.DB("conName").ShouldHaveTable(
 				db.Table("test").
 					Columns("column2", "column1").
@@ -93,7 +90,6 @@ func TestDBは行の順序が期待値と異なる場合はテストを失敗さ
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
 			InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
 
-			db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 			db.DB("conName").ShouldHaveTable(
 				db.Table("test").
 					Columns("column1", "column2").
@@ -119,7 +115,6 @@ func Test失敗したテストに省略記法を使った場合(t *testing.T) {
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
 			InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
 
-			db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 			db.DB("conName").ShouldHaveTable(
 				db.Table("test").
 					Columns("column1", "column2").

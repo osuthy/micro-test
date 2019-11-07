@@ -32,14 +32,6 @@ func DefineConnection2(config C) {
 	connectionInformations = append(connectionInformations, &c)
 }
 
-func DefineConnection(connectionName, rdbms, information string) {
-	c := ConnectionInformation{
-		name:        connectionName,
-		rdbms:       rdbms,
-		information: information}
-	connectionInformations = append(connectionInformations, &c)
-}
-
 func findConnectionInformation(connectionName string) *ConnectionInformation {
 	for _, connectionInformation := range connectionInformations {
 		if connectionInformation.name == connectionName {

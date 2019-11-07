@@ -13,7 +13,6 @@ import (
 func TestDBは指定したテーブルをtruncateできる(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 
-	db.DefineConnection("conName", "mysql", "root:@/test_micro_test")
 	db.DB("conName").HasRecords(
 		db.Table("test").
 			Columns("column1", "column2").
