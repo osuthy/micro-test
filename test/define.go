@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	DefineConnection2(C{
+	DefineConnection(C{
 		"name": "conName",
 		"driver": "mysql",
 		"database": "test_micro_test",

@@ -16,7 +16,7 @@ type ConnectionInformation struct {
 	information string
 }
 
-func DefineConnection2(config C) {
+func DefineConnection(config C) {
 	localConfig := config["local"].(C)
 	c := ConnectionInformation{
 		name: config["name"].(string),
