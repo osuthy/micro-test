@@ -34,11 +34,11 @@ func calledByDescribeForDescribe() bool {
 
 func It(params ...interface{}) interface{} {
 	if description, ok := params[0].(string); ok {
-		function, _ := params[1].(func(c TestContext))
-		testBuilder.AddTestCase(description, function)
+		function, _ := params[1].(func(c TC))
+		testBuilder.AddTestCase(description, func(c TestContext) { function(TC(c)) })
 	} else {
-		function, _ := params[0].(func(c TestContext))
-		testBuilder.AddTestCase("", function)
+		function, _ := params[0].(func(c TC))
+		testBuilder.AddTestCase("", func(c TestContext) { function(TC(c)) })
 	}
 	return nil
 }

@@ -6,7 +6,6 @@ import (
 	"github.com/osuthy/micro-test/runner"
 	_ "github.com/go-sql-driver/mysql"
 	. "github.com/osuthy/micro-test"
-	. "github.com/osuthy/micro-test/testable"
 )
 
 var connectionInformations = [](*ConnectionInformation){}
@@ -46,7 +45,7 @@ type DSL struct {
 	connection *Connection
 }
 
-func DB(c TestContext, connectionName string) DSL {
+func DB(c TC, connectionName string) DSL {
 	info := findConnectionInformation(connectionName)
 	con := FindDBConnection(info.rdbms, info.information)
 	return DSL{con}

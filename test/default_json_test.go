@@ -8,8 +8,6 @@ import (
 	"github.com/osuthy/micro-test/json"
 	"github.com/osuthy/micro-test/runner"
 	"github.com/osuthy/micro-test/test/wiremock"
-
-	. "github.com/osuthy/micro-test/testable"
 	. "github.com/osuthy/micro-test"
 )
 
@@ -23,7 +21,7 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 		spy := setUpSpy()
 
 		Describe("A", func() {
-			It("B", func(c TestContext) {
+			It("B", func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 					`{ "o1": "v1", "o2": "d2"}`, 200, "test success")
 
@@ -46,7 +44,7 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 		spy := setUpSpy()
 
 		Describe("A", func() {
-			It("B", func(c TestContext) {
+			It("B", func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 				`{
 						"o1": {
@@ -76,7 +74,7 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 		spy := setUpSpy()
 
 		Describe("A", func() {
-			It("B", func(c TestContext) {
+			It("B", func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 				`{ "o1": { "o12": { "o13": "v13" } }, "o2": "v21"}`,200, "test success")
 
@@ -101,7 +99,7 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 
 
 		Describe("A", func() {
-			It("B", func(c TestContext) {
+			It("B", func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 				`{
 					"array": [
@@ -128,7 +126,7 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 		spy := setUpSpy()
 
 		Describe("A", func() {
-			It("B", func(c TestContext) {
+			It("B", func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 				`{
 					"array": [
@@ -155,7 +153,7 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 		spy := setUpSpy()
 
 		Describe("A", func() {
-			It("B", func(c TestContext) {
+			It("B", func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 				`{
 					"array": [
