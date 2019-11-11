@@ -2,7 +2,7 @@ package testable
 
 type Testable interface {
 	NextTest() Testable
-	Execute()
+	Execute(c TestContext)
 	HasNextTest() bool
 	Descriptions() []string
 }

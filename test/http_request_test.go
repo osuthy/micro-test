@@ -8,6 +8,7 @@ import (
 	"github.com/osuthy/micro-test/json"
 	"github.com/osuthy/micro-test/runner"
 	. "github.com/osuthy/micro-test"
+	. "github.com/osuthy/micro-test/testable"
 
 	"github.com/osuthy/micro-test/test/wiremock"
 )
@@ -22,7 +23,7 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 		spy := setUpSpy()
 
 		Describe("A", func() {
-			It("B", func() {
+			It("B", func(c TestContext) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 					`{ "object": "value" }`, 200, "test success")
 
@@ -44,7 +45,7 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 		spy := setUpSpy()
 
 		Describe("A", func() {
-			It("B", func() {
+			It("B", func(c TestContext) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 					`[1, 2, 3]`, 200, "test success")
 
@@ -69,7 +70,7 @@ func TestHttpはサーバーにPOSTでリクエストを送ることができる
 	spy := setUpSpy()
 
 	Describe("A", func() {
-		It("B", func() {
+		It("B", func(c TestContext) {
 			wiremock.Stubbing("localhost:8080", "/test", "POST",
 				`{ "object": "value" }`, 200, "test success")
 
@@ -93,7 +94,7 @@ func TestHttpはサーバーはレスポンスが期待と異なる場合はテ�
 	spy := setUpSpy()
 
 	Describe("A", func() {
-		It("B", func() {
+		It("B", func(c TestContext) {
 			http.DefineServer("test_server", "http://localhost:8080")
 			http.Server("test_server").
 				ReceiveRequest("POST", "/test", http.WithJson(json.O{"object": "value"})).
@@ -114,7 +115,7 @@ func TestHttpはパラメータ付きのPOSTのリクエストを送ることが
 	spy := setUpSpy()
 
 	Describe("A", func() {
-		It("B", func() {
+		It("B", func(c TestContext) {
 			wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "POST",
 				`{ "object": "value" }`, 200, "test success")
 
@@ -139,7 +140,7 @@ func TestHttpはパラメータ付きのPATCHのリクエストを送ること�
 	spy := setUpSpy()
 
 	Describe("A", func() {
-		It("B", func() {
+		It("B", func(c TestContext) {
 			wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "PATCH",
 				`{ "object": "value" }`, 200, "test success")
 
@@ -164,7 +165,7 @@ func TestHttpはパラメータ付きのPUTのリクエストを送ることが�
 	spy := setUpSpy()
 
 	Describe("A", func() {
-		It("B", func() {
+		It("B", func(c TestContext) {
 			wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "PUT",
 				`{ "object": "value" }`, 200, "test success")
 
@@ -189,7 +190,7 @@ func TestHttpはパラメータ付きのDELETEのリクエストを送ること�
 	spy := setUpSpy()
 
 	Describe("A", func() {
-		It("B", func() {
+		It("B", func(c TestContext) {
 			wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "DELETE",
 				`{ "object": "value" }`, 200, "test success")
 

@@ -32,7 +32,7 @@ func (this *TestBuilder) AddTearDownFunction(tearDownFunction func()) {
 	this.suites[0].tearDownFunction = NewTearDownFunction(tearDownFunction)
 }
 
-func (this *TestBuilder) AddTestCase(description string, testFunction func()) {
+func (this *TestBuilder) AddTestCase(description string, testFunction func(c TestContext)) {
 	this.suites[0].testCases = append(this.suites[0].testCases, NewTestCase(description, testFunction))
 }
 

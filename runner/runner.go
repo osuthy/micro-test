@@ -1,22 +1,22 @@
 package runner
 
 import (
-	"github.com/osuthy/micro-test"
-	"github.com/osuthy/micro-test/testable"
+	. "github.com/osuthy/micro-test"
+	. "github.com/osuthy/micro-test/testable"
 )
 
 var Diffs *Differences = &Differences{}
 
 func Run() {
-	for _, suite := range microtest.Suites {
+	for _, suite := range Suites {
 		executeSuite(suite)
 	}
 }
 
-func executeSuite(suite testable.Testable) {
+func executeSuite(suite Testable) {
 	s := suite
 	for {
-		s.Execute()
+		s.Execute(TestContext{})
 		if !Diffs.isEmpty() {
 			printer.Println(toFormatedDescription(s.Descriptions()))
 			for _, v := range Diffs.slice {

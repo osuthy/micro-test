@@ -16,11 +16,11 @@ func NewTestSuite(description string, tests []Testable, setUpFunction *SetUpFunc
 	}
 }
 
-func (this *TestSuite) Execute() {
+func (this *TestSuite) Execute(c TestContext) {
 	if this.setUpFunction != nil {
 		this.setUpFunction.Execute()
 	}
-	this.tests[0].Execute()
+	this.tests[0].Execute(c)
 	if this.tearDownFunction != nil {
 		this.tearDownFunction.Execute()
 	}

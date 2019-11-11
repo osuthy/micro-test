@@ -5,13 +5,14 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/osuthy/micro-test/db"
 	. "github.com/osuthy/micro-test/db/infra"
+	. "github.com/osuthy/micro-test/testable"
 )
 
 func TestDBはデータのセットアップができる(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 	TruncateTable("mysql", "root:@/test_micro_test", "test")
 
-	db.DB("conName").HasRecords(
+	db.DB(TestContext{}, "conName").HasRecords(
 		db.Table("test").
 			Columns("column1", "column2").
 			Record("A1", "A2").
@@ -29,7 +30,7 @@ func Test事前条件のデータの補完(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "record_completion_all_type")
 	TruncateTable("mysql", "root:@/test_micro_test", "record_completion_all_type")
 
-	db.DB("conName").HasRecords(
+	db.DB(TestContext{}, "conName").HasRecords(
 		db.Table("record_completion_all_type").
 			Columns("dummy").
 			Record("dummy1").

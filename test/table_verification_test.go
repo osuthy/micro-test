@@ -6,8 +6,9 @@ import (
 
 	. "github.com/osuthy/micro-test/db/infra"
 	. "github.com/osuthy/micro-test"
+	. "github.com/osuthy/micro-test/testable"
 
-	"github.com/osuthy/micro-test/db"
+	. "github.com/osuthy/micro-test/db"
 	"github.com/osuthy/micro-test/runner"
 )
 
@@ -18,11 +19,11 @@ func TestDBはカラムの値を正しいと判定する(t *testing.T) {
 	spy := setUpSpy()
 
 	Describe("A", func() {
-		It("B", func() {
+		It("B", func(c TestContext) {
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
 			InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
-			db.DB("conName").ShouldHaveTable(
-				db.Table("test").
+			DB(c, "conName").ShouldHaveTable(
+				Table("test").
 					Columns("column1", "column2").
 					Record("A1", "A2").
 					Record("B1", "B2"),
@@ -40,12 +41,12 @@ func TestDBはカラムの値の誤りを検出する(t *testing.T) {
 	spy := setUpSpy()
 
 	Describe("A", func() {
-		It("B", func() {
+		It("B", func(c TestContext) {
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
 			InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
 
-			db.DB("conName").ShouldHaveTable(
-				db.Table("test").
+			DB(c, "conName").ShouldHaveTable(
+				Table("test").
 					Columns("column1", "column2").
 					Record("A1", "A2").
 					Record("BUG", "B2"),
@@ -64,11 +65,11 @@ func TestDBはカラム順序は無視して検証する(t *testing.T) {
 	spy := setUpSpy()
 
 	Describe("test", func() {
-		It("test", func() {
+		It("test", func(c TestContext) {
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A", "B")
 
-			db.DB("conName").ShouldHaveTable(
-				db.Table("test").
+			DB(c, "conName").ShouldHaveTable(
+				Table("test").
 					Columns("column2", "column1").
 					Record("B", "A"),
 			)
@@ -86,12 +87,12 @@ func TestDBは行の順序が期待値と異なる場合はテストを失敗さ
 	spy := setUpSpy()
 
 	Describe("A", func() {
-		It("B", func() {
+		It("B", func(c TestContext) {
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
 			InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
 
-			db.DB("conName").ShouldHaveTable(
-				db.Table("test").
+			DB(c, "conName").ShouldHaveTable(
+				Table("test").
 					Columns("column1", "column2").
 					Record("B1", "B2").
 					Record("A1", "A2"),
@@ -111,12 +112,12 @@ func Test失敗したテストに省略記法を使った場合(t *testing.T) {
 	spy := setUpSpy()
 
 	Describe("A", func() {
-		It(func() {
+		It(func(c TestContext) {
 			InsertIntoTest("mysql", "root:@/test_micro_test", "A1", "A2")
 			InsertIntoTest("mysql", "root:@/test_micro_test", "B1", "B2")
 
-			db.DB("conName").ShouldHaveTable(
-				db.Table("test").
+			DB(c, "conName").ShouldHaveTable(
+				Table("test").
 					Columns("column1", "column2").
 					Record("B1", "B2").
 					Record("A1", "A2"),
