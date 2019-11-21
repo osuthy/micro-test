@@ -5,6 +5,12 @@ import (
 	. "github.com/osuthy/micro-test/db"
 )
 
+/*
+_ = DefineK8sClustor(C{
+	""
+})
+*/
+// _ = DefineMinikubeClustorIp()
 func init() {
 	DefineConnection(C{
 		"name": "conName",
@@ -16,10 +22,18 @@ func init() {
 			"user": "root",
 			"password": "",
 		},
-		"k8s": C{ //k8s用のrepositoryに格納する
-			"clusterIp": MinikubeIp(), // 動的にminikubeとその他のクラスタを変更できるようにする
+		"k8s": C{
+			"pod": "",
 			"user": "root",
 			"password": "",
 		},
 	})
+	// DefineApiServer()
 }
+/*
+connection.MakeContextForLocal(tc TestContext) tc {
+	tc["conName"] = Conn.New(sql.Open(, ))
+	tc["assertionErrors"] = 
+	return tc 
+}
+*/

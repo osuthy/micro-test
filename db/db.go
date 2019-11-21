@@ -2,9 +2,11 @@ package db
 
 import (
 	"fmt"
-	. "github.com/osuthy/micro-test/db/infra"
-	"github.com/osuthy/micro-test/runner"
+	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
+
+	"github.com/osuthy/micro-test/runner"
+	. "github.com/osuthy/micro-test/db/infra"
 	. "github.com/osuthy/micro-test"
 )
 
@@ -14,6 +16,30 @@ type ConnectionInformation struct {
 	name        string
 	rdbms       string
 	information string
+}
+
+type RDBDef struct {
+	config C
+}
+
+func (this *RDBDef) SetConnectionForLocal(tc TC) TC {
+	driver := this.config["driver"].(string)
+	localConfig := this.config["local"].(C)
+	source := fmt.Sprintf(
+		"%s:%s@tcp(%s:%s)/%s",
+		localConfig["user"].(string),
+		localConfig["password"].(string),
+		localConfig["host"].(string),
+		localConfig["port"].(string),
+		this.config["database"].(string),
+	)
+	c, _ := sql.Open(driver, source)
+	tc[this.config["name"].(string)] = NewConnection(c, driver)
+	return tc
+}
+
+func (this *RDBDef) SetConnectionForK8S(tc TC, namespace string) TC {
+	return tc
 }
 
 func DefineConnection(config C) {
@@ -29,6 +55,9 @@ func DefineConnection(config C) {
 			localConfig["port"].(string),
 			config["database"].(string)),
 	}
+	runner.AppendConnectionDefinable(&RDBDef{
+		config: config,
+	})
 	connectionInformations = append(connectionInformations, &c)
 }
 
@@ -45,9 +74,10 @@ type DSL struct {
 	connection *Connection
 }
 
-func DB(c TC, connectionName string) DSL {
-	info := findConnectionInformation(connectionName)
-	con := FindDBConnection(info.rdbms, info.information)
+func DB(tc TC, connectionName string) DSL {
+	//info := findConnectionInformation(connectionName)
+	//con := FindDBConnection(info.rdbms, info.information)
+	con := tc[connectionName].(*Connection)
 	return DSL{con}
 }
 

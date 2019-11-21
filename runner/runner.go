@@ -5,6 +5,17 @@ import (
 	. "github.com/osuthy/micro-test/testable"
 )
 
+type ConnectionDefinable interface {
+	SetConnectionForLocal(tc TC) (TC)
+	SetConnectionForK8S(tc TC, namespace string) (TC)
+}
+
+var cdefs []ConnectionDefinable = []ConnectionDefinable{}
+
+func AppendConnectionDefinable(cdef ConnectionDefinable) {
+	cdefs = append(cdefs, cdef)
+}
+
 var Diffs *Differences = &Differences{}
 
 func Run() {
@@ -14,9 +25,13 @@ func Run() {
 }
 
 func executeSuite(suite Testable) {
+	tc := TC{}
+	for _, cdef := range cdefs {
+		tc = cdef.SetConnectionForLocal(tc)
+	}
 	s := suite
 	for {
-		s.Execute(TestContext{})
+		s.Execute(TestContext(tc))
 		if !Diffs.isEmpty() {
 			printer.Println(toFormatedDescription(s.Descriptions()))
 			for _, v := range Diffs.slice {

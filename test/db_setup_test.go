@@ -9,6 +9,7 @@ import (
 )
 
 func TestDBはデータのセットアップができる(t *testing.T) {
+	t.Skip()
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 	TruncateTable("mysql", "root:@/test_micro_test", "test")
 
@@ -27,6 +28,7 @@ func TestDBはデータのセットアップができる(t *testing.T) {
 }
 
 func Test事前条件のデータの補完(t *testing.T) {
+	t.Skip()
 	defer TruncateTable("mysql", "root:@/test_micro_test", "record_completion_all_type")
 	TruncateTable("mysql", "root:@/test_micro_test", "record_completion_all_type")
 
