@@ -343,24 +343,26 @@ func Test事前条件のデータの補完(t *testing.T) {
 	AssertNextIsNone(t, rows)
 }
 
-func TestDBは指定したテーブルをtruncateできる(t *testing.T) {
-	t.Skip()
+func TestTruncate(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 
-	DB(TC{}, "conName").HasRecords(
-		Table("test").
-			Columns("column1", "column2").
-			Record("A1", "A2").
-			Record("B1", "B2"),
-	)
-
-	DB(TC{}, "conName").Truncate("test")
+	Describe("A", func() {
+		It(func(tc TC) {
+			DB(tc, "conName").HasRecords(Table("test").
+					Columns("column1", "column2").
+					Record("A1", "A2").
+					Record("B1", "B2"),
+			)
+			DB(tc, "conName").Truncate("test")
+		})
+	})
+	Run()
 
 	rows := Select("mysql", "root:@/test_micro_test", "test")
 	defer rows.Close()
-	AssertEmpty(t, rows)
+	assertTableIsEmpty(t, rows)
 }
 
-func AssertEmpty(t *testing.T, rows *sql.Rows) {
+func assertTableIsEmpty(t *testing.T, rows *sql.Rows) {
 	assert.False(t, rows.Next())
 }
