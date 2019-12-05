@@ -27,7 +27,7 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 					`{ "object": "value" }`, 200, "test success")
 
 				http.DefineServer("test_server", "http://localhost:8080")
-				http.Server("test_server").
+				http.Server(c, "test_server").
 					ReceiveRequest("GET", "/test", http.WithJson(json.O{"object": "value"})).
 					AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
@@ -49,7 +49,7 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 					`[1, 2, 3]`, 200, "test success")
 
 				http.DefineServer("test_server", "http://localhost:8080")
-				http.Server("test_server").
+				http.Server(c, "test_server").
 					ReceiveRequest("GET", "/test", http.WithJson(json.A{1, 2, 3})).
 					AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
@@ -74,7 +74,7 @@ func TestHttpはサーバーにPOSTでリクエストを送ることができる
 				`{ "object": "value" }`, 200, "test success")
 
 			http.DefineServer("test_server", "http://localhost:8080")
-			http.Server("test_server").
+			http.Server(c, "test_server").
 				ReceiveRequest("POST", "/test", http.WithJson(json.O{"object": "value"})).
 				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		})
@@ -95,7 +95,7 @@ func TestHttpはサーバーはレスポンスが期待と異なる場合はテ�
 	Describe("A", func() {
 		It("B", func(c TC) {
 			http.DefineServer("test_server", "http://localhost:8080")
-			http.Server("test_server").
+			http.Server(c, "test_server").
 				ReceiveRequest("POST", "/test", http.WithJson(json.O{"object": "value"})).
 				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		})
@@ -119,7 +119,7 @@ func TestHttpはパラメータ付きのPOSTのリクエストを送ることが
 				`{ "object": "value" }`, 200, "test success")
 
 			http.DefineServer("test_server", "http://localhost:8080")
-			http.Server("test_server").
+			http.Server(c, "test_server").
 				ReceiveRequest("POST", "/test",
 					http.WithParam("param1", "p1").
 						WithJson(json.O{"object": "value"}).
@@ -144,7 +144,7 @@ func TestHttpはパラメータ付きのPATCHのリクエストを送ること�
 				`{ "object": "value" }`, 200, "test success")
 
 			http.DefineServer("test_server", "http://localhost:8080")
-			http.Server("test_server").
+			http.Server(c, "test_server").
 				ReceiveRequest("PATCH", "/test",
 					http.WithParam("param1", "p1").
 						WithJson(json.O{"object": "value"}).
@@ -169,7 +169,7 @@ func TestHttpはパラメータ付きのPUTのリクエストを送ることが�
 				`{ "object": "value" }`, 200, "test success")
 
 			http.DefineServer("test_server", "http://localhost:8080")
-			http.Server("test_server").
+			http.Server(c, "test_server").
 				ReceiveRequest("PUT", "/test",
 					http.WithParam("param1", "p1").
 						WithJson(json.O{"object": "value"}).
@@ -194,7 +194,7 @@ func TestHttpはパラメータ付きのDELETEのリクエストを送ること�
 				`{ "object": "value" }`, 200, "test success")
 
 			http.DefineServer("test_server", "http://localhost:8080")
-			http.Server("test_server").
+			http.Server(c, "test_server").
 				ReceiveRequest("DELETE", "/test",
 					http.WithParam("param1", "p1").
 						WithJson(json.O{"object": "value"}).

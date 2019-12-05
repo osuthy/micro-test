@@ -72,13 +72,15 @@ func findConnectionInformation(connectionName string) *ConnectionInformation {
 
 type DSL struct {
 	connection *Connection
+	differences *runner.Differences
 }
 
 func DB(tc TC, connectionName string) DSL {
 	//info := findConnectionInformation(connectionName)
 	//con := FindDBConnection(info.rdbms, info.information)
 	con := tc[connectionName].(*Connection)
-	return DSL{con}
+	diffs := tc["differences"].(*runner.Differences)
+	return DSL{connection: con, differences: diffs}
 }
 
 func (this DSL) HasRecords(fixture TableInformation) {
@@ -92,7 +94,7 @@ func (this DSL) ShouldHaveTable(expected TableInformation) {
 	expectedTable := expected.ToTable()
 	resultTable := this.connection.FindTable(expectedTable)
 	if !expectedTable.IsSameAsTable(resultTable) {
-		runner.Diffs.Push("assert is fail")
+		this.differences.Push("assert is fail")
 	}
 }
 

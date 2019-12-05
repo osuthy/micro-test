@@ -16,8 +16,6 @@ func AppendConnectionDefinable(cdef ConnectionDefinable) {
 	cdefs = append(cdefs, cdef)
 }
 
-var Diffs *Differences = &Differences{}
-
 func Run() {
 	for _, suite := range Suites {
 		executeSuite(suite)
@@ -31,15 +29,15 @@ func executeSuite(suite Testable) {
 	}
 	s := suite
 	for {
+		diffs := &Differences{}
+		tc["differences"] = diffs
 		s.Execute(TestContext(tc))
-		if !Diffs.isEmpty() {
+		if !diffs.isEmpty() {
 			printer.Println(toFormatedDescription(s.Descriptions()))
-			for _, v := range Diffs.slice {
+			for _, v := range diffs.slice {
 				printer.Println(v)
 			}
 		}
-		Diffs = &Differences{}
-
 		if !s.HasNextTest() {
 			return
 		}

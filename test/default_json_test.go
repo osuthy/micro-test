@@ -11,7 +11,7 @@ import (
 	. "github.com/osuthy/micro-test"
 )
 
-func TestDBはデフォルト値を使ってデータのセットアップができる(t *testing.T) {
+func Testデフォルト値を使ってデータのセットアップができる(t *testing.T) {
 	wiremock.Reset("localhost:8080")
 
 	t.Run("階層が1つの場合", func(t *testing.T) {
@@ -28,7 +28,7 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 				http.DefineServer("test_server", "http://localhost:8080")
 				defaultJson := json.O{"o1": "d1", "o2": "d2"}
 
-				http.Server("test_server").
+				http.Server(c, "test_server").
 					ReceiveRequest("GET", "/test", http.WithJson(defaultJson.Override("o1", "v1"))).
 					AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
@@ -57,7 +57,7 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 				http.DefineServer("test_server", "http://localhost:8080")
 				defaultJson := json.O{"o1": json.O{"o2": json.O{"o3": "d3"}}}
 
-				http.Server("test_server").
+				http.Server(c, "test_server").
 					ReceiveRequest("GET", "/test", http.WithJson(defaultJson.Override("o1", "o2", "o3", "v3"))).
 					AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
@@ -81,7 +81,7 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 				http.DefineServer("test_server", "http://localhost:8080")
 				defaultJson := json.O{"o1": json.O{"o12": json.O{"o13": "d13"} }, "o2": "d21"}
 
-				http.Server("test_server").
+				http.Server(c, "test_server").
 				ReceiveRequest("GET", "/test", http.WithJson(defaultJson.Override(json.O{ "o1": json.O{"o12": json.O{"o13": "v13"}}, "o2": "v21"}))).
 				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
@@ -109,7 +109,7 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 
 				http.DefineServer("test_server", "http://localhost:8080")
 
-				http.Server("test_server").
+				http.Server(c, "test_server").
 				ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o": "v"}.Generate(2)})).
 				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
@@ -136,7 +136,7 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 
 				http.DefineServer("test_server", "http://localhost:8080")
 
-				http.Server("test_server").
+				http.Server(c, "test_server").
 				ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o1": 10}.Generate(2)})).
 				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
@@ -163,7 +163,7 @@ func TestDBはデフォルト値を使ってデータのセットアップがで
 
 				http.DefineServer("test_server", "http://localhost:8080")
 
-				http.Server("test_server").
+				http.Server(c, "test_server").
 				ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o1": json.T("2001-12-20 23:59:59")}.Generate(2)})).
 				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
