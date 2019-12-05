@@ -12,6 +12,7 @@ import (
 func TestDBはデータのセットアップができる(t *testing.T) {
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
 	defer resetSuites()
+	resetSuites()
 	TruncateTable("mysql", "root:@/test_micro_test", "test")
 
 	Describe("A", func() {
@@ -34,16 +35,22 @@ func TestDBはデータのセットアップができる(t *testing.T) {
 }
 
 func Test事前条件のデータの補完(t *testing.T) {
-	t.Skip()
 	defer TruncateTable("mysql", "root:@/test_micro_test", "record_completion_all_type")
+	defer resetSuites()
+	resetSuites()
 	TruncateTable("mysql", "root:@/test_micro_test", "record_completion_all_type")
 
-	DB(TC{}, "conName").HasRecords(
-		Table("record_completion_all_type").
-			Columns("dummy").
-			Record("dummy1").
-			Record("dummy2"),
-	)
+	Describe("A", func() {
+		It(func(tc TC) {
+			DB(tc, "conName").HasRecords(
+				Table("record_completion_all_type").
+					Columns("dummy").
+					Record("dummy1").
+					Record("dummy2"),
+			)
+		})
+	})
+	Run()
 
 	rows := Select("mysql", "root:@/test_micro_test", "record_completion_all_type")
 	defer rows.Close()
