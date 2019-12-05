@@ -3,22 +3,28 @@ package test
 import (
 	"testing"
 	"github.com/stretchr/testify/assert"
+	. "github.com/osuthy/micro-test/db/infra" // helper
+
 	. "github.com/osuthy/micro-test/db"
-	. "github.com/osuthy/micro-test/db/infra"
 	. "github.com/osuthy/micro-test"
 )
 
 func TestDBはデータのセットアップができる(t *testing.T) {
-	t.Skip()
 	defer TruncateTable("mysql", "root:@/test_micro_test", "test")
+	defer resetSuites()
 	TruncateTable("mysql", "root:@/test_micro_test", "test")
 
-	DB(TC{}, "conName").HasRecords(
-		Table("test").
-			Columns("column1", "column2").
-			Record("A1", "A2").
-			Record("B1", "B2"),
-	)
+	Describe("A", func() {
+		It(func(tc TC) {
+			DB(tc, "conName").HasRecords(
+				Table("test").
+					Columns("column1", "column2").
+					Record("A1", "A2").
+					Record("B1", "B2"),
+			)
+		})
+	})
+	Run()
 
 	rows := Select("mysql", "root:@/test_micro_test", "test")
 	defer rows.Close()
