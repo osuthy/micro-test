@@ -10,16 +10,14 @@ import (
 	. "github.com/osuthy/micro-test"
 )
 
-var connectionInformations = [](*ConnectionInformation){}
-
-type ConnectionInformation struct {
-	name        string
-	rdbms       string
-	information string
-}
-
 type RDBDef struct {
 	config C
+}
+
+func DefineConnection(config C) {
+	runner.AppendConnectionDefinable(&RDBDef{
+		config: config,
+	})
 }
 
 func (this *RDBDef) SetConnectionForLocal(tc TC) TC {
@@ -42,42 +40,12 @@ func (this *RDBDef) SetConnectionForK8S(tc TC, namespace string) TC {
 	return tc
 }
 
-func DefineConnection(config C) {
-	localConfig := config["local"].(C)
-	c := ConnectionInformation{
-		name: config["name"].(string),
-		rdbms: config["driver"].(string),
-		information: fmt.Sprintf(
-			"%s:%s@tcp(%s:%s)/%s",
-			localConfig["user"].(string),
-			localConfig["password"].(string),
-			localConfig["host"].(string),
-			localConfig["port"].(string),
-			config["database"].(string)),
-	}
-	runner.AppendConnectionDefinable(&RDBDef{
-		config: config,
-	})
-	connectionInformations = append(connectionInformations, &c)
-}
-
-func findConnectionInformation(connectionName string) *ConnectionInformation {
-	for _, connectionInformation := range connectionInformations {
-		if connectionInformation.name == connectionName {
-			return connectionInformation
-		}
-	}
-	return nil
-}
-
 type DSL struct {
 	connection *Connection
 	differences *runner.Differences
 }
 
 func DB(tc TC, connectionName string) DSL {
-	//info := findConnectionInformation(connectionName)
-	//con := FindDBConnection(info.rdbms, info.information)
 	con := tc[connectionName].(*Connection)
 	diffs := tc["differences"].(*runner.Differences)
 	return DSL{connection: con, differences: diffs}
