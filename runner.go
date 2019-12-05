@@ -1,7 +1,6 @@
-package runner
+package microtest
 
 import (
-	. "github.com/osuthy/micro-test"
 	. "github.com/osuthy/micro-test/testable"
 )
 

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"github.com/osuthy/micro-test/runner"
 	. "github.com/osuthy/micro-test"
 )
 
@@ -15,7 +14,7 @@ type Client struct {
 	Name    string
 	Url     string
 	Request Request
-	differences *runner.Differences
+	differences *Differences
 }
 
 func DefineServer(serverName string, url string) {
@@ -25,7 +24,7 @@ func DefineServer(serverName string, url string) {
 func Server(tc TC, serverName string) *Client {
 	for _, clientInfo := range clientInformations {
 		if clientInfo.Name == serverName {
-			clientInfo.differences = tc["differences"].(*runner.Differences)
+			clientInfo.differences = tc["differences"].(*Differences)
 			return clientInfo
 		}
 	}

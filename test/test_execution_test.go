@@ -6,7 +6,6 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	. "github.com/osuthy/micro-test"
-	"github.com/osuthy/micro-test/runner"
 )
 
 func Test定義したテストを実行できる(t *testing.T) {
@@ -24,7 +23,7 @@ func Test定義したテストを実行できる(t *testing.T) {
 		})
 	})
 
-	runner.Run()
+	Run()
 
 	assert.Equal(t, []string{"test1", "test2"}, results)
 }
@@ -54,7 +53,7 @@ func TestImplicitSetUpをテスト毎に行える(t *testing.T) {
 		})
 	})
 
-	runner.Run()
+	Run()
 
 	assert.Equal(t, []string{"setUp1", "setUp2", "description1", "setUp1", "setUp2", "description2"}, results)
 }
@@ -76,7 +75,7 @@ func Testトップレベルの宣言ごとにテストSuiteが構築される(t 
 		})
 	})
 
-	runner.Run()
+	Run()
 
 	assert.Equal(t, []string{"test1", "test2"}, results)
 }
@@ -106,7 +105,7 @@ func TestImplicitTearDownをテスト毎に行える(t *testing.T) {
 		})
 	})
 
-	runner.Run()
+	Run()
 
 	assert.Equal(t, []string{"description1", "tearDown1", "tearDown2", "description2", "tearDown1", "tearDown2"}, results)
 }

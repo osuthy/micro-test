@@ -1,4 +1,4 @@
-package runner
+package microtest
 
 import (
 	"github.com/k0kubun/pp"

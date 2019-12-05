@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 
-	"github.com/osuthy/micro-test/runner"
 	. "github.com/osuthy/micro-test/db/infra"
 	. "github.com/osuthy/micro-test"
 )
@@ -15,7 +14,7 @@ type RDBDef struct {
 }
 
 func DefineConnection(config C) {
-	runner.AppendConnectionDefinable(&RDBDef{
+	AppendConnectionDefinable(&RDBDef{
 		config: config,
 	})
 }
@@ -42,12 +41,12 @@ func (this *RDBDef) SetConnectionForK8S(tc TC, namespace string) TC {
 
 type DSL struct {
 	connection *Connection
-	differences *runner.Differences
+	differences *Differences
 }
 
 func DB(tc TC, connectionName string) DSL {
 	con := tc[connectionName].(*Connection)
-	diffs := tc["differences"].(*runner.Differences)
+	diffs := tc["differences"].(*Differences)
 	return DSL{connection: con, differences: diffs}
 }
 

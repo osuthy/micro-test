@@ -6,7 +6,6 @@ import (
 
 	"github.com/osuthy/micro-test/http"
 	"github.com/osuthy/micro-test/json"
-	"github.com/osuthy/micro-test/runner"
 	"github.com/osuthy/micro-test/test/wiremock"
 	. "github.com/osuthy/micro-test"
 )
@@ -33,7 +32,7 @@ func Testデフォルト値を使ってデータのセットアップができ�
 					AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
 		})
-		runner.Run()
+		Run()
 		assert.Equal(t, 0, len(spy.results))
 	})
 
@@ -63,7 +62,7 @@ func Testデフォルト値を使ってデータのセットアップができ�
 			})
 		})
 
-		runner.Run()
+		Run()
 		assert.Equal(t, 0, len(spy.results))
 	})
 
@@ -87,7 +86,7 @@ func Testデフォルト値を使ってデータのセットアップができ�
 			})
 		})
 
-		runner.Run()
+		Run()
 		assert.Equal(t, 0, len(spy.results))
 	})
 
@@ -115,7 +114,7 @@ func Testデフォルト値を使ってデータのセットアップができ�
 			})
 		})
 
-		runner.Run()
+		Run()
 		assert.Equal(t, 0, len(spy.results))
 	})
 
@@ -142,7 +141,7 @@ func Testデフォルト値を使ってデータのセットアップができ�
 			})
 		})
 
-		runner.Run()
+		Run()
 		assert.Equal(t, 0, len(spy.results))
 	})
 
@@ -169,7 +168,7 @@ func Testデフォルト値を使ってデータのセットアップができ�
 			})
 		})
 
-		runner.Run()
+		Run()
 		assert.Equal(t, 0, len(spy.results))
 	})
 }

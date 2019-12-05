@@ -6,7 +6,6 @@ import (
 
 	"github.com/osuthy/micro-test/http"
 	"github.com/osuthy/micro-test/json"
-	"github.com/osuthy/micro-test/runner"
 	. "github.com/osuthy/micro-test"
 
 	"github.com/osuthy/micro-test/test/wiremock"
@@ -33,7 +32,7 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 			})
 		})
 
-		runner.Run()
+		Run()
 		assert.Equal(t, 0, len(spy.results))
 	})
 
@@ -55,7 +54,7 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 			})
 		})
 
-		runner.Run()
+		Run()
 		assert.Equal(t, 0, len(spy.results))
 	})
 }
@@ -80,7 +79,7 @@ func TestHttpはサーバーにPOSTでリクエストを送ることができる
 		})
 	})
 
-	runner.Run()
+	Run()
 	assert.Equal(t, 0, len(spy.results))
 }
 
@@ -100,7 +99,7 @@ func TestHttpはサーバーはレスポンスが期待と異なる場合はテ�
 				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		})
 	})
-	runner.Run()
+	Run()
 	assert.Equal(t, "A B", spy.results[0])
 	assert.Equal(t, 2, len(spy.results))
 }
@@ -126,7 +125,7 @@ func TestHttpはパラメータ付きのPOSTのリクエストを送ることが
 						WithParam("param2", "p2")).AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		})
 	})
-	runner.Run()
+	Run()
 	assert.Equal(t, 0, len(spy.results))
 }
 
@@ -151,7 +150,7 @@ func TestHttpはパラメータ付きのPATCHのリクエストを送ること�
 						WithParam("param2", "p2")).AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		})
 	})
-	runner.Run()
+	Run()
 	assert.Equal(t, 0, len(spy.results))
 }
 
@@ -176,7 +175,7 @@ func TestHttpはパラメータ付きのPUTのリクエストを送ることが�
 						WithParam("param2", "p2")).AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		})
 	})
-	runner.Run()
+	Run()
 	assert.Equal(t, 0, len(spy.results))
 }
 
@@ -201,6 +200,6 @@ func TestHttpはパラメータ付きのDELETEのリクエストを送ること�
 						WithParam("param2", "p2")).AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		})
 	})
-	runner.Run()
+	Run()
 	assert.Equal(t, 0, len(spy.results))
 }

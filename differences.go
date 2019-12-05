@@ -1,4 +1,4 @@
-package runner
+package microtest
 
 type Differences struct {
 	slice []string

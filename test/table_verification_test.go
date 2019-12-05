@@ -8,7 +8,6 @@ import (
 	. "github.com/osuthy/micro-test"
 
 	. "github.com/osuthy/micro-test/db"
-	"github.com/osuthy/micro-test/runner"
 )
 
 func TestDBはカラムの値を正しいと判定する(t *testing.T) {
@@ -29,7 +28,7 @@ func TestDBはカラムの値を正しいと判定する(t *testing.T) {
 			)
 		})
 	})
-	runner.Run()
+	Run()
 	assert.Equal(t, 0, len(spy.results))
 }
 
@@ -52,7 +51,7 @@ func TestDBはカラムの値の誤りを検出する(t *testing.T) {
 			)
 		})
 	})
-	runner.Run()
+	Run()
 	assert.Equal(t, "A B", spy.results[0])
 	assert.Equal(t, 2, len(spy.results))
 }
@@ -75,7 +74,7 @@ func TestDBはカラム順序は無視して検証する(t *testing.T) {
 		})
 	})
 
-	runner.Run()
+	Run()
 	assert.Equal(t, 0, len(spy.results))
 }
 
@@ -99,7 +98,7 @@ func TestDBは行の順序が期待値と異なる場合はテストを失敗さ
 		})
 	})
 
-	runner.Run()
+	Run()
 	assert.Equal(t, "A B", spy.results[0])
 	assert.Equal(t, 2, len(spy.results))
 }
@@ -124,7 +123,7 @@ func Test失敗したテストに省略記法を使った場合(t *testing.T) {
 		})
 	})
 
-	runner.Run()
+	Run()
 	assert.Equal(t, "A", spy.results[0])
 	assert.Equal(t, 2, len(spy.results))
 }

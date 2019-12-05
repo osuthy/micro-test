@@ -2,7 +2,6 @@ package test
 
 import (
 	"github.com/osuthy/micro-test/testable"
-	"github.com/osuthy/micro-test/runner"
 	"github.com/osuthy/micro-test"
 )
 
@@ -20,7 +19,7 @@ func (this *PrinterSpy) Println(str string) {
 
 func setUpSpy() *PrinterSpy {
 	spy := NewPrinterSpy()
-	runner.SetPrinter(spy)
+	microtest.SetPrinter(spy)
 	return spy
 }
 
