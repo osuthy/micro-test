@@ -90,7 +90,6 @@ func TestHttpはサーバーはレスポンスが期待と異なる場合はテ�
 
 	Describe("A", func() {
 		It("B", func(c TC) {
-			http.DefineServer("test_server", "http://localhost:8080")
 			http.Server(c, "test_server").
 				ReceiveRequest("POST", "/test", http.WithJson(json.O{"object": "value"})).
 				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
@@ -115,7 +114,6 @@ func TestHttpはパラメータ付きのPOSTのリクエストを送ることが
 			wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "POST",
 				`{ "object": "value" }`, 200, "test success")
 
-			http.DefineServer("test_server", "http://localhost:8080")
 			http.Server(c, "test_server").
 				ReceiveRequest("POST", "/test",
 					http.WithParam("param1", "p1").
@@ -141,7 +139,6 @@ func TestHttpはパラメータ付きのPATCHのリクエストを送ること�
 			wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "PATCH",
 				`{ "object": "value" }`, 200, "test success")
 
-			http.DefineServer("test_server", "http://localhost:8080")
 			http.Server(c, "test_server").
 				ReceiveRequest("PATCH", "/test",
 					http.WithParam("param1", "p1").
@@ -167,7 +164,6 @@ func TestHttpはパラメータ付きのPUTのリクエストを送ることが�
 			wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "PUT",
 				`{ "object": "value" }`, 200, "test success")
 
-			http.DefineServer("test_server", "http://localhost:8080")
 			http.Server(c, "test_server").
 				ReceiveRequest("PUT", "/test",
 					http.WithParam("param1", "p1").
@@ -193,7 +189,6 @@ func TestHttpはパラメータ付きのDELETEのリクエストを送ること�
 			wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "DELETE",
 				`{ "object": "value" }`, 200, "test success")
 
-			http.DefineServer("test_server", "http://localhost:8080")
 			http.Server(c, "test_server").
 				ReceiveRequest("DELETE", "/test",
 					http.WithParam("param1", "p1").

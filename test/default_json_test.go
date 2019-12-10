@@ -76,7 +76,6 @@ func Testデフォルト値を使ってデータのセットアップができ�
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 					`{ "o1": { "o12": { "o13": "v13" } }, "o2": "v21"}`, 200, "test success")
 
-				http.DefineServer("test_server", "http://localhost:8080")
 				defaultJson := json.O{"o1": json.O{"o12": json.O{"o13": "d13"}}, "o2": "d21"}
 
 				http.Server(c, "test_server").
@@ -103,8 +102,6 @@ func Testデフォルト値を使ってデータのセットアップができ�
 						{"o": "v1"}, {"o": "v2"}
 						]
 				}`, 200, "test success")
-
-				http.DefineServer("test_server", "http://localhost:8080")
 
 				http.Server(c, "test_server").
 					ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o": "v"}.Generate(2)})).
