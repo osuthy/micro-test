@@ -11,7 +11,6 @@ import (
 )
 
 func Testデフォルト値を使ってデータのセットアップができる(t *testing.T) {
-	t.Skip()
 	wiremock.Reset("localhost:8080")
 
 	t.Run("階層が1つの場合", func(t *testing.T) {
@@ -20,12 +19,11 @@ func Testデフォルト値を使ってデータのセットアップができ�
 		resetSuites()
 		spy := setUpSpy()
 
-		Describe("A", func() {
-			It("B", func(c TC) {
+		Describe("", func() {
+			It(func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 					`{ "o1": "v1", "o2": "d2"}`, 200, "test success")
 
-				http.DefineServer("test_server", "http://localhost:8080")
 				defaultJson := json.O{"o1": "d1", "o2": "d2"}
 
 				http.Server(c, "test_server").
@@ -34,6 +32,7 @@ func Testデフォルト値を使ってデータのセットアップができ�
 			})
 		})
 		Run()
+
 		assert.Equal(t, 0, len(spy.results))
 	})
 
@@ -43,8 +42,8 @@ func Testデフォルト値を使ってデータのセットアップができ�
 		resetSuites()
 		spy := setUpSpy()
 
-		Describe("A", func() {
-			It("B", func(c TC) {
+		Describe("", func() {
+			It(func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 				`{
 						"o1": {
@@ -54,7 +53,6 @@ func Testデフォルト値を使ってデータのセットアップができ�
 						}
 				 }`, 200, "test success")
 
-				http.DefineServer("test_server", "http://localhost:8080")
 				defaultJson := json.O{"o1": json.O{"o2": json.O{"o3": "d3"}}}
 
 				http.Server(c, "test_server").
@@ -62,8 +60,8 @@ func Testデフォルト値を使ってデータのセットアップができ�
 					AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
 		})
-
 		Run()
+
 		assert.Equal(t, 0, len(spy.results))
 	})
 
@@ -73,8 +71,8 @@ func Testデフォルト値を使ってデータのセットアップができ�
 		resetSuites()
 		spy := setUpSpy()
 
-		Describe("A", func() {
-			It("B", func(c TC) {
+		Describe("", func() {
+			It(func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 				`{ "o1": { "o12": { "o13": "v13" } }, "o2": "v21"}`,200, "test success")
 
@@ -86,8 +84,8 @@ func Testデフォルト値を使ってデータのセットアップができ�
 				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
 		})
-
 		Run()
+
 		assert.Equal(t, 0, len(spy.results))
 	})
 
@@ -98,8 +96,8 @@ func Testデフォルト値を使ってデータのセットアップができ�
 		spy := setUpSpy()
 
 
-		Describe("A", func() {
-			It("B", func(c TC) {
+		Describe("", func() {
+			It(func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 				`{
 					"array": [
@@ -114,8 +112,8 @@ func Testデフォルト値を使ってデータのセットアップができ�
 				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
 		})
-
 		Run()
+
 		assert.Equal(t, 0, len(spy.results))
 	})
 
@@ -125,24 +123,21 @@ func Testデフォルト値を使ってデータのセットアップができ�
 		resetSuites()
 		spy := setUpSpy()
 
-		Describe("A", func() {
-			It("B", func(c TC) {
+		Describe("", func() {
+			It(func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 				`{
 					"array": [
 						{"o1": 11}, {"o1": 12}
 						]
 				}`, 200, "test success")
-
-				http.DefineServer("test_server", "http://localhost:8080")
-
 				http.Server(c, "test_server").
 				ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o1": 10}.Generate(2)})).
 				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
 		})
-
 		Run()
+
 		assert.Equal(t, 0, len(spy.results))
 	})
 
@@ -152,8 +147,8 @@ func Testデフォルト値を使ってデータのセットアップができ�
 		resetSuites()
 		spy := setUpSpy()
 
-		Describe("A", func() {
-			It("B", func(c TC) {
+		Describe("", func() {
+			It(func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 				`{
 					"array": [
@@ -161,15 +156,13 @@ func Testデフォルト値を使ってデータのセットアップができ�
 						]
 				}`, 200, "test success")
 
-				http.DefineServer("test_server", "http://localhost:8080")
-
 				http.Server(c, "test_server").
 				ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o1": json.T("2001-12-20 23:59:59")}.Generate(2)})).
 				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
 		})
-
 		Run()
+
 		assert.Equal(t, 0, len(spy.results))
 	})
 }
