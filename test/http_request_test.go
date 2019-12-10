@@ -20,8 +20,8 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 		resetSuites()
 		spy := setUpSpy()
 
-		Describe("A", func() {
-			It("B", func(c TC) {
+		Describe("", func() {
+			It(func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 					`{ "object": "value" }`, 200, "test success")
 
@@ -30,37 +30,34 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 					AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
 		})
-
 		Run()
+
 		assert.Equal(t, 0, len(spy.results))
 	})
 
 	t.Run("Arrayがトップレベルの階層の場合", func(t *testing.T) {
-		t.Skip()
 		defer wiremock.Reset("localhost:8080")
 		defer resetSuites()
 		resetSuites()
 		spy := setUpSpy()
 
-		Describe("A", func() {
-			It("B", func(c TC) {
+		Describe("", func() {
+			It(func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 					`[1, 2, 3]`, 200, "test success")
 
-				http.DefineServer("test_server", "http://localhost:8080")
 				http.Server(c, "test_server").
 					ReceiveRequest("GET", "/test", http.WithJson(json.A{1, 2, 3})).
 					AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
 		})
-
 		Run()
+
 		assert.Equal(t, 0, len(spy.results))
 	})
 }
 
 func TestHttpはサーバーにPOSTでリクエストを送ることができる(t *testing.T) {
-	t.Skip()
 	defer wiremock.Reset("localhost:8080")
 	defer resetSuites()
 
@@ -68,24 +65,22 @@ func TestHttpはサーバーにPOSTでリクエストを送ることができる
 	resetSuites()
 	spy := setUpSpy()
 
-	Describe("A", func() {
-		It("B", func(c TC) {
+	Describe("", func() {
+		It(func(c TC) {
 			wiremock.Stubbing("localhost:8080", "/test", "POST",
 				`{ "object": "value" }`, 200, "test success")
 
-			http.DefineServer("test_server", "http://localhost:8080")
 			http.Server(c, "test_server").
 				ReceiveRequest("POST", "/test", http.WithJson(json.O{"object": "value"})).
 				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		})
 	})
-
 	Run()
+
 	assert.Equal(t, 0, len(spy.results))
 }
 
 func TestHttpはサーバーはレスポンスが期待と異なる場合はテストを失敗させる(t *testing.T) {
-	t.Skip()
 	defer wiremock.Reset("localhost:8080")
 	defer resetSuites()
 
@@ -102,12 +97,12 @@ func TestHttpはサーバーはレスポンスが期待と異なる場合はテ�
 		})
 	})
 	Run()
+
 	assert.Equal(t, "A B", spy.results[0])
 	assert.Equal(t, 2, len(spy.results))
 }
 
 func TestHttpはパラメータ付きのPOSTのリクエストを送ることができる(t *testing.T) {
-	t.Skip()
 	defer wiremock.Reset("localhost:8080")
 	defer resetSuites()
 
@@ -115,8 +110,8 @@ func TestHttpはパラメータ付きのPOSTのリクエストを送ることが
 	resetSuites()
 	spy := setUpSpy()
 
-	Describe("A", func() {
-		It("B", func(c TC) {
+	Describe("", func() {
+		It(func(c TC) {
 			wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "POST",
 				`{ "object": "value" }`, 200, "test success")
 
@@ -129,11 +124,11 @@ func TestHttpはパラメータ付きのPOSTのリクエストを送ることが
 		})
 	})
 	Run()
+
 	assert.Equal(t, 0, len(spy.results))
 }
 
 func TestHttpはパラメータ付きのPATCHのリクエストを送ることができる(t *testing.T) {
-	t.Skip()
 	defer wiremock.Reset("localhost:8080")
 	defer resetSuites()
 
@@ -141,8 +136,8 @@ func TestHttpはパラメータ付きのPATCHのリクエストを送ること�
 	resetSuites()
 	spy := setUpSpy()
 
-	Describe("A", func() {
-		It("B", func(c TC) {
+	Describe("", func() {
+		It(func(c TC) {
 			wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "PATCH",
 				`{ "object": "value" }`, 200, "test success")
 
@@ -155,11 +150,11 @@ func TestHttpはパラメータ付きのPATCHのリクエストを送ること�
 		})
 	})
 	Run()
+
 	assert.Equal(t, 0, len(spy.results))
 }
 
 func TestHttpはパラメータ付きのPUTのリクエストを送ることができる(t *testing.T) {
-	t.Skip()
 	defer wiremock.Reset("localhost:8080")
 	defer resetSuites()
 
@@ -167,8 +162,8 @@ func TestHttpはパラメータ付きのPUTのリクエストを送ることが�
 	resetSuites()
 	spy := setUpSpy()
 
-	Describe("A", func() {
-		It("B", func(c TC) {
+	Describe("", func() {
+		It(func(c TC) {
 			wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "PUT",
 				`{ "object": "value" }`, 200, "test success")
 
@@ -181,11 +176,11 @@ func TestHttpはパラメータ付きのPUTのリクエストを送ることが�
 		})
 	})
 	Run()
+
 	assert.Equal(t, 0, len(spy.results))
 }
 
 func TestHttpはパラメータ付きのDELETEのリクエストを送ることができる(t *testing.T) {
-	t.Skip()
 	defer wiremock.Reset("localhost:8080")
 	defer resetSuites()
 
@@ -193,8 +188,8 @@ func TestHttpはパラメータ付きのDELETEのリクエストを送ること�
 	resetSuites()
 	spy := setUpSpy()
 
-	Describe("A", func() {
-		It("B", func(c TC) {
+	Describe("", func() {
+		It(func(c TC) {
 			wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "DELETE",
 				`{ "object": "value" }`, 200, "test success")
 
@@ -207,5 +202,6 @@ func TestHttpはパラメータ付きのDELETEのリクエストを送ること�
 		})
 	})
 	Run()
+
 	assert.Equal(t, 0, len(spy.results))
 }
