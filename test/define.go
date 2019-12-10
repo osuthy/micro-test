@@ -3,6 +3,7 @@ package test
 import (
 	. "github.com/osuthy/micro-test"
 	. "github.com/osuthy/micro-test/db"
+	. "github.com/osuthy/micro-test/http"
 )
 
 /*
@@ -12,6 +13,16 @@ _ = DefineK8sClustor(C{
 */
 // _ = DefineMinikubeClustorIp()
 func init() {
+	DefineHttpServer(C{
+		"name": "test_server",
+		"local": C{
+			"host": "localhost",
+			"port": 8080,
+		},
+		"k8s": C{
+			"pod": "",
+		},
+	})
 	DefineConnection(C{
 		"name": "conName",
 		"driver": "mysql",
@@ -28,12 +39,5 @@ func init() {
 			"password": "",
 		},
 	})
-	// DefineApiServer()
 }
-/*
-connection.MakeContextForLocal(tc TestContext) tc {
-	tc["conName"] = Conn.New(sql.Open(, ))
-	tc["assertionErrors"] = 
-	return tc 
-}
-*/
+

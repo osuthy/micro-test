@@ -11,6 +11,7 @@ import (
 )
 
 func Testデフォルト値を使ってデータのセットアップができる(t *testing.T) {
+	t.Skip()
 	wiremock.Reset("localhost:8080")
 
 	t.Run("階層が1つの場合", func(t *testing.T) {
