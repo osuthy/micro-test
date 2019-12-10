@@ -34,7 +34,7 @@ func (this *RDBDefinition) SetConnectionForK8S(tc TC, namespace string) TC {
 	return tc
 }
 
-func DefineConnection(config C) {
+func DefineRDB(config C) {
 	AppendConnectionDefinable(&RDBDefinition{
 		config: config,
 	})

@@ -23,7 +23,7 @@ func init() {
 			"pod": "",
 		},
 	})
-	DefineConnection(C{
+	DefineRDB(C{
 		"name":     "conName",
 		"driver":   "mysql",
 		"database": "test_micro_test",
