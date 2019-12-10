@@ -131,7 +131,7 @@ func Test次のテストケースの取り出し(t *testing.T) {
 				NewTestCase("", func(c TestContext) { result = append(result, "test2") })),
 			createTestSuite(
 				NewTestCase("", func(c TestContext) { result = append(result, "test3") })),
-			)
+		)
 		last := suite.NextTest().NextTest()
 
 		last.Execute(TestContext{})

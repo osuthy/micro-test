@@ -1,14 +1,14 @@
 package test
 
 import (
-	"testing"
 	"database/sql"
 	"github.com/stretchr/testify/assert"
+	"testing"
 
 	. "github.com/osuthy/micro-test/db/infra"
 
-	. "github.com/osuthy/micro-test/db"
 	. "github.com/osuthy/micro-test"
+	. "github.com/osuthy/micro-test/db"
 )
 
 func TestDBはカラムの値を正しいと判定する(t *testing.T) {
@@ -177,36 +177,36 @@ func Test事前条件のデータの補完(t *testing.T) {
 	var (
 		dummy string
 
-		tinyintc int
-		smallintc int
+		tinyintc   int
+		smallintc  int
 		mediumintc int
-		intc int
-		bigintc int
+		intc       int
+		bigintc    int
 
-		floatc float64
-		doublec float64
+		floatc   float64
+		doublec  float64
 		decimalc float64
 
-		charc string
-		varcharc string
-		tinytextc string
-		textc string
+		charc       string
+		varcharc    string
+		tinytextc   string
+		textc       string
 		mediumtextc string
-		longtextc string
+		longtextc   string
 
-		datec string
-		datetimec string
+		datec      string
+		datetimec  string
 		timestampc string
-		timec string
-		yearc string
+		timec      string
+		yearc      string
 
-		bitc uint8
-		binaryc uint8
-		varbinaryc uint8
-		tinyblobc uint8
-		blobc uint8
+		bitc        uint8
+		binaryc     uint8
+		varbinaryc  uint8
+		tinyblobc   uint8
+		blobc       uint8
 		mediumblobc uint8
-		longblobc uint8
+		longblobc   uint8
 	)
 	rows.Next()
 	rows.Scan(
@@ -266,7 +266,7 @@ func Test事前条件のデータの補完(t *testing.T) {
 	assert.Equal(t, "10:00:00.000000", timec)
 	assert.Equal(t, "1901", yearc)
 
-	assert.Equal(t,	uint8(0x0), bitc)
+	assert.Equal(t, uint8(0x0), bitc)
 	assert.Equal(t, uint8(0x0), binaryc)
 	assert.Equal(t, uint8(0x0), varbinaryc)
 	assert.Equal(t, uint8(0x0), tinyblobc)
@@ -332,7 +332,7 @@ func Test事前条件のデータの補完(t *testing.T) {
 	assert.Equal(t, "10:00:00.000000", timec)
 	assert.Equal(t, "1901", yearc)
 
-	assert.Equal(t,	uint8(0x0), bitc)
+	assert.Equal(t, uint8(0x0), bitc)
 	assert.Equal(t, uint8(0x0), binaryc)
 	assert.Equal(t, uint8(0x0), varbinaryc)
 	assert.Equal(t, uint8(0x0), tinyblobc)
@@ -349,9 +349,9 @@ func TestTruncate(t *testing.T) {
 	Describe("A", func() {
 		It(func(tc TC) {
 			DB(tc, "conName").HasRecords(Table("test").
-					Columns("column1", "column2").
-					Record("A1", "A2").
-					Record("B1", "B2"),
+				Columns("column1", "column2").
+				Record("A1", "A2").
+				Record("B1", "B2"),
 			)
 			DB(tc, "conName").Truncate("test")
 		})

@@ -24,20 +24,19 @@ func init() {
 		},
 	})
 	DefineConnection(C{
-		"name": "conName",
-		"driver": "mysql",
+		"name":     "conName",
+		"driver":   "mysql",
 		"database": "test_micro_test",
 		"local": C{
-			"host": "localhost",
-			"port": "3306",
-			"user": "root",
+			"host":     "localhost",
+			"port":     "3306",
+			"user":     "root",
 			"password": "",
 		},
 		"k8s": C{
-			"pod": "",
-			"user": "root",
+			"pod":      "",
+			"user":     "root",
 			"password": "",
 		},
 	})
 }
-

@@ -1,8 +1,8 @@
 package infra
 
 import (
-	. "github.com/osuthy/micro-test/db/table"
 	_ "github.com/go-sql-driver/mysql"
+	. "github.com/osuthy/micro-test/db/table"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

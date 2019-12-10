@@ -1,8 +1,8 @@
 package microtest
 
 import (
-	"runtime"
 	. "github.com/osuthy/micro-test/testable"
+	"runtime"
 )
 
 var testBuilder *TestBuilder = NewTestBuilder()

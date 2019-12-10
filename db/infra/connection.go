@@ -9,7 +9,7 @@ import (
 
 type Connection struct {
 	Driver *sql.DB
-	rdbms string
+	rdbms  string
 }
 
 func NewConnection(driver *sql.DB, rdbms string) *Connection {
@@ -37,7 +37,7 @@ func (this *Connection) StoreTable(table *Table) {
 	tx, _ := this.Driver.Begin()
 	stmt, _ := tx.Prepare(table.InsertQuery())
 	for _, values := range table.AllValues() {
-		 stmt.Exec(values...)
+		stmt.Exec(values...)
 	}
 	tx.Commit()
 }
@@ -100,8 +100,8 @@ func toDataTypeNameForMysql(mysqlDataType string) string {
 	} else if strings.Contains(mysqlDataType, "year") {
 		return "year"
 	} else if strings.Contains(mysqlDataType, "float") ||
-	strings.Contains(mysqlDataType, "double") ||
-	strings.Contains(mysqlDataType, "decimal") {
+		strings.Contains(mysqlDataType, "double") ||
+		strings.Contains(mysqlDataType, "decimal") {
 		return "decimal"
 	} else if strings.Contains(mysqlDataType, "bit") ||
 		strings.Contains(mysqlDataType, "binary") ||
@@ -136,8 +136,9 @@ func scanArgs(types []*sql.ColumnType) []interface{} {
 
 func isStringTypeName(typeName string) bool {
 	switch typeName {
-		case "CHAR", "VARCHAR", "TEXT": return true
-		default: return false
+	case "CHAR", "VARCHAR", "TEXT":
+		return true
+	default:
+		return false
 	}
 }
-

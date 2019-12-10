@@ -2,13 +2,13 @@ package testable
 
 type TestCase struct {
 	description string
-	function func(c TestContext)
+	function    func(c TestContext)
 }
 
 func NewTestCase(description string, function func(c TestContext)) *TestCase {
 	return &TestCase{
 		description: description,
-		function: function,
+		function:    function,
 	}
 }
 

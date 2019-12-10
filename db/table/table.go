@@ -70,4 +70,3 @@ func (this *Table) AllValues() [][]interface{} {
 func (this *Table) MysqlColumnDefinitionQuery() string {
 	return fmt.Sprintf("show columns from %s;", this.name)
 }
-

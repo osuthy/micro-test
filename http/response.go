@@ -5,8 +5,8 @@ import (
 )
 
 type Response struct {
-	Status int
-	Body   string
+	Status      int
+	Body        string
 	differences *Differences
 }
 

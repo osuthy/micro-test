@@ -4,9 +4,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"testing"
 
+	. "github.com/osuthy/micro-test"
 	"github.com/osuthy/micro-test/http"
 	"github.com/osuthy/micro-test/json"
-	. "github.com/osuthy/micro-test"
 
 	"github.com/osuthy/micro-test/test/wiremock"
 )

@@ -4,10 +4,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"testing"
 
+	. "github.com/osuthy/micro-test"
 	"github.com/osuthy/micro-test/http"
 	"github.com/osuthy/micro-test/json"
 	"github.com/osuthy/micro-test/test/wiremock"
-	. "github.com/osuthy/micro-test"
 )
 
 func Testデフォルト値を使ってデータのセットアップができる(t *testing.T) {
@@ -45,7 +45,7 @@ func Testデフォルト値を使ってデータのセットアップができ�
 		Describe("", func() {
 			It(func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
-				`{
+					`{
 						"o1": {
 							"o2": {
 								"o3": "v3"
@@ -74,14 +74,14 @@ func Testデフォルト値を使ってデータのセットアップができ�
 		Describe("", func() {
 			It(func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
-				`{ "o1": { "o12": { "o13": "v13" } }, "o2": "v21"}`,200, "test success")
+					`{ "o1": { "o12": { "o13": "v13" } }, "o2": "v21"}`, 200, "test success")
 
 				http.DefineServer("test_server", "http://localhost:8080")
-				defaultJson := json.O{"o1": json.O{"o12": json.O{"o13": "d13"} }, "o2": "d21"}
+				defaultJson := json.O{"o1": json.O{"o12": json.O{"o13": "d13"}}, "o2": "d21"}
 
 				http.Server(c, "test_server").
-				ReceiveRequest("GET", "/test", http.WithJson(defaultJson.Override(json.O{ "o1": json.O{"o12": json.O{"o13": "v13"}}, "o2": "v21"}))).
-				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
+					ReceiveRequest("GET", "/test", http.WithJson(defaultJson.Override(json.O{"o1": json.O{"o12": json.O{"o13": "v13"}}, "o2": "v21"}))).
+					AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
 		})
 		Run()
@@ -95,11 +95,10 @@ func Testデフォルト値を使ってデータのセットアップができ�
 		resetSuites()
 		spy := setUpSpy()
 
-
 		Describe("", func() {
 			It(func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
-				`{
+					`{
 					"array": [
 						{"o": "v1"}, {"o": "v2"}
 						]
@@ -108,8 +107,8 @@ func Testデフォルト値を使ってデータのセットアップができ�
 				http.DefineServer("test_server", "http://localhost:8080")
 
 				http.Server(c, "test_server").
-				ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o": "v"}.Generate(2)})).
-				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
+					ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o": "v"}.Generate(2)})).
+					AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
 		})
 		Run()
@@ -126,14 +125,14 @@ func Testデフォルト値を使ってデータのセットアップができ�
 		Describe("", func() {
 			It(func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
-				`{
+					`{
 					"array": [
 						{"o1": 11}, {"o1": 12}
 						]
 				}`, 200, "test success")
 				http.Server(c, "test_server").
-				ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o1": 10}.Generate(2)})).
-				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
+					ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o1": 10}.Generate(2)})).
+					AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
 		})
 		Run()
@@ -150,15 +149,15 @@ func Testデフォルト値を使ってデータのセットアップができ�
 		Describe("", func() {
 			It(func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
-				`{
+					`{
 					"array": [
 						{"o1": "2001-12-20 23:59:59"}, {"o1": "2001-12-20 23:59:59"}
 						]
 				}`, 200, "test success")
 
 				http.Server(c, "test_server").
-				ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o1": json.T("2001-12-20 23:59:59")}.Generate(2)})).
-				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
+					ReceiveRequest("GET", "/test", http.WithJson(json.O{"array": json.O{"o1": json.T("2001-12-20 23:59:59")}.Generate(2)})).
+					AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
 		})
 		Run()

@@ -1,9 +1,9 @@
 package json
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
-	"bytes"
 )
 
 type Object interface {

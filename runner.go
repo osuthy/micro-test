@@ -5,8 +5,8 @@ import (
 )
 
 type ConnectionDefinable interface {
-	SetConnectionForLocal(tc TC) (TC)
-	SetConnectionForK8S(tc TC, namespace string) (TC)
+	SetConnectionForLocal(tc TC) TC
+	SetConnectionForK8S(tc TC, namespace string) TC
 }
 
 var cdefs []ConnectionDefinable = []ConnectionDefinable{}

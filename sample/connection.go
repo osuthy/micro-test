@@ -1,20 +1,20 @@
 package main
 
 import (
-	"fmt"
 	"database/sql"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 type ConnectionInfo struct {
-	userName	string
-	password	string
-	protocol	string
-	host		string
-	port		int
+	userName string
+	password string
+	protocol string
+	host     string
+	port     int
 }
 
-func (this ConnectionInfo) builder(userName string, password string, protocol string, host string, port int) ConnectionInfo{
+func (this ConnectionInfo) builder(userName string, password string, protocol string, host string, port int) ConnectionInfo {
 	return ConnectionInfo{userName, password, protocol, host, port}
 }
 
@@ -40,8 +40,8 @@ func main() {
 	db := conncetion_builder("mysql", connectionInfo)
 
 	err := db.Ping()
-    if err != nil {
-        panic(err)
+	if err != nil {
+		panic(err)
 	}
 
 	fmt.Println("Hello World.")

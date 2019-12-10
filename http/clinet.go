@@ -3,16 +3,16 @@ package http
 import (
 	"bytes"
 	"fmt"
+	. "github.com/osuthy/micro-test"
 	"io/ioutil"
 	"net/http"
-	. "github.com/osuthy/micro-test"
 )
 
 var clientInformations []*Client
 
 type Client struct {
-	Name    string
-	url     string
+	Name        string
+	url         string
 	differences *Differences
 }
 
@@ -42,13 +42,13 @@ func DefineServer(serverName string, url string) {
 }
 
 type RequestDSL struct {
-	client *Client
+	client      *Client
 	differences *Differences
 }
 
 func Server(tc TC, serverName string) *RequestDSL {
 	return &RequestDSL{
-		client: tc[serverName].(*Client),
+		client:      tc[serverName].(*Client),
 		differences: tc["differences"].(*Differences),
 	}
 }
@@ -72,6 +72,6 @@ func (this *RequestDSL) ReceiveRequest(methodType string, path string, requestBo
 }
 
 type ResponseDSL struct {
-	response *Response
+	response    *Response
 	differences *Differences
 }
