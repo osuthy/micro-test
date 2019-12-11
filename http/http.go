@@ -5,38 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-
 	. "github.com/osuthy/micro-test"
 )
-
-
-func DefineHttpServer(config C) {
-	AppendConnectionDefinable(&HttpServerDefinition{
-		config: config,
-	})
-}
-
-type HttpServerDefinition struct {
-	config C
-}
-
-func (this *HttpServerDefinition) SetConnectionForK8S(tc TC, namespace string) TC {
-	return tc
-}
-
-func (this *HttpServerDefinition) SetConnectionForLocal(tc TC) TC {
-	localConfig := this.config["local"].(C)
-	url := fmt.Sprintf("http://%s:%d", localConfig["host"].(string), localConfig["port"].(int))
-	tc[this.config["name"].(string)] = &Client{url: url}
-	return tc
-}
-
-
-func (this Response) AndResponseShouldBe(expected *Response) {
-	if !this.Equal(expected) {
-		this.differences.Push("assert is fail!!!!!!!!!!!1")
-	}
-}
 
 type RequestDSL struct {
 	client      *Client
@@ -73,3 +43,8 @@ type ResponseDSL struct {
 	differences *Differences
 }
 
+func (this Response) AndResponseShouldBe(expected *Response) {
+	if !this.Equal(expected) {
+		this.differences.Push("assert is fail!!!!!!!!!!!1")
+	}
+}
