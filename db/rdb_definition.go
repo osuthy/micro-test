@@ -15,7 +15,7 @@ type RDBDefinition struct {
 	config C
 }
 
-func (this *RDBDefinition) SetConnectionForLocal(tc TC) TC {
+func (this *RDBDefinition) SetConnectionForLocal(tc TC) (TC, error) {
 	driver := this.config["driver"].(string)
 	localConfig := this.config["local"].(C)
 	source := fmt.Sprintf(
@@ -28,10 +28,10 @@ func (this *RDBDefinition) SetConnectionForLocal(tc TC) TC {
 	)
 	c, _ := sql.Open(driver, source)
 	tc[this.config["name"].(string)] = NewConnection(c, driver)
-	return tc
+	return tc, nil
 }
 
-func (this *RDBDefinition) SetConnectionForK8S(tc TC, namespace string) TC {
+func (this *RDBDefinition) SetConnectionForK8S(tc TC, namespace string) (TC, error) {
 	k8s, _ := CreateK8S()
 	k8sConfig := this.config["k8s"].(C)
 	port, _ := k8s.Port(namespace, k8sConfig["svn"].(string))
@@ -46,7 +46,7 @@ func (this *RDBDefinition) SetConnectionForK8S(tc TC, namespace string) TC {
 	driver := this.config["driver"].(string)
 	c, _ := sql.Open(driver, source)
 	tc[this.config["name"].(string)] = NewConnection(c, driver)
-	return tc
+	return tc, nil
 }
 
 func DefineRDB(config C) {

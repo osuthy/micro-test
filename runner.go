@@ -5,8 +5,8 @@ import (
 )
 
 type ConnectionDefinable interface {
-	SetConnectionForLocal(tc TC) TC
-	SetConnectionForK8S(tc TC, namespace string) TC
+	SetConnectionForLocal(tc TC) (TC, error)
+	SetConnectionForK8S(tc TC, namespace string) (TC, error)
 }
 
 var cdefs []ConnectionDefinable = []ConnectionDefinable{}
@@ -24,7 +24,7 @@ func Run() {
 func executeSuite(suite Testable) {
 	tc := TC{}
 	for _, cdef := range cdefs {
-		tc = cdef.SetConnectionForLocal(tc)
+		tc, _ = cdef.SetConnectionForLocal(tc)
 	}
 	s := suite
 	for {

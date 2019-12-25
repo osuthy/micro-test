@@ -15,13 +15,13 @@ func DefineHttpServer(config C) {
 	})
 }
 
-func (this *HttpServerDefinition) SetConnectionForK8S(tc TC, namespace string) TC {
-	return tc
+func (this *HttpServerDefinition) SetConnectionForK8S(tc TC, namespace string) (TC, error) {
+	return tc, nil
 }
 
-func (this *HttpServerDefinition) SetConnectionForLocal(tc TC) TC {
+func (this *HttpServerDefinition) SetConnectionForLocal(tc TC) (TC, error) {
 	localConfig := this.config["local"].(C)
 	url := fmt.Sprintf("http://%s:%d", localConfig["host"].(string), localConfig["port"].(int))
 	tc[this.config["name"].(string)] = &Client{url: url}
-	return tc
+	return tc, nil
 }
