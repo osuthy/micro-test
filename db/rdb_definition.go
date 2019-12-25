@@ -3,14 +3,11 @@ package db
 import (
 	"database/sql"
 	"fmt"
-	"net/url"
 
 	_ "github.com/go-sql-driver/mysql"
-	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
 
 	. "github.com/osuthy/micro-test"
+	. "github.com/osuthy/micro-test/k8s"
 	. "github.com/osuthy/micro-test/db/infra"
 )
 
@@ -35,20 +32,18 @@ func (this *RDBDefinition) SetConnectionForLocal(tc TC) TC {
 }
 
 func (this *RDBDefinition) SetConnectionForK8S(tc TC, namespace string) TC {
-	driver := this.config["driver"].(string)
-	kubeConfig, _ := clientcmd.BuildConfigFromFlags("", clientcmd.RecommendedHomeFile)
-	client, _ := kubernetes.NewForConfig(kubeConfig)
-	s, _ := client.CoreV1().Services(namespace).Get(this.config["name"].(string), meta_v1.GetOptions{})
-	u, _ := url.Parse(kubeConfig.Host)
+	k8s, _ := CreateK8S()
+	port, _ := k8s.Port(namespace, this.config["name"].(string))
 	k8sConfig := this.config["k8s"].(C)
 	source := fmt.Sprintf(
 		"%s:%s@tcp(%s:%d)/%s",
 		k8sConfig["user"].(string),
 		k8sConfig["password"].(string),
-		u.Hostname(),
-		s.Spec.Ports[0].NodePort,
+		k8s.Host(),
+		port,
 		this.config["database"].(string),
 	)
+	driver := this.config["driver"].(string)
 	c, _ := sql.Open(driver, source)
 	tc[this.config["name"].(string)] = NewConnection(c, driver)
 	return tc
