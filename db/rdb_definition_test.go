@@ -11,10 +11,11 @@ import (
 func Testネームスペースからコネクションを作成(t *testing.T) {
 	definition := &RDBDefinition{
 		config: C{
-			"name":     "micro-test-mysql",
+			"name":     "conName",
 			"driver":   "mysql",
 			"database": "test_db",
 			"k8s": C{
+				"svn":     "micro-test-mysql",
 				"user":     "root",
 				"password": "",
 			},
@@ -22,6 +23,6 @@ func Testネームスペースからコネクションを作成(t *testing.T) {
 	}
 	tc := TC{}
 	definition.SetConnectionForK8S(tc, "test-namespace")
-	con := tc["micro-test-mysql"].(*Connection)
+	con := tc["conName"].(*Connection)
 	assert.Nil(t, con.Ping())
 }

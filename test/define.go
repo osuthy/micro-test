@@ -6,12 +6,6 @@ import (
 	. "github.com/osuthy/micro-test/http"
 )
 
-/*
-_ = DefineK8sClustor(C{
-	""
-})
-*/
-// _ = DefineMinikubeClustorIp()
 func init() {
 	DefineHttpServer(C{
 		"name": "test_server",
@@ -20,7 +14,7 @@ func init() {
 			"port": 8080,
 		},
 		"k8s": C{
-			"pod": "",
+			"svn": "",
 		},
 	})
 	DefineRDB(C{
@@ -34,6 +28,7 @@ func init() {
 			"password": "",
 		},
 		"k8s": C{
+			"svn": "",
 			"user":     "root",
 			"password": "",
 		},
