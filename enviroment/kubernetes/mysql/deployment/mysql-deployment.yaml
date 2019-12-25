@@ -15,10 +15,7 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: micro-test
+        image: micro-test-mysql
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3306

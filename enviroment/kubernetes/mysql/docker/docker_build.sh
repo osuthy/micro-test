@@ -2,4 +2,4 @@
 
 set eu
 
-docker build -t mysql .
+docker build -t micro-test-mysql .

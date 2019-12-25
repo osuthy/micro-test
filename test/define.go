@@ -34,7 +34,6 @@ func init() {
 			"password": "",
 		},
 		"k8s": C{
-			"pod":      "",
 			"user":     "root",
 			"password": "",
 		},

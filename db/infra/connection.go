@@ -16,6 +16,10 @@ func NewConnection(driver *sql.DB, rdbms string) *Connection {
 	return &Connection{Driver: driver, rdbms: rdbms}
 }
 
+func (this *Connection) Ping() error {
+	return this.Driver.Ping()
+}
+
 func (this *Connection) FindTable(table *Table) *Table {
 	rows, _ := this.Driver.Query(table.SelectAllQuery())
 	defer rows.Close()

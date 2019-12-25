@@ -25,4 +25,3 @@ func (this *HttpServerDefinition) SetConnectionForLocal(tc TC) TC {
 	tc[this.config["name"].(string)] = &Client{url: url}
 	return tc
 }
-

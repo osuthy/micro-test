@@ -3,9 +3,9 @@ package http
 import (
 	"bytes"
 	"fmt"
+	. "github.com/osuthy/micro-test"
 	"io/ioutil"
 	"net/http"
-	. "github.com/osuthy/micro-test"
 )
 
 type RequestDSL struct {

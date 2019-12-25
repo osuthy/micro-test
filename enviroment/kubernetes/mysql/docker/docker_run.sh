@@ -2,4 +2,4 @@
 
 set eu
 
-docker run -d --name mysql -e MYSQL_ROOT_PASSWORD=micro-test -p 3306:3306 mysql
+docker run -it -p 3306:3306 micro-test-mysql
