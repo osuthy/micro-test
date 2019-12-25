@@ -24,11 +24,9 @@ func (this *RequestDSL) ReceiveRequest(methodType string, path string, requestBo
 	urlWithQueryParam := fmt.Sprintf("%s%s?%s", this.client.url, path, requestBody.ToQueryParam())
 	request, _ := http.NewRequest(methodType, urlWithQueryParam, bytes.NewBuffer([]byte(requestBody.Json)))
 	resp, err := http.DefaultClient.Do(request)
-	p(err)
 	defer resp.Body.Close()
 
 	if err != nil {
-		fmt.Println(err)
 		return NewResponse(500, "BadRequest!!")
 	}
 
