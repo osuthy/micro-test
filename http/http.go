@@ -21,7 +21,7 @@ func Server(tc TC, serverName string) *RequestDSL {
 }
 
 func (this *RequestDSL) ReceiveRequest(methodType string, path string, requestBody Request) *Response {
-	urlWithQueryParam := fmt.Sprintf("%s%s?%s", this.client.url, path, requestBody.ToQueryParam())
+	urlWithQueryParam := fmt.Sprintf("%s%s?%s", this.client.Url, path, requestBody.ToQueryParam())
 	request, _ := http.NewRequest(methodType, urlWithQueryParam, bytes.NewBuffer([]byte(requestBody.Json)))
 	resp, err := http.DefaultClient.Do(request)
 	defer resp.Body.Close()

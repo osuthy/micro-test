@@ -15,7 +15,7 @@ func Testネームスペースからコネクションを作成(t *testing.T) {
 			"driver":   "mysql",
 			"database": "test_db",
 			"k8s": C{
-				"svn":     "micro-test-mysql",
+				"svc":     "micro-test-mysql",
 				"user":     "root",
 				"password": "",
 			},

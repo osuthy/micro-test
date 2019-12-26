@@ -34,7 +34,7 @@ func (this *RDBDefinition) SetConnectionForLocal(tc TC) (TC, error) {
 func (this *RDBDefinition) SetConnectionForK8S(tc TC, namespace string) (TC, error) {
 	k8s, _ := CreateK8S()
 	k8sConfig := this.config["k8s"].(C)
-	port, _ := k8s.Port(namespace, k8sConfig["svn"].(string))
+	port, _ := k8s.Port(namespace, k8sConfig["svc"].(string))
 	source := fmt.Sprintf(
 		"%s:%s@tcp(%s:%d)/%s",
 		k8sConfig["user"].(string),
