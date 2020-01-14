@@ -23,4 +23,3 @@ func (this *ColumnDefinition) FillTableWithDefaultValue(table *Table) *Table {
 	}
 	return NewTable(table.name, rows)
 }
-

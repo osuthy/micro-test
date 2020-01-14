@@ -1,44 +1,19 @@
 package db
 
 import (
+	. "github.com/osuthy/micro-test"
 	. "github.com/osuthy/micro-test/db/infra"
-	"github.com/osuthy/micro-test/runner"
-	_ "github.com/go-sql-driver/mysql"
 )
 
-var connectionInformations = [](*ConnectionInformation){}
-
-type ConnectionInformation struct {
-	name        string
-	rdbms       string
-	information string
-}
-
-func DefineConnection(connectionName, rdbms, information string) {
-	c := ConnectionInformation{
-		name:        connectionName,
-		rdbms:       rdbms,
-		information: information}
-	connectionInformations = append(connectionInformations, &c)
-}
-
-func findConnectionInformation(connectionName string) *ConnectionInformation {
-	for _, connectionInformation := range connectionInformations {
-		if connectionInformation.name == connectionName {
-			return connectionInformation
-		}
-	}
-	return nil
-}
-
 type DSL struct {
-	connection *Connection
+	connection  *Connection
+	differences *Differences
 }
 
-func DB(connectionName string) DSL {
-	info := findConnectionInformation(connectionName)
-	con := FindDBConnection(info.rdbms, info.information)
-	return DSL{con}
+func DB(tc TC, connectionName string) DSL {
+	con := tc[connectionName].(*Connection)
+	diffs := tc["differences"].(*Differences)
+	return DSL{connection: con, differences: diffs}
 }
 
 func (this DSL) HasRecords(fixture TableInformation) {
@@ -52,11 +27,10 @@ func (this DSL) ShouldHaveTable(expected TableInformation) {
 	expectedTable := expected.ToTable()
 	resultTable := this.connection.FindTable(expectedTable)
 	if !expectedTable.IsSameAsTable(resultTable) {
-		runner.Diffs.Push("assert is fail")
+		this.differences.Push("assert is fail")
 	}
 }
 
 func (this DSL) Truncate(tableName string) {
 	this.connection.TruncateTable(Table(tableName).ToTable())
 }
-

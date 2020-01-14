@@ -5,10 +5,10 @@ type TestBuilder struct {
 }
 
 type TestSuiteStruct struct {
-	description string
-	setUpFunction *SetUpFunction
+	description      string
+	setUpFunction    *SetUpFunction
 	tearDownFunction *TearDownFunction
-	testCases     []*TestCase
+	testCases        []*TestCase
 }
 
 func NewTestBuilder() *TestBuilder {
@@ -17,7 +17,7 @@ func NewTestBuilder() *TestBuilder {
 
 func (this *TestBuilder) AddTestSuite(description string) {
 	suite := &TestSuiteStruct{
-		description: description,
+		description:   description,
 		setUpFunction: nil,
 		testCases:     []*TestCase{},
 	}
@@ -32,7 +32,7 @@ func (this *TestBuilder) AddTearDownFunction(tearDownFunction func()) {
 	this.suites[0].tearDownFunction = NewTearDownFunction(tearDownFunction)
 }
 
-func (this *TestBuilder) AddTestCase(description string, testFunction func()) {
+func (this *TestBuilder) AddTestCase(description string, testFunction func(c TestContext)) {
 	this.suites[0].testCases = append(this.suites[0].testCases, NewTestCase(description, testFunction))
 }
 

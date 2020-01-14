@@ -5,12 +5,12 @@ import (
 )
 
 type ColumnMetaInformation struct {
-	name string
-	dataType string
+	name                   string
+	dataType               string
 	preferredKeyConstraint string
-	additional string
-	isNotNull bool
-	hasDefaultValue bool
+	additional             string
+	isNotNull              bool
+	hasDefaultValue        bool
 }
 
 func NewColumnMetaInformation(
@@ -20,13 +20,13 @@ func NewColumnMetaInformation(
 	additional string,
 	isNotNull bool,
 	hasDefaultValue bool) *ColumnMetaInformation {
-	return &ColumnMetaInformation {
-		name: name,
-		dataType: dataType,
+	return &ColumnMetaInformation{
+		name:                   name,
+		dataType:               dataType,
 		preferredKeyConstraint: preferredKeyConstraint,
-		additional: additional,
-		hasDefaultValue: hasDefaultValue,
-		isNotNull: isNotNull,
+		additional:             additional,
+		hasDefaultValue:        hasDefaultValue,
+		isNotNull:              isNotNull,
 	}
 }
 

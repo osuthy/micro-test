@@ -1,10 +1,9 @@
 package json
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
-	// "reflect"
-	"bytes"
 )
 
 type Object interface {
@@ -12,9 +11,6 @@ type Object interface {
 }
 
 type O map[string]interface{}
-
-func (this O) Print() {
-}
 
 func (this O) ToJson() []byte {
 	json, _ := json.Marshal(this)
@@ -71,9 +67,6 @@ func (this O) Override(elements ...interface{}) O {
 }
 
 type A []interface{}
-
-func (this A) Print() {
-}
 
 func (this A) ToJson() []byte {
 	json, _ := json.Marshal(this)

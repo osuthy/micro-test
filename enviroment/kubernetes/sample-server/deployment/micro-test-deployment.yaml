@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: micro-test
+  name: sample-server
   namespace: $NAME_SPACE
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: micro-test
+      app: sample-server
   template:
     metadata:
       labels:
-        app: micro-test
+        app: sample-server
     spec:
       containers:
-      - name: micro-test
-        image: "sample-server:1.0"
+      - name: sample-server
+        image: sample-server
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 80
+        - containerPort: 5000
 

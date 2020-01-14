@@ -1,8 +1,8 @@
 package microtest
 
 import (
-	"runtime"
 	. "github.com/osuthy/micro-test/testable"
+	"runtime"
 )
 
 var testBuilder *TestBuilder = NewTestBuilder()
@@ -34,11 +34,11 @@ func calledByDescribeForDescribe() bool {
 
 func It(params ...interface{}) interface{} {
 	if description, ok := params[0].(string); ok {
-		function, _ := params[1].(func())
-		testBuilder.AddTestCase(description, function)
+		function, _ := params[1].(func(c TC))
+		testBuilder.AddTestCase(description, func(c TestContext) { function(TC(c)) })
 	} else {
-		function, _ := params[0].(func())
-		testBuilder.AddTestCase("", function)
+		function, _ := params[0].(func(c TC))
+		testBuilder.AddTestCase("", func(c TestContext) { function(TC(c)) })
 	}
 	return nil
 }

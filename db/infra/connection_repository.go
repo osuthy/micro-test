@@ -4,6 +4,8 @@ import (
 	"database/sql"
 )
 
+// 自動テスト用のヘルパー
+
 type ConnectionMap struct {
 	driverName            string
 	connectionInformation string

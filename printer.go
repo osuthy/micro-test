@@ -1,4 +1,4 @@
-package runner
+package microtest
 
 import (
 	"github.com/k0kubun/pp"
@@ -8,7 +8,7 @@ type Printable interface {
 	Println(str string)
 }
 
-type Printer struct {}
+type Printer struct{}
 
 var printer Printable = Printer{}
 
@@ -20,4 +20,3 @@ func (this Printer) Println(str string) {
 func SetPrinter(p Printable) {
 	printer = p
 }
-

@@ -5,15 +5,15 @@ import (
 )
 
 type TableInformation struct {
-	tableName     string
-	columnNames   []string
-	records       [][]interface{}
+	tableName   string
+	columnNames []string
+	records     [][]interface{}
 }
 
 func Table(tableName string) TableInformation {
 	return TableInformation{
-		tableName:     tableName,
-		records:       [][]interface{}{},
+		tableName: tableName,
+		records:   [][]interface{}{},
 	}
 }
 

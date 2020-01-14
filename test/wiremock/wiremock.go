@@ -24,7 +24,7 @@ func Stubbing(url string, path string, method string, json string, status int, b
 					"url": "`+path+`",
 					"method": "`+method+`",
 					"bodyPatterns": [{
-						"equalToJson": "`+ jsonForWiremock3 +`"
+						"equalToJson": "`+jsonForWiremock3+`"
 					}]
 				},
 			"response":

@@ -1,26 +1,26 @@
 package testable
 
 type TestSuite struct {
-	description          string
-	tests         []Testable
-	setUpFunction *SetUpFunction
+	description      string
+	tests            []Testable
+	setUpFunction    *SetUpFunction
 	tearDownFunction *TearDownFunction
 }
 
 func NewTestSuite(description string, tests []Testable, setUpFunction *SetUpFunction, tearDownFunction *TearDownFunction) *TestSuite {
 	return &TestSuite{
-		description:         description,
-		tests:         tests,
-		setUpFunction: setUpFunction,
+		description:      description,
+		tests:            tests,
+		setUpFunction:    setUpFunction,
 		tearDownFunction: tearDownFunction,
 	}
 }
 
-func (this *TestSuite) Execute() {
+func (this *TestSuite) Execute(c TestContext) {
 	if this.setUpFunction != nil {
 		this.setUpFunction.Execute()
 	}
-	this.tests[0].Execute()
+	this.tests[0].Execute(c)
 	if this.tearDownFunction != nil {
 		this.tearDownFunction.Execute()
 	}
@@ -52,4 +52,3 @@ func (this *TestSuite) HasNextTest() bool {
 func (this *TestSuite) Descriptions() []string {
 	return append([]string{this.description}, this.tests[0].Descriptions()...)
 }
-

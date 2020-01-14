@@ -4,10 +4,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"testing"
 
+	. "github.com/osuthy/micro-test"
 	"github.com/osuthy/micro-test/http"
 	"github.com/osuthy/micro-test/json"
-	"github.com/osuthy/micro-test/runner"
-	. "github.com/osuthy/micro-test"
 
 	"github.com/osuthy/micro-test/test/wiremock"
 )
@@ -21,19 +20,18 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 		resetSuites()
 		spy := setUpSpy()
 
-		Describe("A", func() {
-			It("B", func() {
+		Describe("", func() {
+			It(func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 					`{ "object": "value" }`, 200, "test success")
 
-				http.DefineServer("test_server", "http://localhost:8080")
-				http.Server("test_server").
+				http.Server(c, "test_server").
 					ReceiveRequest("GET", "/test", http.WithJson(json.O{"object": "value"})).
 					AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
 		})
+		Run()
 
-		runner.Run()
 		assert.Equal(t, 0, len(spy.results))
 	})
 
@@ -43,19 +41,18 @@ func TestHttpはサーバーにJSONを送ることができる(t *testing.T) {
 		resetSuites()
 		spy := setUpSpy()
 
-		Describe("A", func() {
-			It("B", func() {
+		Describe("", func() {
+			It(func(c TC) {
 				wiremock.Stubbing("localhost:8080", "/test", "GET",
 					`[1, 2, 3]`, 200, "test success")
 
-				http.DefineServer("test_server", "http://localhost:8080")
-				http.Server("test_server").
+				http.Server(c, "test_server").
 					ReceiveRequest("GET", "/test", http.WithJson(json.A{1, 2, 3})).
 					AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 			})
 		})
+		Run()
 
-		runner.Run()
 		assert.Equal(t, 0, len(spy.results))
 	})
 }
@@ -68,19 +65,18 @@ func TestHttpはサーバーにPOSTでリクエストを送ることができる
 	resetSuites()
 	spy := setUpSpy()
 
-	Describe("A", func() {
-		It("B", func() {
+	Describe("", func() {
+		It(func(c TC) {
 			wiremock.Stubbing("localhost:8080", "/test", "POST",
 				`{ "object": "value" }`, 200, "test success")
 
-			http.DefineServer("test_server", "http://localhost:8080")
-			http.Server("test_server").
+			http.Server(c, "test_server").
 				ReceiveRequest("POST", "/test", http.WithJson(json.O{"object": "value"})).
 				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		})
 	})
+	Run()
 
-	runner.Run()
 	assert.Equal(t, 0, len(spy.results))
 }
 
@@ -93,14 +89,14 @@ func TestHttpはサーバーはレスポンスが期待と異なる場合はテ�
 	spy := setUpSpy()
 
 	Describe("A", func() {
-		It("B", func() {
-			http.DefineServer("test_server", "http://localhost:8080")
-			http.Server("test_server").
+		It("B", func(c TC) {
+			http.Server(c, "test_server").
 				ReceiveRequest("POST", "/test", http.WithJson(json.O{"object": "value"})).
 				AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		})
 	})
-	runner.Run()
+	Run()
+
 	assert.Equal(t, "A B", spy.results[0])
 	assert.Equal(t, 2, len(spy.results))
 }
@@ -113,20 +109,20 @@ func TestHttpはパラメータ付きのPOSTのリクエストを送ることが
 	resetSuites()
 	spy := setUpSpy()
 
-	Describe("A", func() {
-		It("B", func() {
+	Describe("", func() {
+		It(func(c TC) {
 			wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "POST",
 				`{ "object": "value" }`, 200, "test success")
 
-			http.DefineServer("test_server", "http://localhost:8080")
-			http.Server("test_server").
+			http.Server(c, "test_server").
 				ReceiveRequest("POST", "/test",
 					http.WithParam("param1", "p1").
 						WithJson(json.O{"object": "value"}).
 						WithParam("param2", "p2")).AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		})
 	})
-	runner.Run()
+	Run()
+
 	assert.Equal(t, 0, len(spy.results))
 }
 
@@ -138,20 +134,20 @@ func TestHttpはパラメータ付きのPATCHのリクエストを送ること�
 	resetSuites()
 	spy := setUpSpy()
 
-	Describe("A", func() {
-		It("B", func() {
+	Describe("", func() {
+		It(func(c TC) {
 			wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "PATCH",
 				`{ "object": "value" }`, 200, "test success")
 
-			http.DefineServer("test_server", "http://localhost:8080")
-			http.Server("test_server").
+			http.Server(c, "test_server").
 				ReceiveRequest("PATCH", "/test",
 					http.WithParam("param1", "p1").
 						WithJson(json.O{"object": "value"}).
 						WithParam("param2", "p2")).AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		})
 	})
-	runner.Run()
+	Run()
+
 	assert.Equal(t, 0, len(spy.results))
 }
 
@@ -163,20 +159,20 @@ func TestHttpはパラメータ付きのPUTのリクエストを送ることが�
 	resetSuites()
 	spy := setUpSpy()
 
-	Describe("A", func() {
-		It("B", func() {
+	Describe("", func() {
+		It(func(c TC) {
 			wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "PUT",
 				`{ "object": "value" }`, 200, "test success")
 
-			http.DefineServer("test_server", "http://localhost:8080")
-			http.Server("test_server").
+			http.Server(c, "test_server").
 				ReceiveRequest("PUT", "/test",
 					http.WithParam("param1", "p1").
 						WithJson(json.O{"object": "value"}).
 						WithParam("param2", "p2")).AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		})
 	})
-	runner.Run()
+	Run()
+
 	assert.Equal(t, 0, len(spy.results))
 }
 
@@ -188,19 +184,19 @@ func TestHttpはパラメータ付きのDELETEのリクエストを送ること�
 	resetSuites()
 	spy := setUpSpy()
 
-	Describe("A", func() {
-		It("B", func() {
+	Describe("", func() {
+		It(func(c TC) {
 			wiremock.Stubbing("localhost:8080", "/test?param1=p1&param2=p2", "DELETE",
 				`{ "object": "value" }`, 200, "test success")
 
-			http.DefineServer("test_server", "http://localhost:8080")
-			http.Server("test_server").
+			http.Server(c, "test_server").
 				ReceiveRequest("DELETE", "/test",
 					http.WithParam("param1", "p1").
 						WithJson(json.O{"object": "value"}).
 						WithParam("param2", "p2")).AndResponseShouldBe(http.Status(200).TextPlain("test success"))
 		})
 	})
-	runner.Run()
+	Run()
+
 	assert.Equal(t, 0, len(spy.results))
 }

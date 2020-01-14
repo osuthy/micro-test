@@ -2,18 +2,18 @@ package testable
 
 type TestCase struct {
 	description string
-	function func()
+	function    func(c TestContext)
 }
 
-func NewTestCase(description string, function func()) *TestCase {
+func NewTestCase(description string, function func(c TestContext)) *TestCase {
 	return &TestCase{
 		description: description,
-		function: function,
+		function:    function,
 	}
 }
 
-func (this *TestCase) Execute() {
-	this.function()
+func (this *TestCase) Execute(c TestContext) {
+	this.function(c)
 }
 
 func (this *TestCase) HasNextTest() bool {

@@ -1,8 +1,13 @@
 package http
 
+import (
+	. "github.com/osuthy/micro-test"
+)
+
 type Response struct {
-	Status int
-	Body   string
+	Status      int
+	Body        string
+	differences *Differences
 }
 
 func NewResponse(status int, body string) *Response {
