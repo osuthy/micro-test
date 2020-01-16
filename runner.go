@@ -17,7 +17,14 @@ func AppendConnectionDefinable(cdef ConnectionDefinable) {
 
 func Run() {
 	for _, suite := range Suites {
-		executeSuite(suite, createTC())
+		s := suite
+		for {
+			executeSuite(s, createTC())
+			if !s.HasNextTest() {
+				break
+			}
+			s = s.NextTest()
+		}
 	}
 }
 
@@ -30,22 +37,14 @@ func createTC() TC {
 }
 
 func executeSuite(suite Testable, tc TC) {
-	s := suite
-	for {
-		diffs := &Differences{}
-		tc["differences"] = diffs
-		s.Execute(TestContext(tc))
-		if !diffs.isEmpty() {
-			printer.Println(toFormatedDescription(s.Descriptions()))
-			for _, v := range diffs.slice {
-				printer.Println(v)
-			}
+	diffs := &Differences{}
+	tc["differences"] = diffs
+	suite.Execute(TestContext(tc))
+	if !diffs.isEmpty() {
+		printer.Println(toFormatedDescription(suite.Descriptions()))
+		for _, v := range diffs.slice {
+			printer.Println(v)
 		}
-		if !s.HasNextTest() {
-			return
-		}
-
-		s = s.NextTest()
 	}
 }
 
