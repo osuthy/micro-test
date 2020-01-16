@@ -17,15 +17,19 @@ func AppendConnectionDefinable(cdef ConnectionDefinable) {
 
 func Run() {
 	for _, suite := range Suites {
-		executeSuite(suite)
+		executeSuite(suite, createTC())
 	}
 }
 
-func executeSuite(suite Testable) {
+func createTC() TC {
 	tc := TC{}
 	for _, cdef := range cdefs {
 		tc, _ = cdef.SetConnectionForLocal(tc)
 	}
+	return tc
+}
+
+func executeSuite(suite Testable, tc TC) {
 	s := suite
 	for {
 		diffs := &Differences{}
