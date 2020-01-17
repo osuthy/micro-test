@@ -29,7 +29,7 @@ func Run() {
 }
 
 func createTC() TC {
-	tc := TC{}
+	tc := TC{"differences": &Differences{}}
 	for _, cdef := range cdefs {
 		tc, _ = cdef.SetConnectionForLocal(tc)
 	}
@@ -37,9 +37,8 @@ func createTC() TC {
 }
 
 func executeSuite(suite Testable, tc TC) {
-	diffs := &Differences{}
-	tc["differences"] = diffs
 	suite.Execute(TestContext(tc))
+	diffs := tc["differences"].(*Differences)
 	if !diffs.isEmpty() {
 		printer.Println(toFormatedDescription(suite.Descriptions()))
 		for _, v := range diffs.slice {
