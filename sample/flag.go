@@ -3,9 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 )
 
 func main() {
+	os.Args = []string{"osargstrial.exe", "-p", "5"} // stub command line args
 	run()
 }
 
