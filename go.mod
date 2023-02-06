@@ -8,8 +8,10 @@ require (
 	github.com/imroc/req v0.2.4
 	github.com/k0kubun/colorstring v0.0.0-20150214042306-9440f1994b88 // indirect
 	github.com/k0kubun/pp v3.0.1+incompatible
+	github.com/lib/pq v1.10.7 // indirect
 	github.com/mattn/go-colorable v0.1.2 // indirect
-	github.com/stretchr/testify v1.4.0
-	k8s.io/apimachinery v0.17.0
-	k8s.io/client-go v0.17.0
+	github.com/mattn/go-sqlite3 v1.14.16 // indirect
+	github.com/stretchr/testify v1.6.1
+	k8s.io/apimachinery v0.20.0
+	k8s.io/client-go v0.20.0
 )
